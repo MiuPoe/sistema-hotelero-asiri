@@ -53,10 +53,26 @@ export default function App() {
   };
 
   useEffect(() => {
+    const verificarYObtenerPerfil = async (user: any) => {
+      const email = (user.email || '').toLowerCase();
+      const esPersonal = email.includes('tamfranco') || email.includes('leonel') || email.includes('grim');
+      const emailConfirmado = !!(user.email_confirmed_at || user.confirmed_at);
+
+      // Si es un cliente y su correo aún no ha sido confirmado, cerramos sesión
+      if (!esPersonal && !emailConfirmado) {
+        await supabase.auth.signOut();
+        setCurrentUser(null);
+        setCargando(false);
+        return;
+      }
+
+      obtenerPerfil(user.id, email);
+    };
+
     // 1. Sesión actual al abrir la web
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        obtenerPerfil(session.user.id, session.user.email || '');
+        verificarYObtenerPerfil(session.user);
       } else {
         setCargando(false);
       }
@@ -65,7 +81,7 @@ export default function App() {
     // 2. Escuchar cambios de login / logout
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        obtenerPerfil(session.user.id, session.user.email || '');
+        verificarYObtenerPerfil(session.user);
       } else {
         setCurrentUser(null);
         setCargando(false);

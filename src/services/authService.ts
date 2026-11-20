@@ -21,6 +21,9 @@ export const authService = {
     })
 
     if (error) {
+      if (error.message.toLowerCase().includes('email not confirmed')) {
+        return { user: null, error: 'Tu correo aún no ha sido confirmado. Por favor revisa tu bandeja de entrada y haz clic en el enlace antes de ingresar.' }
+      }
       return { user: null, error: error.message }
     }
 
@@ -28,10 +31,16 @@ export const authService = {
       return { user: null, error: 'No se pudo obtener la sesión de usuario.' }
     }
 
-    // 2. Si Supabase validó la contraseña, asignamos de inmediato los datos del usuario
-    const esTamara = emailLimpio.includes('tamfranco') || emailLimpio.includes('tamfrango')
-    const esLeonel = emailLimpio.includes('leonel')
-    const esGrimanez = emailLimpio.includes('grim')
+    const emailLimpioCheck = emailLimpio
+    const esTamara = emailLimpioCheck.includes('tamfranco') || emailLimpioCheck.includes('tamfrango')
+    const esLeonel = emailLimpioCheck.includes('leonel')
+    const esGrimanez = emailLimpioCheck.includes('grim')
+
+    // Si no es empleado interno y el correo no está confirmado en Supabase, bloqueamos el ingreso
+    if (!data.user.confirmed_at && !esTamara && !esLeonel && !esGrimanez) {
+      await supabase.auth.signOut()
+      return { user: null, error: 'Debes confirmar tu correo electrónico antes de ingresar. Por favor revisa tu bandeja de entrada.' }
+    }
 
     let usuarioFinal: PerfilUsuario = {
       id: data.user.id,
@@ -56,8 +65,10 @@ export const authService = {
   },
 
   // Registrar cliente
-  async registrarse(email: string, password: string, nombre: string, telefono: string): Promise<{ user: PerfilUsuario | null; error: string | null }> {
+  async registrarse(email: string, password: string, nombre: string, telefono: string): Promise<{ user: PerfilUsuario | null; error: string | null; requiereConfirmacion?: boolean }> {
     const emailLimpio = email.trim().toLowerCase()
+
+    const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined
 
     const { data, error } = await supabase.auth.signUp({
       email: emailLimpio,
@@ -66,7 +77,8 @@ export const authService = {
         data: {
           nombre: nombre.trim(),
           telefono: telefono.trim()
-        }
+        },
+        emailRedirectTo: redirectTo
       }
     })
 
@@ -76,6 +88,17 @@ export const authService = {
 
     if (!data.user) {
       return { user: null, error: 'No se pudo crear el usuario.' }
+    }
+
+    // Si el usuario requiere confirmación de correo (no hay sesión o confirmed_at es null),
+    // cerramos cualquier sesión y forzamos el flujo de verificación.
+    if (!data.session || !data.user.confirmed_at) {
+      try {
+        await supabase.auth.signOut()
+      } catch {
+        // Ignorar
+      }
+      return { user: null, error: null, requiereConfirmacion: true }
     }
 
     const usuarioNuevo: PerfilUsuario = {

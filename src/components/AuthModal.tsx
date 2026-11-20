@@ -20,6 +20,8 @@ export default function AuthModal({ isOpen = true, onClose, onLoginSuccess, onLo
   
   const [cargando, setCargando] = useState(false)
   const [authError, setAuthError] = useState('')
+  const [registroPendiente, setRegistroPendiente] = useState(false)
+  const [emailEnviado, setEmailEnviado] = useState('')
   
   const [captchaCode, setCaptchaCode] = useState('')
   const [captchaInput, setCaptchaInput] = useState('')
@@ -100,6 +102,7 @@ export default function AuthModal({ isOpen = true, onClose, onLoginSuccess, onLo
     setNotRobotChecked(false)
     setCaptchaError('')
     setAuthError('')
+    setRegistroPendiente(false)
   }, [tab])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -136,16 +139,26 @@ export default function AuthModal({ isOpen = true, onClose, onLoginSuccess, onLo
         if (onLogin) onLogin(user)
         onClose()
       } else {
-        const { user, error } = await authService.registrarse(email.trim().toLowerCase(), password, nombre, telefono)
-        if (error || !user) {
-          setAuthError(error || 'No se pudo crear la cuenta.')
+        const res = await authService.registrarse(email.trim().toLowerCase(), password, nombre, telefono)
+        if (res.error) {
+          setAuthError(res.error || 'No se pudo crear la cuenta.')
+          setCargando(false)
+          reloadCaptcha()
+          return
+        }
+
+        if (res.requiereConfirmacion) {
+          setEmailEnviado(email.trim().toLowerCase())
+          setRegistroPendiente(true)
           setCargando(false)
           return
         }
 
-        if (onLoginSuccess) onLoginSuccess(user)
-        if (onLogin) onLogin(user)
-        onClose()
+        if (res.user) {
+          if (onLoginSuccess) onLoginSuccess(res.user)
+          if (onLogin) onLogin(res.user)
+          onClose()
+        }
       }
     } catch (err: any) {
       setAuthError(err.message || 'Error de conexión con el servidor')
@@ -189,7 +202,58 @@ export default function AuthModal({ isOpen = true, onClose, onLoginSuccess, onLo
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3.5">
+        {registroPendiente ? (
+          <div className="py-2 space-y-4 text-center">
+            <div className="w-14 h-14 mx-auto rounded-full bg-[#E0A526]/10 border border-[#E0A526]/40 flex items-center justify-center text-[#E0A526]">
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3 className="font-serif text-lg font-bold text-[#F5EBDC]" style={{ fontFamily: '"Young Serif", Georgia, serif' }}>
+                ¡Verifica tu correo electrónico!
+              </h3>
+              <p className="text-xs text-[#C9B096] mt-1">
+                Hemos enviado un correo de confirmación a:
+              </p>
+              <p className="text-xs font-semibold text-[#E0A526] bg-[#1A0F08] py-2 px-3 rounded-lg border border-[#E6D5BC]/15 mt-2 select-all font-mono break-all">
+                {emailEnviado}
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#1A0F08]/80 border border-[#E6D5BC]/15 text-left text-xs text-[#C9B096] space-y-2.5">
+              <p className="flex items-start gap-2">
+                <span className="text-[#E0A526] font-bold">1.</span>
+                <span>Abre tu bandeja de entrada en Gmail (o revisa Spam / Promociones).</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#E0A526] font-bold">2.</span>
+                <span>Haz clic en el botón dorado <strong>"Confirmar mi correo electrónico"</strong>.</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <span className="text-[#E0A526] font-bold">3.</span>
+                <span>¡Listo! Tu cuenta quedará activada y podrás iniciar sesión.</span>
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setRegistroPendiente(false)
+                  setTab('login')
+                  setPassword('')
+                }}
+                className="w-full py-2.5 rounded-full bg-[#E0A526] text-[#1E140C] hover:bg-[#F28C38] font-bold text-xs transition-all shadow-md cursor-pointer"
+              >
+                Ir a Iniciar Sesión
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-3.5">
           {tab === 'register' && (
             <>
               <div>
@@ -331,6 +395,7 @@ export default function AuthModal({ isOpen = true, onClose, onLoginSuccess, onLo
             </button>
           </div>
         </form>
+        )}
 
       </div>
     </div>
