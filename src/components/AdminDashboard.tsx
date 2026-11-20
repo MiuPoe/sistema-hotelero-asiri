@@ -468,13 +468,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         ]);
       }
       // 8. Solicitudes de Reserva Web
-      const { data: solData } = await supabase
+      const { data: solData, error: solErr } = await supabase
         .from('solicitudes_reserva')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*');
+
+      if (solErr) {
+        console.warn('Error cargando solicitudes_reserva:', solErr);
+      }
 
       if (solData) {
-        setSolicitudes(solData.map((s: any) => ({
+        const ordenadas = [...solData].sort((a: any, b: any) => {
+          const tA = new Date(a.created_at || a.creado_en || 0).getTime();
+          const tB = new Date(b.created_at || b.creado_en || 0).getTime();
+          return tB - tA;
+        });
+
+        setSolicitudes(ordenadas.map((s: any) => ({
           id: String(s.id),
           clienteId: s.cliente_id,
           nombre: s.nombre || 'Cliente Web',
@@ -485,7 +494,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           fechaSalida: s.fecha_salida || '',
           personas: Number(s.personas) || 1,
           estado: s.estado || 'pendiente',
-          createdAt: s.created_at || ''
+          createdAt: s.created_at || s.creado_en || ''
         })));
       }
     } catch (err) {

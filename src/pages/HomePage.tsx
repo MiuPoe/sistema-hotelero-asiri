@@ -88,19 +88,33 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
 
     setEnviandoSolicitud(true)
     try {
-      const { error } = await supabase.from('solicitudes_reserva').insert({
-        cliente_id: user?.id,
+      const payload: any = {
         nombre: user?.nombre || 'Cliente Web',
         telefono: user?.telefono || 'Sin teléfono',
-        email: user?.email,
-        ambiente_codigo: habitacionSeleccionada,
+        email: user?.email || null,
+        ambiente_codigo: habitacionSeleccionada || 'Habitación 101',
         fecha_entrada: solicitudEntrada,
         fecha_salida: solicitudSalida,
-        personas: solicitudPersonas,
+        personas: Number(solicitudPersonas) || 1,
         estado: 'pendiente'
-      })
+      };
 
-      if (error) throw error
+      if (user?.id && typeof user.id === 'string' && user.id.includes('-') && user.id.length > 30) {
+        payload.cliente_id = user.id;
+      }
+
+      const { error } = await supabase.from('solicitudes_reserva').insert(payload);
+
+      if (error) {
+        console.warn('Reintentando inserción sin cliente_id:', error);
+        if (payload.cliente_id) {
+          delete payload.cliente_id;
+          const { error: err2 } = await supabase.from('solicitudes_reserva').insert(payload);
+          if (err2) throw err2;
+        } else {
+          throw error;
+        }
+      }
 
       setShowModalSolicitudCliente(false)
       mostrarNotifCliente('✓ Recibimos tu solicitud. El hotel te llamará para confirmar. Esto aún no es una reserva confirmada.')
