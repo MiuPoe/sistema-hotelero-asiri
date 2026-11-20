@@ -202,6 +202,20 @@ interface MovimientoCaja {
   estadiaVinculada?: string;
 }
 
+interface SolicitudReserva {
+  id: string;
+  clienteId?: string;
+  nombre: string;
+  telefono: string;
+  email?: string;
+  ambienteCodigo: string;
+  fechaEntrada: string;
+  fechaSalida: string;
+  personas: number;
+  estado: 'pendiente' | 'confirmada' | 'rechazada';
+  createdAt: string;
+}
+
 export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) {
   const esAdmin = user.rol === 'administrador';
 
@@ -210,18 +224,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   >('panel');
 
   const [tabPanel, setTabPanel] = useState<'modulos' | 'resumen'>('modulos');
-  const [vistaReservas, setVistaReservas] = useState<'calendario' | 'lista'>('calendario');
+  const [vistaReservas, setVistaReservas] = useState<'calendario' | 'lista' | 'solicitudes'>('calendario');
 
   // Notificación flotante
   const [notificacion, setNotificacion] = useState<string | null>(null);
   const mostrarNotificacion = (msg: string) => {
     setNotificacion(msg);
-    setTimeout(() => setNotificacion(null), 3500);
+    setTimeout(() => setNotificacion(null), 4000);
   };
 
   // Datos dinámicos de Supabase
   const [ambientes, setAmbientes] = useState<Ambiente[]>([]);
   const [reservas, setReservas] = useState<Reserva[]>([]);
+  const [solicitudes, setSolicitudes] = useState<SolicitudReserva[]>([]);
   const [huespedes, setHuespedes] = useState<Huesped[]>([]);
   const [estadias, setEstadias] = useState<Estadia[]>([]);
   const [tareasLimpieza, setTareasLimpieza] = useState<TareaLimpieza[]>([]);
@@ -229,8 +244,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const [personal, setPersonal] = useState<PersonalUsuario[]>([]);
   const [guardandoReserva, setGuardandoReserva] = useState(false);
 
-  // Filtros
+  // Filtros y Métricas Rápidas
   const [filtroAmbienteEstado, setFiltroAmbienteEstado] = useState<string>('todos');
+  const solicitudesPendientes = solicitudes.filter(s => s.estado === 'pendiente').length;
 
   // Modales
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -451,6 +467,27 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           { id: 'u3', nombre: 'Grimanez Cordero Villasante', email: 'grimsvillasante@gmail.com', rol: 'limpieza', activo: true, ultimoAcceso: 'Hoy 15:45' }
         ]);
       }
+      // 8. Solicitudes de Reserva Web
+      const { data: solData } = await supabase
+        .from('solicitudes_reserva')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (solData) {
+        setSolicitudes(solData.map((s: any) => ({
+          id: String(s.id),
+          clienteId: s.cliente_id,
+          nombre: s.nombre || 'Cliente Web',
+          telefono: s.telefono || 'Sin teléfono',
+          email: s.email || '',
+          ambienteCodigo: s.ambiente_codigo || '',
+          fechaEntrada: s.fecha_entrada || '',
+          fechaSalida: s.fecha_salida || '',
+          personas: Number(s.personas) || 1,
+          estado: s.estado || 'pendiente',
+          createdAt: s.created_at || ''
+        })));
+      }
     } catch (err) {
       console.error('Error cargando datos de Supabase:', err);
     }
@@ -472,6 +509,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         cargarDatos();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos_caja' }, () => {
+        cargarDatos();
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'solicitudes_reserva' }, (payload: any) => {
+        mostrarNotificacion(`🔔 ¡Nueva solicitud de reserva de ${payload.new?.nombre || 'un cliente'}!`);
+        cargarDatos();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes_reserva' }, () => {
         cargarDatos();
       })
       .subscribe();
@@ -718,6 +762,92 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     }
   };
 
+  const handleAprobarSolicitud = async (sol: SolicitudReserva) => {
+    try {
+      // 1. Buscar ambiente adecuado
+      const amb = ambientes.find(a => 
+        a.codigo === sol.ambienteCodigo || 
+        a.nombre === sol.ambienteCodigo || 
+        (a.nombre && sol.ambienteCodigo.includes(a.nombre)) ||
+        (a.codigo && sol.ambienteCodigo.includes(a.codigo)) ||
+        (a.tipo && sol.ambienteCodigo.toLowerCase().includes(a.tipo.toLowerCase()))
+      ) || ambientes[0];
+
+      const ambId = amb?.id;
+
+      // 2. Obtener o crear huésped
+      let huespedId: string | null = null;
+      try {
+        const { data: hExist } = await supabase
+          .from('huespedes')
+          .select('id')
+          .or(`nombre.eq.${sol.nombre},nombres.eq.${sol.nombre}`)
+          .maybeSingle();
+
+        if (hExist?.id) {
+          huespedId = hExist.id;
+        } else {
+          const { data: hNuevo } = await supabase
+            .from('huespedes')
+            .insert({
+              nombre: sol.nombre,
+              contacto: sol.telefono,
+              email: sol.email || null
+            } as any)
+            .select('id')
+            .maybeSingle();
+          if (hNuevo?.id) huespedId = hNuevo.id;
+        }
+      } catch (e) {}
+
+      // 3. Crear la reserva confirmada en la tabla reservas
+      const codigoRes = `RES-${amb?.codigo || '101'}-${Date.now().toString().slice(-4)}`;
+      const payloadBase: any = {
+        codigo: codigoRes,
+        fecha_entrada: sol.fechaEntrada,
+        fecha_salida: sol.fechaSalida,
+        cantidad_huespedes: sol.personas || 1
+      };
+      if (ambId) payloadBase.ambiente_id = ambId;
+      if (huespedId) payloadBase.huesped_id = huespedId;
+
+      await supabase.from('reservas').insert(payloadBase);
+
+      // 4. Actualizar estado de la solicitud a 'confirmada'
+      await supabase
+        .from('solicitudes_reserva')
+        .update({ estado: 'confirmada' })
+        .eq('id', sol.id);
+
+      // 5. Actualizar ambiente a 'reservado'
+      if (ambId) {
+        await supabase.from('ambientes').update({
+          estado: 'reservado',
+          huesped_actual: sol.nombre
+        }).eq('id', ambId);
+      }
+
+      await cargarDatos();
+      mostrarNotificacion(`✓ Solicitud de ${sol.nombre} aprobada y registrada en el hotel.`);
+    } catch (err: any) {
+      mostrarNotificacion('Error al aprobar: ' + (err.message || 'Error'));
+    }
+  };
+
+  const handleRechazarSolicitud = async (solicitudId: string) => {
+    try {
+      await supabase
+        .from('solicitudes_reserva')
+        .update({ estado: 'rechazada' })
+        .eq('id', solicitudId);
+
+      setSolicitudes(prev => prev.map(s => s.id === solicitudId ? { ...s, estado: 'rechazada' } : s));
+      mostrarNotificacion('Solicitud marcada como rechazada.');
+    } catch (err: any) {
+      mostrarNotificacion('Error al rechazar: ' + (err.message || 'Error'));
+    }
+  };
+
   const handleGuardarIngreso = async () => {
     if (!nuevoMovMonto || !nuevoMovDetalle) {
       mostrarNotificacion('Por favor completa el detalle y el monto.');
@@ -941,12 +1071,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
             <button
               onClick={() => setSeccionActiva('reservas')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
                 seccionActiva === 'reservas' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
               }`}
             >
-              <IconReservas className="w-5 h-5 text-[#E0A526]" />
-              <span>Reservas</span>
+              <div className="flex items-center gap-3">
+                <IconReservas className="w-5 h-5 text-[#E0A526]" />
+                <span>Reservas</span>
+              </div>
+              {solicitudesPendientes > 0 && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E0A526] text-[#1E140C] shadow animate-pulse">
+                  {solicitudesPendientes} nueva{solicitudesPendientes > 1 ? 's' : ''}
+                </span>
+              )}
             </button>
 
             <button
@@ -1308,6 +1445,21 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     >
                       Por Lista
                     </button>
+                    <button
+                      onClick={() => setVistaReservas('solicitudes')}
+                      className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                        vistaReservas === 'solicitudes' ? 'bg-[#E0A526] text-[#1E140C]' : 'text-[#C9B096] hover:text-white'
+                      }`}
+                    >
+                      <span>Solicitudes Web</span>
+                      {solicitudesPendientes > 0 && (
+                        <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                          vistaReservas === 'solicitudes' ? 'bg-[#1E140C] text-[#E0A526]' : 'bg-[#E0A526] text-[#1E140C]'
+                        }`}>
+                          {solicitudesPendientes}
+                        </span>
+                      )}
+                    </button>
                   </div>
 
                   <button
@@ -1325,7 +1477,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               {/* CALENDARIO TIPO EXCEL */}
-              {vistaReservas === 'calendario' ? (
+              {vistaReservas === 'calendario' && (
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-4 shadow-xl space-y-3">
                   
                   {/* BARRA SUPERIOR: < Anterior, Hoy, Siguiente > y Píldoras de Estado */}
@@ -1447,7 +1599,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     </table>
                   </div>
                 </div>
-              ) : (
+              )}
+
+              {/* VISTA 3.2: POR LISTA */}
+              {vistaReservas === 'lista' && (
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
                   <table className="w-full border-collapse text-left text-xs">
                     <thead>
@@ -1483,6 +1638,95 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       )}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {/* VISTA 3.3: SOLICITUDES EN LÍNEA DE CLIENTES (WEB) */}
+              {vistaReservas === 'solicitudes' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-[#C9B096]">
+                      Solicitudes de reserva recibidas en tiempo real desde la página web pública de Hotel Asiri.
+                    </p>
+                    <span className="text-xs text-[#E0A526] font-semibold">
+                      {solicitudesPendientes} pendiente{solicitudesPendientes !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+
+                  <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
+                    <table className="w-full border-collapse text-left text-xs">
+                      <thead>
+                        <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
+                          <th className="p-3.5 font-semibold">Cliente / Huésped</th>
+                          <th className="p-3.5 font-semibold">Contacto</th>
+                          <th className="p-3.5 font-semibold">Habitación</th>
+                          <th className="p-3.5 font-semibold">Fechas</th>
+                          <th className="p-3.5 font-semibold">Personas</th>
+                          <th className="p-3.5 font-semibold">Estado</th>
+                          <th className="p-3.5 font-semibold text-right">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {solicitudes.length === 0 ? (
+                          <tr>
+                            <td colSpan={7} className="p-8 text-center text-[#C9B096]">
+                              No hay solicitudes de reserva web registradas todavía.
+                            </td>
+                          </tr>
+                        ) : (
+                          solicitudes.map(s => (
+                            <tr key={s.id} className="border-b border-[#3D2817]/60 hover:bg-[#2D1E12]/50">
+                              <td className="p-3.5">
+                                <div className="font-bold text-white">{s.nombre}</div>
+                                {s.email && <div className="text-[11px] text-[#C9B096]">{s.email}</div>}
+                              </td>
+                              <td className="p-3.5 text-[#F5EBDC] font-mono">{s.telefono}</td>
+                              <td className="p-3.5">
+                                <span className="font-semibold text-[#E0A526]">{s.ambienteCodigo}</span>
+                              </td>
+                              <td className="p-3.5 text-[#C9B096]">
+                                <div>{s.fechaEntrada} <span className="text-[#E0A526]">→</span> {s.fechaSalida}</div>
+                              </td>
+                              <td className="p-3.5 text-[#F5EBDC]">{s.personas} pers.</td>
+                              <td className="p-3.5">
+                                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                                  s.estado === 'confirmada'
+                                    ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'
+                                    : s.estado === 'rechazada'
+                                    ? 'bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]'
+                                    : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F] animate-pulse'
+                                }`}>
+                                  {s.estado.toUpperCase()}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-right space-x-2">
+                                {s.estado === 'pendiente' ? (
+                                  <>
+                                    <button
+                                      onClick={() => handleAprobarSolicitud(s)}
+                                      className="px-3 py-1.5 rounded-lg bg-[#2F7D4F] hover:bg-[#3FA066] text-white text-xs font-bold transition-all shadow cursor-pointer"
+                                      title="Aprobar y registrar en el calendario"
+                                    >
+                                      ✓ Aprobar
+                                    </button>
+                                    <button
+                                      onClick={() => handleRechazarSolicitud(s.id)}
+                                      className="px-3 py-1.5 rounded-lg bg-[#2D1E12] hover:bg-[#3D2817] text-[#C9B096] hover:text-white text-xs font-semibold border border-[#5A3418] cursor-pointer"
+                                      title="Rechazar solicitud"
+                                    >
+                                      ✕ Rechazar
+                                    </button>
+                                  </>
+                                ) : (
+                                  <span className="text-[11px] text-[#C9B096] italic">Procesada</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>
