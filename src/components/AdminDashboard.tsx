@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 interface AdminDashboardProps {
@@ -234,8 +234,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
   // Modales
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [showCheckInModal, setShowCheckInModal] = useState<Estadia | null>(null);
-  const [showCheckOutWarning, setShowCheckOutWarning] = useState<Estadia | null>(null);
+  const [, setShowCheckInModal] = useState<Estadia | null>(null);
+  const [, setShowCheckOutWarning] = useState<Estadia | null>(null);
   const [showNuevaTareaModal, setShowNuevaTareaModal] = useState(false);
   const [showNuevoIngresoModal, setShowNuevoIngresoModal] = useState(false);
   const [showNuevoEgresoModal, setShowNuevoEgresoModal] = useState(false);
@@ -598,7 +598,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           for (const item of intentos) {
             const { data: hNuevo } = await supabase
               .from('huespedes')
-              .insert(item)
+              .insert(item as any)
               .select('id')
               .maybeSingle();
             if (hNuevo?.id) {
