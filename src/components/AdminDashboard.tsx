@@ -1482,11 +1482,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             </span>
                           </div>
                         </div>
-                          <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">{a.codigo}</span>
-                          <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
-                            {estadoTexto}
-                          </span>
-                        </div>
 
                         <div className="my-2">
                           <p className="text-xs text-[#C9B096] font-semibold">{a.tipo}</p>
