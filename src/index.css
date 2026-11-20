@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --color-asiri-bg: #1E140C;
+  --color-asiri-surface: #2D1E12;
+  --color-asiri-ink: #F5EBDC;
+  --color-asiri-muted: #C9B096;
+  --color-asiri-accent: #F28C38;
+  --color-asiri-gold: #E0A526;
+  --color-asiri-line: #4A3420;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #1E140C;
+  color: #F5EBDC;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Young Serif", Georgia, serif;
+  font-weight: 400;
+}
