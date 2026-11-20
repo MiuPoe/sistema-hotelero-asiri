@@ -68,8 +68,6 @@ export const authService = {
   async registrarse(email: string, password: string, nombre: string, telefono: string): Promise<{ user: PerfilUsuario | null; error: string | null; requiereConfirmacion?: boolean }> {
     const emailLimpio = email.trim().toLowerCase()
 
-    const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined
-
     const { data, error } = await supabase.auth.signUp({
       email: emailLimpio,
       password,
@@ -77,8 +75,7 @@ export const authService = {
         data: {
           nombre: nombre.trim(),
           telefono: telefono.trim()
-        },
-        emailRedirectTo: redirectTo
+        }
       }
     })
 

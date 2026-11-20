@@ -216,6 +216,18 @@ interface SolicitudReserva {
   createdAt: string;
 }
 
+interface TareaAtencion {
+  id: string;
+  ambienteCodigo: string;
+  huespedNombre: string;
+  tipo: 'Petición especial' | 'Requerimiento' | 'Queja' | 'Toallas / Amenities' | 'Mantenimiento' | 'Otro';
+  descripcion: string;
+  prioridad: 'Baja' | 'Normal' | 'Alta' | 'Urgente';
+  responsable: string;
+  estado: 'pendiente' | 'en_proceso' | 'resuelta';
+  fecha: string;
+}
+
 export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) {
   const esAdmin = user.rol === 'administrador';
 
@@ -257,6 +269,69 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const [showNuevoEgresoModal, setShowNuevoEgresoModal] = useState(false);
   const [showCierreCajaModal, setShowCierreCajaModal] = useState(false);
   const [showNuevaReservaModal, setShowNuevaReservaModal] = useState(false);
+
+  // Estados de Atención al Cliente (Tareas y requerimientos)
+  const [tareasAtencion, setTareasAtencion] = useState<TareaAtencion[]>([
+    {
+      id: 'tat-1',
+      ambienteCodigo: 'HAB-101',
+      huespedNombre: 'Carlos Mendoza',
+      tipo: 'Toallas / Amenities',
+      descripcion: 'Solicita 2 toallas adicionales y jabón extra para la tarde.',
+      prioridad: 'Normal',
+      responsable: 'Recepción',
+      estado: 'pendiente',
+      fecha: new Date().toISOString().split('T')[0]
+    },
+    {
+      id: 'tat-2',
+      ambienteCodigo: 'HAB-203',
+      huespedNombre: 'Valeria Quispe',
+      tipo: 'Petición especial',
+      descripcion: 'Pide secadora de cabello y cobija extra por frío.',
+      prioridad: 'Alta',
+      responsable: 'Limpieza',
+      estado: 'en_proceso',
+      fecha: new Date().toISOString().split('T')[0]
+    }
+  ]);
+  const [showNuevaTareaAtencionModal, setShowNuevaTareaAtencionModal] = useState(false);
+  const [tareaAtencionAEditar, setTareaAtencionAEditar] = useState<TareaAtencion | null>(null);
+  const [filtroAtencionEstado, setFiltroAtencionEstado] = useState<'todos' | 'pendiente' | 'en_proceso' | 'resuelta'>('todos');
+
+  // Form Tarea Atención
+  const [formAtencionAmbiente, setFormAtencionAmbiente] = useState('HAB-101');
+  const [formAtencionHuesped, setFormAtencionHuesped] = useState('');
+  const [formAtencionTipo, setFormAtencionTipo] = useState<'Petición especial' | 'Requerimiento' | 'Queja' | 'Toallas / Amenities' | 'Mantenimiento' | 'Otro'>('Petición especial');
+  const [formAtencionDesc, setFormAtencionDesc] = useState('');
+  const [formAtencionPrioridad, setFormAtencionPrioridad] = useState<'Baja' | 'Normal' | 'Alta' | 'Urgente'>('Normal');
+  const [formAtencionResponsable, setFormAtencionResponsable] = useState('Recepción');
+  const [formAtencionEstado, setFormAtencionEstado] = useState<'pendiente' | 'en_proceso' | 'resuelta'>('pendiente');
+
+  // Modales de Ambientes (CRUD)
+  const [showNuevoAmbienteModal, setShowNuevoAmbienteModal] = useState(false);
+  const [ambienteAEditar, setAmbienteAEditar] = useState<Ambiente | null>(null);
+  const [formAmbCodigo, setFormAmbCodigo] = useState('');
+  const [formAmbNombre, setFormAmbNombre] = useState('');
+  const [formAmbTipo, setFormAmbTipo] = useState('Simple');
+  const [formAmbCapacidad, setFormAmbCapacidad] = useState(2);
+  const [formAmbPrecio, setFormAmbPrecio] = useState(280);
+  const [formAmbEstado, setFormAmbEstado] = useState<'disponible' | 'ocupada' | 'limpieza'>('disponible');
+
+  // Modales de Huéspedes (CRUD)
+  const [showNuevoHuespedModal, setShowNuevoHuespedModal] = useState(false);
+  const [huespedAEditar, setHuespedAEditar] = useState<Huesped | null>(null);
+  const [huespedHistorial, setHuespedHistorial] = useState<Huesped | null>(null);
+  const [formHuespedNombre, setFormHuespedNombre] = useState('');
+  const [formHuespedDoc, setFormHuespedDoc] = useState('');
+  const [formHuespedContacto, setFormHuespedContacto] = useState('');
+  const [formHuespedFotocopia, setFormHuespedFotocopia] = useState(false);
+
+  // Modal Editar Personal / Usuario (CRUD)
+  const [usuarioAEditar, setUsuarioAEditar] = useState<PersonalUsuario | null>(null);
+  const [formUserNombre, setFormUserNombre] = useState('');
+  const [formUserRol, setFormUserRol] = useState<'administrador' | 'recepcionista' | 'limpieza'>('recepcionista');
+  const [formUserActivo, setFormUserActivo] = useState(true);
 
   // Form Ingreso (Fiel a la Imagen 2)
   const [nuevoMovFecha, setNuevoMovFecha] = useState(new Date().toISOString().split('T')[0]);
@@ -496,6 +571,29 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           estado: s.estado || 'pendiente',
           createdAt: s.created_at || s.creado_en || ''
         })));
+      }
+
+      // 9. Tareas Atención al Cliente
+      try {
+        const { data: atData } = await supabase
+          .from('tareas_atencion')
+          .select('*');
+
+        if (atData && atData.length > 0) {
+          setTareasAtencion(atData.map((a: any) => ({
+            id: String(a.id),
+            ambienteCodigo: a.ambiente_codigo || a.ambienteCodigo || 'HAB-101',
+            huespedNombre: a.huesped_nombre || a.huespedNombre || 'Huésped',
+            tipo: a.tipo || 'Petición especial',
+            descripcion: a.descripcion || a.detalle || '',
+            prioridad: a.prioridad || 'Normal',
+            responsable: a.responsable || 'Recepción',
+            estado: a.estado || 'pendiente',
+            fecha: a.fecha || new Date().toISOString().split('T')[0]
+          })));
+        }
+      } catch {
+        // Fallback al estado local si no existe la tabla
       }
     } catch (err) {
       console.error('Error cargando datos de Supabase:', err);
@@ -1258,15 +1356,32 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Ambientes</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Gestión de 23 ambientes, tarifas y asignación inmediata a limpieza</p>
+                  <p className="text-sm text-[#C9B096] mt-0.5">Gestión de ambientes, tarifas, capacidades y asignación a limpieza</p>
                 </div>
 
-                <div className="px-4 py-2 rounded-xl bg-[#24170E] border border-[#3D2817] text-xs font-medium text-[#F5EBDC]">
-                  « <span className="text-[#5FD08E] font-bold">{conteoLibres} libres</span> ·{' '}
-                  <span className="text-[#F28C38] font-bold">{conteoOcupadas} ocupadas</span> ·{' '}
-                  <span className="text-[#F0C14B] font-bold">{conteoPendientes} pendientes</span> ·{' '}
-                  <span className="text-[#F472B6] font-bold">{conteoPagadas} pagadas</span> ·{' '}
-                  <span className="text-[#6DB7D9] font-bold">{conteoLimpieza} en limpieza</span> »
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="px-4 py-2 rounded-xl bg-[#24170E] border border-[#3D2817] text-xs font-medium text-[#F5EBDC]">
+                    « <span className="text-[#5FD08E] font-bold">{conteoLibres} libres</span> ·{' '}
+                    <span className="text-[#F28C38] font-bold">{conteoOcupadas} ocupadas</span> ·{' '}
+                    <span className="text-[#F0C14B] font-bold">{conteoPendientes} pendientes</span> ·{' '}
+                    <span className="text-[#F472B6] font-bold">{conteoPagadas} pagadas</span> ·{' '}
+                    <span className="text-[#6DB7D9] font-bold">{conteoLimpieza} en limpieza</span> »
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setFormAmbCodigo(`HAB-${ambientes.length + 101}`);
+                      setFormAmbNombre(`Habitación ${ambientes.length + 101}`);
+                      setFormAmbTipo('Simple');
+                      setFormAmbCapacidad(2);
+                      setFormAmbPrecio(280);
+                      setFormAmbEstado('disponible');
+                      setShowNuevoAmbienteModal(true);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>+ Nuevo Ambiente</span>
+                  </button>
                 </div>
               </div>
 
@@ -1345,6 +1460,28 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     >
                       <div>
                         <div className="flex items-center justify-between">
+                          <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">{a.codigo}</span>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => {
+                                setAmbienteAEditar(a);
+                                setFormAmbCodigo(a.codigo);
+                                setFormAmbNombre(a.nombre);
+                                setFormAmbTipo(a.tipo);
+                                setFormAmbCapacidad(a.capacidad);
+                                setFormAmbPrecio(a.tarifa_base);
+                                setFormAmbEstado(a.estado === 'disponible' || a.estado === 'ocupada' || a.estado === 'limpieza' ? a.estado : 'disponible');
+                              }}
+                              className="text-[10px] px-2 py-0.5 rounded bg-[#1E140C] border border-[#5A3418] text-[#E0A526] hover:bg-[#E0A526] hover:text-[#1E140C] transition-colors font-medium cursor-pointer"
+                              title="Modificar capacidad y precio"
+                            >
+                              Editar
+                            </button>
+                            <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
+                              {estadoTexto}
+                            </span>
+                          </div>
+                        </div>
                           <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">{a.codigo}</span>
                           <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
                             {estadoTexto}
@@ -1797,7 +1934,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </div>
           )}
 
-          {/* VISTA 5: HUÉSPEDES */}
+          {/* VISTA 5: HUÉSPEDES (CRUD COMPLETO CON HISTORIAL) */}
           {seccionActiva === 'huespedes' && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -1805,6 +1942,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Huéspedes</h2>
                   <p className="text-sm text-[#C9B096] mt-0.5">Directorio de huéspedes, códigos HU- y control de fotocopias</p>
                 </div>
+
+                <button
+                  onClick={() => {
+                    setFormHuespedNombre('');
+                    setFormHuespedDoc('');
+                    setFormHuespedContacto('');
+                    setFormHuespedFotocopia(false);
+                    setShowNuevoHuespedModal(true);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>+ Nuevo Huésped</span>
+                </button>
               </div>
 
               <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
@@ -1812,9 +1962,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <thead>
                     <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
                       <th className="p-3.5 font-semibold">Perfil</th>
-                      <th className="p-3.5 font-semibold">Nombre</th>
+                      <th className="p-3.5 font-semibold">Nombre Completo</th>
                       <th className="p-3.5 font-semibold">Documento</th>
                       <th className="p-3.5 font-semibold">Contacto</th>
+                      <th className="p-3.5 font-semibold">Estadías</th>
+                      <th className="p-3.5 font-semibold">Estadía Activa</th>
+                      <th className="p-3.5 font-semibold">Fotocopia Carnet</th>
+                      <th className="p-3.5 font-semibold text-right">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1824,6 +1978,47 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <td className="p-3.5 font-medium text-white">{h.nombre}</td>
                         <td className="p-3.5 text-[#F5EBDC]">{h.documento}</td>
                         <td className="p-3.5 text-[#C9B096]">{h.contacto}</td>
+                        <td className="p-3.5 text-[#F5EBDC]">{h.estadiasTotal} visita{h.estadiasTotal > 1 ? 's' : ''}</td>
+                        <td className="p-3.5">
+                          {h.codigoEstadiaActiva ? (
+                            <span className="px-2 py-0.5 rounded bg-[#E0A526]/20 text-[#E0A526] border border-[#E0A526]/40 font-mono text-[11px] font-bold">
+                              {h.codigoEstadiaActiva}
+                            </span>
+                          ) : (
+                            <span className="text-[#6E5644] text-[11px]">Sin estadía activa</span>
+                          )}
+                        </td>
+                        <td className="p-3.5">
+                          {h.fotocopiaRecibida ? (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#2F7D4F]/20 text-[#5FD08E] border border-[#2F7D4F]">
+                              ✓ Recibida
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#96690F]/20 text-[#F0C14B] border border-[#96690F]">
+                              Pendiente
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-3.5 text-right space-x-2 whitespace-nowrap">
+                          <button
+                            onClick={() => {
+                              setHuespedAEditar(h);
+                              setFormHuespedNombre(h.nombre);
+                              setFormHuespedDoc(h.documento);
+                              setFormHuespedContacto(h.contacto);
+                              setFormHuespedFotocopia(h.fotocopiaRecibida);
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => setHuespedHistorial(h)}
+                            className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-[#F5EBDC] hover:bg-[#3D2817] text-[11px] cursor-pointer"
+                          >
+                            Historial
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1999,6 +2194,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       <th className="p-3.5 font-semibold">Correo Electrónico</th>
                       <th className="p-3.5 font-semibold">Rol Asignado</th>
                       <th className="p-3.5 font-semibold">Estado</th>
+                      <th className="p-3.5 font-semibold text-right">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2024,6 +2220,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             <span className="text-[#6E5644]">Inactivo</span>
                           )}
                         </td>
+                        <td className="p-3.5 text-right">
+                          <button
+                            onClick={() => {
+                              setUsuarioAEditar(p);
+                              setFormUserNombre(p.nombre);
+                              setFormUserRol(p.rol);
+                              setFormUserActivo(p.activo);
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
+                          >
+                            Editar
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -2032,7 +2241,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </div>
           )}
 
-          {/* VISTA 9: ATENCIÓN AL CLIENTE */}
+          {/* VISTA 9: ATENCIÓN AL CLIENTE (CRUD COMPLETO) */}
           {seccionActiva === 'atencion' && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -2040,10 +2249,142 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Atención al cliente</h2>
                   <p className="text-sm text-[#C9B096] mt-0.5">Peticiones, requerimientos especiales y quejas de huéspedes</p>
                 </div>
+
+                <button
+                  onClick={() => {
+                    setFormAtencionAmbiente(ambientes[0]?.codigo || 'HAB-101');
+                    setFormAtencionHuesped('');
+                    setFormAtencionTipo('Petición especial');
+                    setFormAtencionDesc('');
+                    setFormAtencionPrioridad('Normal');
+                    setFormAtencionResponsable('Recepción');
+                    setFormAtencionEstado('pendiente');
+                    setShowNuevaTareaAtencionModal(true);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>+ Nueva Tarea / Atención</span>
+                </button>
               </div>
 
-              <div className="p-8 rounded-2xl bg-[#24170E] border border-[#3D2817] text-center text-sm text-[#C9B096]">
-                No hay quejas ni solicitudes registradas en la base de datos.
+              {/* Filtros por estado */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-xs text-[#C9B096]">Filtrar por:</span>
+                {(['todos', 'pendiente', 'en_proceso', 'resuelta'] as const).map(est => (
+                  <button
+                    key={est}
+                    onClick={() => setFiltroAtencionEstado(est)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                      filtroAtencionEstado === est 
+                        ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' 
+                        : 'bg-[#24170E] border-[#3D2817] text-[#C9B096]'
+                    }`}
+                  >
+                    {est === 'todos' ? 'Todas' : (est === 'pendiente' ? 'Pendientes' : (est === 'en_proceso' ? 'En proceso' : 'Resueltas'))}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tabla de Tareas de Atención */}
+              <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
+                {tareasAtencion.filter(t => filtroAtencionEstado === 'todos' || t.estado === filtroAtencionEstado).length === 0 ? (
+                  <div className="p-8 text-center text-sm text-[#C9B096]">
+                    No hay tareas ni solicitudes registradas con este filtro.
+                  </div>
+                ) : (
+                  <table className="w-full border-collapse text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
+                        <th className="p-3.5 font-semibold">Habitación</th>
+                        <th className="p-3.5 font-semibold">Huésped</th>
+                        <th className="p-3.5 font-semibold">Tipo</th>
+                        <th className="p-3.5 font-semibold">Detalle de la solicitud</th>
+                        <th className="p-3.5 font-semibold">Prioridad</th>
+                        <th className="p-3.5 font-semibold">Responsable</th>
+                        <th className="p-3.5 font-semibold">Estado</th>
+                        <th className="p-3.5 font-semibold text-right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tareasAtencion
+                        .filter(t => filtroAtencionEstado === 'todos' || t.estado === filtroAtencionEstado)
+                        .map(t => {
+                          const badgePrioridad = t.prioridad === 'Urgente'
+                            ? 'bg-rose-950/60 text-rose-300 border-rose-800'
+                            : (t.prioridad === 'Alta' 
+                               ? 'bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]' 
+                               : (t.prioridad === 'Normal' ? 'bg-[#E0A526]/20 text-[#E0A526] border-[#E0A526]/50' : 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'));
+
+                          const badgeEstado = t.estado === 'resuelta'
+                            ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'
+                            : (t.estado === 'en_proceso' 
+                               ? 'bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]' 
+                               : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]');
+
+                          return (
+                            <tr key={t.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
+                              <td className="p-3.5 font-bold text-[#E0A526]">{t.ambienteCodigo}</td>
+                              <td className="p-3.5 font-medium text-white">{t.huespedNombre || 'Huésped'}</td>
+                              <td className="p-3.5 text-[#C9B096] font-semibold">{t.tipo}</td>
+                              <td className="p-3.5 text-[#F5EBDC] max-w-xs">{t.descripcion}</td>
+                              <td className="p-3.5">
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgePrioridad}`}>
+                                  {t.prioridad}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-[#C9B096]">{t.responsable || 'Recepción'}</td>
+                              <td className="p-3.5">
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeEstado}`}>
+                                  {t.estado === 'resuelta' ? '✓ Resuelta' : (t.estado === 'en_proceso' ? 'En proceso' : 'Pendiente')}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
+                                {t.estado !== 'resuelta' && (
+                                  <button
+                                    onClick={() => {
+                                      const nuevoEstado = t.estado === 'pendiente' ? 'en_proceso' : 'resuelta';
+                                      setTareasAtencion(tareasAtencion.map(x => x.id === t.id ? { ...x, estado: nuevoEstado } : x));
+                                      mostrarNotificacion(nuevoEstado === 'resuelta' ? 'Tarea marcada como resuelta.' : 'Tarea puesta en proceso.');
+                                    }}
+                                    className="px-2 py-1 rounded bg-[#2D6F8E] hover:bg-[#2F7D4F] text-white text-[10px] font-bold cursor-pointer"
+                                    title="Avanzar estado"
+                                  >
+                                    {t.estado === 'pendiente' ? 'Iniciar' : '✓ Resolver'}
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => {
+                                    setTareaAtencionAEditar(t);
+                                    setFormAtencionAmbiente(t.ambienteCodigo);
+                                    setFormAtencionHuesped(t.huespedNombre);
+                                    setFormAtencionTipo(t.tipo);
+                                    setFormAtencionDesc(t.descripcion);
+                                    setFormAtencionPrioridad(t.prioridad);
+                                    setFormAtencionResponsable(t.responsable);
+                                    setFormAtencionEstado(t.estado);
+                                  }}
+                                  className="px-2 py-1 rounded bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] text-[10px] font-semibold cursor-pointer"
+                                >
+                                  Editar
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    if (confirm('¿Eliminar esta tarea de atención?')) {
+                                      setTareasAtencion(tareasAtencion.filter(x => x.id !== t.id));
+                                      mostrarNotificacion('Tarea eliminada.');
+                                    }
+                                  }}
+                                  className="px-2 py-1 rounded bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-[10px] font-semibold cursor-pointer"
+                                >
+                                  ✕
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           )}
@@ -2613,6 +2954,829 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <div className="flex justify-end pt-2">
               <button onClick={() => setShowCierreCajaModal(false)} className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer">
                 Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. MODAL NUEVO AMBIENTE */}
+      {showNuevoAmbienteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Añadir nuevo ambiente</h3>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Código del ambiente *</label>
+                <input
+                  type="text"
+                  value={formAmbCodigo}
+                  onChange={(e) => setFormAmbCodigo(e.target.value)}
+                  placeholder="Ej. HAB-106"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre descriptivo *</label>
+                <input
+                  type="text"
+                  value={formAmbNombre}
+                  onChange={(e) => setFormAmbNombre(e.target.value)}
+                  placeholder="Ej. Habitación 106 Simple"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo *</label>
+                  <select
+                    value={formAmbTipo}
+                    onChange={(e) => setFormAmbTipo(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Simple">Simple</option>
+                    <option value="Doble">Doble</option>
+                    <option value="Matrimonial">Matrimonial</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Coworking">Coworking</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Capacidad (pers.) *</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={formAmbCapacidad}
+                    onChange={(e) => setFormAmbCapacidad(Number(e.target.value))}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Precio / Tarifa base (Bs) *</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={formAmbPrecio}
+                    onChange={(e) => setFormAmbPrecio(Number(e.target.value))}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado inicial *</label>
+                  <select
+                    value={formAmbEstado}
+                    onChange={(e) => setFormAmbEstado(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="disponible">Libre (Disponible)</option>
+                    <option value="ocupada">Ocupada</option>
+                    <option value="limpieza">En Limpieza</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button
+                onClick={() => setShowNuevoAmbienteModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (!formAmbCodigo.trim() || !formAmbNombre.trim()) {
+                    mostrarNotificacion('Por favor completa código y nombre.');
+                    return;
+                  }
+                  const nuevo: Ambiente = {
+                    id: `amb-${Date.now()}`,
+                    codigo: formAmbCodigo.trim().toUpperCase(),
+                    nombre: formAmbNombre.trim(),
+                    tipo: formAmbTipo,
+                    capacidad: Number(formAmbCapacidad) || 1,
+                    tarifa_base: Number(formAmbPrecio) || 280,
+                    estado: formAmbEstado
+                  };
+                  setAmbientes([...ambientes, nuevo]);
+                  setShowNuevoAmbienteModal(false);
+                  mostrarNotificacion(`Ambiente ${nuevo.codigo} añadido correctamente.`);
+
+                  try {
+                    await supabase.from('ambientes').insert({
+                      codigo: nuevo.codigo,
+                      nombre: nuevo.nombre,
+                      tipo: nuevo.tipo,
+                      capacidad: nuevo.capacidad,
+                      tarifa_base: nuevo.tarifa_base,
+                      estado: nuevo.estado
+                    });
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Ambiente
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 8. MODAL EDITAR AMBIENTE (CAPACIDAD Y PRECIO) */}
+      {ambienteAEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar {ambienteAEditar.codigo}</h3>
+              <button onClick={() => setAmbienteAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre del ambiente *</label>
+                <input
+                  type="text"
+                  value={formAmbNombre}
+                  onChange={(e) => setFormAmbNombre(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo *</label>
+                  <select
+                    value={formAmbTipo}
+                    onChange={(e) => setFormAmbTipo(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Simple">Simple</option>
+                    <option value="Doble">Doble</option>
+                    <option value="Matrimonial">Matrimonial</option>
+                    <option value="Familiar">Familiar</option>
+                    <option value="Coworking">Coworking</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Capacidad (personas) *</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={formAmbCapacidad}
+                    onChange={(e) => setFormAmbCapacidad(Number(e.target.value))}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Precio / Tarifa (Bs) *</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={formAmbPrecio}
+                    onChange={(e) => setFormAmbPrecio(Number(e.target.value))}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado actual *</label>
+                  <select
+                    value={formAmbEstado}
+                    onChange={(e) => setFormAmbEstado(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="disponible">Libre (Disponible)</option>
+                    <option value="ocupada">Ocupada</option>
+                    <option value="limpieza">En Limpieza</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setAmbienteAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const idEdit = ambienteAEditar.id;
+                  setAmbientes(ambientes.map(a => a.id === idEdit ? {
+                    ...a,
+                    nombre: formAmbNombre.trim(),
+                    tipo: formAmbTipo,
+                    capacidad: Number(formAmbCapacidad) || 1,
+                    tarifa_base: Number(formAmbPrecio) || 280,
+                    estado: formAmbEstado
+                  } : a));
+                  setAmbienteAEditar(null);
+                  mostrarNotificacion(`Ambiente ${ambienteAEditar.codigo} actualizado.`);
+
+                  try {
+                    await supabase.from('ambientes').update({
+                      nombre: formAmbNombre.trim(),
+                      tipo: formAmbTipo,
+                      capacidad: Number(formAmbCapacidad) || 1,
+                      tarifa_base: Number(formAmbPrecio) || 280,
+                      estado: formAmbEstado
+                    }).eq('id', idEdit);
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 9. MODAL NUEVO HUÉSPED */}
+      {showNuevoHuespedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Registrar nuevo huésped</h3>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre completo *</label>
+                <input
+                  type="text"
+                  value={formHuespedNombre}
+                  onChange={(e) => setFormHuespedNombre(e.target.value)}
+                  placeholder="Ej. Roberto Flores"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad (CI / Pasaporte) *</label>
+                <input
+                  type="text"
+                  value={formHuespedDoc}
+                  onChange={(e) => setFormHuespedDoc(e.target.value)}
+                  placeholder="Ej. 7483921 TJ"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                <input
+                  type="tel"
+                  value={formHuespedContacto}
+                  onChange={(e) => setFormHuespedContacto(e.target.value)}
+                  placeholder="+591 70000000"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <label className="flex items-center gap-2 p-2.5 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formHuespedFotocopia}
+                  onChange={(e) => setFormHuespedFotocopia(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <span className="text-xs text-[#F5EBDC]">Fotocopia de documento de identidad recibida</span>
+              </label>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setShowNuevoHuespedModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (!formHuespedNombre.trim() || !formHuespedDoc.trim()) {
+                    mostrarNotificacion('Por favor completa nombre y documento.');
+                    return;
+                  }
+                  const nuevoH: Huesped = {
+                    id: `h-${Date.now()}`,
+                    codigo: `HU-${String(huespedes.length + 1).padStart(4, '0')}`,
+                    nombre: formHuespedNombre.trim(),
+                    documento: formHuespedDoc.trim(),
+                    contacto: formHuespedContacto.trim() || 'Sin teléfono',
+                    estadiasTotal: 1,
+                    montoAcumulado: 0,
+                    fotocopiaRecibida: formHuespedFotocopia
+                  };
+                  setHuespedes([...huespedes, nuevoH]);
+                  setShowNuevoHuespedModal(false);
+                  mostrarNotificacion(`Huésped ${nuevoH.nombre} registrado con éxito.`);
+
+                  try {
+                    await supabase.from('huespedes').insert({
+                      codigo: nuevoH.codigo,
+                      nombre: nuevoH.nombre,
+                      documento: nuevoH.documento,
+                      contacto: nuevoH.contacto,
+                      fotocopia_recibida: nuevoH.fotocopiaRecibida
+                    });
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Huésped
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 10. MODAL EDITAR HUÉSPED */}
+      {huespedAEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Huésped ({huespedAEditar.codigo})</h3>
+              <button onClick={() => setHuespedAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre completo *</label>
+                <input
+                  type="text"
+                  value={formHuespedNombre}
+                  onChange={(e) => setFormHuespedNombre(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad *</label>
+                <input
+                  type="text"
+                  value={formHuespedDoc}
+                  onChange={(e) => setFormHuespedDoc(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                <input
+                  type="tel"
+                  value={formHuespedContacto}
+                  onChange={(e) => setFormHuespedContacto(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <label className="flex items-center gap-2 p-2.5 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formHuespedFotocopia}
+                  onChange={(e) => setFormHuespedFotocopia(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <span className="text-xs text-[#F5EBDC]">Fotocopia de documento de identidad recibida</span>
+              </label>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setHuespedAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const idEdit = huespedAEditar.id;
+                  setHuespedes(huespedes.map(h => h.id === idEdit ? {
+                    ...h,
+                    nombre: formHuespedNombre.trim(),
+                    documento: formHuespedDoc.trim(),
+                    contacto: formHuespedContacto.trim(),
+                    fotocopiaRecibida: formHuespedFotocopia
+                  } : h));
+                  setHuespedAEditar(null);
+                  mostrarNotificacion('Datos del huésped actualizados.');
+
+                  try {
+                    await supabase.from('huespedes').update({
+                      nombre: formHuespedNombre.trim(),
+                      documento: formHuespedDoc.trim(),
+                      contacto: formHuespedContacto.trim(),
+                      fotocopia_recibida: formHuespedFotocopia
+                    }).eq('id', idEdit);
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 11. MODAL HISTORIAL DE HUÉSPED */}
+      {huespedHistorial && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-lg bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <div>
+                <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">{huespedHistorial.nombre}</h3>
+                <p className="text-xs text-[#C9B096]">Código {huespedHistorial.codigo} · CI: {huespedHistorial.documento}</p>
+              </div>
+              <button onClick={() => setHuespedHistorial(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-[#1E140C] rounded-xl border border-[#3D2817]">
+                <span className="text-[#C9B096] block text-[11px]">Total Estadías:</span>
+                <span className="text-[#E0A526] font-bold text-base">{huespedHistorial.estadiasTotal} visitas</span>
+              </div>
+              <div className="p-3 bg-[#1E140C] rounded-xl border border-[#3D2817]">
+                <span className="text-[#C9B096] block text-[11px]">Fotocopia de Carnet:</span>
+                <span className={`font-bold text-xs ${huespedHistorial.fotocopiaRecibida ? 'text-[#5FD08E]' : 'text-[#F0C14B]'}`}>
+                  {huespedHistorial.fotocopiaRecibida ? '✓ Documento en archivo' : '⚠️ Pendiente de entrega'}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-[#C9B096] mb-2 uppercase tracking-wider">Historial de reservas registradas:</h4>
+              <div className="space-y-2">
+                {reservas.filter(r => r.huespedNombre.toLowerCase().includes(huespedHistorial.nombre.toLowerCase()) || r.documento === huespedHistorial.documento).length === 0 ? (
+                  <p className="text-xs text-[#6E5644] italic p-3 bg-[#1E140C] rounded-xl text-center">
+                    No se registran estadías anteriores en el sistema.
+                  </p>
+                ) : (
+                  reservas.filter(r => r.huespedNombre.toLowerCase().includes(huespedHistorial.nombre.toLowerCase()) || r.documento === huespedHistorial.documento).map(r => (
+                    <div key={r.id} className="p-3 rounded-xl bg-[#1E140C] border border-[#3D2817] flex justify-between items-center text-xs">
+                      <div>
+                        <p className="font-bold text-white">{r.ambienteCodigo}</p>
+                        <p className="text-[11px] text-[#C9B096]">{r.fechaEntrada} al {r.fechaSalida}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[#E0A526] font-bold block">Bs {r.montoTotal}</span>
+                        <span className="text-[10px] text-[#5FD08E] font-semibold">{r.estadoPago.toUpperCase()}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2 border-t border-[#3D2817]">
+              <button onClick={() => setHuespedHistorial(null)} className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer">
+                Cerrar Historial
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 12. MODAL NUEVA TAREA DE ATENCIÓN AL CLIENTE */}
+      {showNuevaTareaAtencionModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Nueva tarea / atención</h3>
+            <div className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Habitación / Ambiente *</label>
+                  <select
+                    value={formAtencionAmbiente}
+                    onChange={(e) => setFormAtencionAmbiente(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    {ambientes.map(a => (
+                      <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Huésped solicitante</label>
+                  <input
+                    type="text"
+                    value={formAtencionHuesped}
+                    onChange={(e) => setFormAtencionHuesped(e.target.value)}
+                    placeholder="Ej. Roberto Flores"
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo de solicitud *</label>
+                  <select
+                    value={formAtencionTipo}
+                    onChange={(e) => setFormAtencionTipo(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Petición especial">Petición especial</option>
+                    <option value="Requerimiento">Requerimiento</option>
+                    <option value="Toallas / Amenities">Toallas / Amenities</option>
+                    <option value="Queja">Queja / Reclamo</option>
+                    <option value="Mantenimiento">Mantenimiento rápido</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Prioridad *</label>
+                  <select
+                    value={formAtencionPrioridad}
+                    onChange={(e) => setFormAtencionPrioridad(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Normal">Normal</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Urgente">Urgente</option>
+                    <option value="Baja">Baja</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle de la solicitud *</label>
+                <textarea
+                  rows={3}
+                  value={formAtencionDesc}
+                  onChange={(e) => setFormAtencionDesc(e.target.value)}
+                  placeholder="Detalla qué necesita el huésped o el problema reportado..."
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Responsable asignado</label>
+                <select
+                  value={formAtencionResponsable}
+                  onChange={(e) => setFormAtencionResponsable(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                >
+                  <option value="Recepción">Recepción (Leonel)</option>
+                  <option value="Limpieza">Limpieza (Grimanez)</option>
+                  <option value="Administración">Administración (Tamara)</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setShowNuevaTareaAtencionModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (!formAtencionDesc.trim()) {
+                    mostrarNotificacion('Por favor ingresa el detalle de la solicitud.');
+                    return;
+                  }
+                  const nueva: TareaAtencion = {
+                    id: `tat-${Date.now()}`,
+                    ambienteCodigo: formAtencionAmbiente,
+                    huespedNombre: formAtencionHuesped.trim() || 'Huésped',
+                    tipo: formAtencionTipo,
+                    descripcion: formAtencionDesc.trim(),
+                    prioridad: formAtencionPrioridad,
+                    responsable: formAtencionResponsable,
+                    estado: 'pendiente',
+                    fecha: new Date().toISOString().split('T')[0]
+                  };
+                  setTareasAtencion([nueva, ...tareasAtencion]);
+                  setShowNuevaTareaAtencionModal(false);
+                  mostrarNotificacion('Tarea de atención registrada exitosamente.');
+
+                  try {
+                    await supabase.from('tareas_atencion').insert({
+                      ambiente_codigo: nueva.ambienteCodigo,
+                      huesped_nombre: nueva.huespedNombre,
+                      tipo: nueva.tipo,
+                      descripcion: nueva.descripcion,
+                      prioridad: nueva.prioridad,
+                      responsable: nueva.responsable,
+                      estado: nueva.estado
+                    });
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Tarea
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 13. MODAL EDITAR TAREA DE ATENCIÓN */}
+      {tareaAtencionAEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar atención ({tareaAtencionAEditar.ambienteCodigo})</h3>
+              <button onClick={() => setTareaAtencionAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Habitación</label>
+                  <select
+                    value={formAtencionAmbiente}
+                    onChange={(e) => setFormAtencionAmbiente(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    {ambientes.map(a => (
+                      <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Huésped</label>
+                  <input
+                    type="text"
+                    value={formAtencionHuesped}
+                    onChange={(e) => setFormAtencionHuesped(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo</label>
+                  <select
+                    value={formAtencionTipo}
+                    onChange={(e) => setFormAtencionTipo(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Petición especial">Petición especial</option>
+                    <option value="Requerimiento">Requerimiento</option>
+                    <option value="Toallas / Amenities">Toallas / Amenities</option>
+                    <option value="Queja">Queja / Reclamo</option>
+                    <option value="Mantenimiento">Mantenimiento rápido</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Prioridad</label>
+                  <select
+                    value={formAtencionPrioridad}
+                    onChange={(e) => setFormAtencionPrioridad(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Normal">Normal</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Urgente">Urgente</option>
+                    <option value="Baja">Baja</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle *</label>
+                <textarea
+                  rows={3}
+                  value={formAtencionDesc}
+                  onChange={(e) => setFormAtencionDesc(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Responsable</label>
+                  <select
+                    value={formAtencionResponsable}
+                    onChange={(e) => setFormAtencionResponsable(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="Recepción">Recepción (Leonel)</option>
+                    <option value="Limpieza">Limpieza (Grimanez)</option>
+                    <option value="Administración">Administración (Tamara)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado *</label>
+                  <select
+                    value={formAtencionEstado}
+                    onChange={(e) => setFormAtencionEstado(e.target.value as any)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    <option value="pendiente">Pendiente</option>
+                    <option value="en_proceso">En proceso</option>
+                    <option value="resuelta">Resuelta</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setTareaAtencionAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const idEdit = tareaAtencionAEditar.id;
+                  setTareasAtencion(tareasAtencion.map(t => t.id === idEdit ? {
+                    ...t,
+                    ambienteCodigo: formAtencionAmbiente,
+                    huespedNombre: formAtencionHuesped.trim() || 'Huésped',
+                    tipo: formAtencionTipo,
+                    descripcion: formAtencionDesc.trim(),
+                    prioridad: formAtencionPrioridad,
+                    responsable: formAtencionResponsable,
+                    estado: formAtencionEstado
+                  } : t));
+                  setTareaAtencionAEditar(null);
+                  mostrarNotificacion('Tarea de atención actualizada.');
+
+                  try {
+                    await supabase.from('tareas_atencion').update({
+                      ambiente_codigo: formAtencionAmbiente,
+                      huesped_nombre: formAtencionHuesped.trim(),
+                      tipo: formAtencionTipo,
+                      descripcion: formAtencionDesc.trim(),
+                      prioridad: formAtencionPrioridad,
+                      responsable: formAtencionResponsable,
+                      estado: formAtencionEstado
+                    }).eq('id', idEdit);
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 14. MODAL EDITAR PERSONAL / USUARIO */}
+      {usuarioAEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Usuario</h3>
+              <button onClick={() => setUsuarioAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Correo (invariable)</label>
+                <input
+                  type="email"
+                  readOnly
+                  value={usuarioAEditar.email}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#C9B096] outline-none cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre Completo *</label>
+                <input
+                  type="text"
+                  value={formUserNombre}
+                  onChange={(e) => setFormUserNombre(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Rol Asignado *</label>
+                <select
+                  value={formUserRol}
+                  onChange={(e) => setFormUserRol(e.target.value as any)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                >
+                  <option value="administrador">Administrador</option>
+                  <option value="recepcionista">Recepcionista</option>
+                  <option value="limpieza">Limpieza</option>
+                </select>
+              </div>
+              <label className="flex items-center gap-2 p-2.5 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formUserActivo}
+                  onChange={(e) => setFormUserActivo(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <span className="text-xs text-[#F5EBDC]">Usuario Activo (permitir acceso al sistema)</span>
+              </label>
+            </div>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button onClick={() => setUsuarioAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const idEdit = usuarioAEditar.id;
+                  setPersonal(personal.map(p => p.id === idEdit ? {
+                    ...p,
+                    nombre: formUserNombre.trim(),
+                    rol: formUserRol,
+                    activo: formUserActivo
+                  } : p));
+                  setUsuarioAEditar(null);
+                  mostrarNotificacion('Datos del personal actualizados.');
+
+                  try {
+                    await supabase.from('perfiles').update({
+                      nombre: formUserNombre.trim(),
+                      rol: formUserRol,
+                      activo: formUserActivo
+                    }).eq('id', idEdit);
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                Guardar Cambios
               </button>
             </div>
           </div>

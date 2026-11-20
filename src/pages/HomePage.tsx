@@ -61,6 +61,14 @@ function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
   )
 }
 
+function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    </svg>
+  )
+}
+
 export default function HomePage({ user, onLogout, onLoginSuccess }: HomePageProps) {
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const [showModalSolicitudCliente, setShowModalSolicitudCliente] = useState(false)
@@ -551,7 +559,7 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
         </div>
       </section>
 
-      {/* CONTACTO CON BIENVENIDA.JPG */}
+      {/* CONTACTO CON MAPA / CROQUIS DE GOOGLE MAPS */}
       <section id="contacto" className="py-20 max-w-6xl mx-auto px-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
@@ -564,30 +572,67 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
             </p>
 
             <div className="space-y-4 text-sm text-[#F5EBDC]">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-[#E0A526] shrink-0" />
-                <span>Calle Domingo Paz N.º 663, Tarija - Bolivia</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-[#E0A526] shrink-0" />
-                <span>(591) 706-95 403</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-[#E0A526] shrink-0" />
-                <span>hotelasiritarija@gmail.com</span>
-              </div>
+              <a 
+                href="https://share.google/r2dfqJUeBvul3JyCY" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-3 hover:text-[#E0A526] transition-colors group cursor-pointer"
+              >
+                <MapPin className="w-5 h-5 text-[#E0A526] shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="underline decoration-[#E0A526]/40 underline-offset-4">Calle Domingo Paz N.º 663, Tarija - Bolivia</span>
+              </a>
+              <a 
+                href="https://www.whatsapp.com/catalog/59168705002/?app_absent=0" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-3 hover:text-[#E0A526] transition-colors group cursor-pointer"
+              >
+                <Phone className="w-5 h-5 text-[#E0A526] shrink-0 group-hover:scale-110 transition-transform" />
+                <span>(591) 706-95 403 <span className="text-xs text-[#25D366] font-semibold ml-1">(WhatsApp)</span></span>
+              </a>
+              <a 
+                href="mailto:hotelasiritarijabolivia@gmail.com" 
+                className="flex items-center gap-3 hover:text-[#E0A526] transition-colors group cursor-pointer"
+              >
+                <Mail className="w-5 h-5 text-[#E0A526] shrink-0 group-hover:scale-110 transition-transform" />
+                <span>hotelasiritarijabolivia@gmail.com</span>
+              </a>
             </div>
           </div>
 
+          {/* CROQUIS TIPO GOOGLE MAPS QUE LLEVA A GOOGLE MAPS */}
           <div className="relative w-full group">
             <div className="absolute -inset-2 bg-gradient-to-r from-[#E0A526]/30 to-[#F28C38]/20 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 transition duration-500" />
-            <div className="relative rounded-2xl overflow-hidden border-2 border-[#E0A526] bg-[#2D1E12] shadow-2xl p-2.5">
-              <img 
-                src="/bienvenida.jpg" 
-                alt="Bienvenido al Hotel ASIRI" 
-                className="w-full h-auto max-h-[460px] object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 shadow-inner"
-                onError={(e) => { (e.target as HTMLImageElement).src = '/hotel.jpg' }}
-              />
+            <div className="relative rounded-2xl overflow-hidden border-2 border-[#E0A526] bg-[#24170E] shadow-2xl p-2.5">
+              <a 
+                href="https://share.google/r2dfqJUeBvul3JyCY" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="block relative rounded-xl overflow-hidden cursor-pointer group/map"
+              >
+                <iframe
+                  title="Ubicación Hotel Asiri"
+                  src="https://www.google.com/maps?q=-21.5323,-64.7339&hl=es&z=17&output=embed"
+                  className="w-full h-[380px] rounded-xl border-0 pointer-events-none filter contrast-125 brightness-95"
+                  loading="lazy"
+                />
+                {/* Overlay con información y llamada a la acción */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-between p-4 group-hover/map:bg-black/20 transition-colors">
+                  <div className="self-end bg-[#1E140C]/90 border border-[#E0A526] px-3.5 py-1.5 rounded-full text-xs text-[#E0A526] font-bold shadow-lg flex items-center gap-1.5 backdrop-blur-sm">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>Ver en Google Maps</span>
+                  </div>
+                  <div className="bg-[#1E140C]/95 border border-[#3D2817] p-3.5 rounded-xl text-left backdrop-blur-sm shadow-xl">
+                    <div className="flex items-center gap-2 text-white font-bold text-sm">
+                      <span className="text-[#E0A526]">●</span> Hotel Asiri Tarija
+                    </div>
+                    <p className="text-xs text-[#C9B096] mt-0.5">Calle Domingo Paz N.º 663 · A pasos de la plaza principal</p>
+                    <span className="inline-block mt-2 text-[11px] text-[#E0A526] font-semibold underline">
+                      Toca aquí para abrir la ruta en Google Maps ↗
+                    </span>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -636,19 +681,36 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
               <p className="text-xs italic text-[#C9B096] mt-1">¡Un nuevo concepto del descanso!</p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
-              <a href="mailto:hotelasiritarija@gmail.com" className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <a href="mailto:hotelasiritarijabolivia@gmail.com" className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer">
                 <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
-                <span>hotelasiritarija@gmail.com</span>
+                <span>hotelasiritarijabolivia@gmail.com</span>
               </a>
 
-              <a href="tel:+59170695403" className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors">
+              <a 
+                href="https://www.whatsapp.com/catalog/59168705002/?app_absent=0" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer"
+              >
                 <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0">
                   <Phone className="w-4 h-4" />
                 </div>
                 <span>(591) 706-95 403</span>
+              </a>
+
+              <a 
+                href="https://www.facebook.com/HotelAsiri/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer group"
+              >
+                <div className="w-8 h-8 rounded-full bg-white text-[#1877F2] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-sm">
+                  <FacebookIcon className="w-4 h-4 text-[#1877F2]" />
+                </div>
+                <span className="font-medium">Facebook</span>
               </a>
 
               <a 
@@ -657,10 +719,10 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
                 rel="noopener noreferrer" 
                 className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer group"
               >
-                <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-sm">
-                  <InstagramIcon className="w-4 h-4 text-[#190F08]" />
+                <div className="w-8 h-8 rounded-full bg-white text-[#E4405F] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-sm">
+                  <InstagramIcon className="w-4 h-4 text-[#E4405F]" />
                 </div>
-                <span className="font-medium">Hotel Asiri</span>
+                <span className="font-medium">Instagram</span>
               </a>
             </div>
           </div>
