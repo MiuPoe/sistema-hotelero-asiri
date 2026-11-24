@@ -139,6 +139,7 @@ interface Huesped {
   id: string;
   codigo: string;
   nombre: string;
+  email?: string;
   documento: string;
   contacto: string;
   estadiasTotal: number;
@@ -311,6 +312,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   // Modales de Ambientes (CRUD)
   const [showNuevoAmbienteModal, setShowNuevoAmbienteModal] = useState(false);
   const [ambienteAEditar, setAmbienteAEditar] = useState<Ambiente | null>(null);
+  const [formAmbCategoria, setFormAmbCategoria] = useState<'Habitacion' | 'Coworking' | 'Otro'>('Habitacion');
   const [formAmbCodigo, setFormAmbCodigo] = useState('');
   const [formAmbNombre, setFormAmbNombre] = useState('');
   const [formAmbTipo, setFormAmbTipo] = useState('Simple');
@@ -323,6 +325,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const [huespedAEditar, setHuespedAEditar] = useState<Huesped | null>(null);
   const [huespedHistorial, setHuespedHistorial] = useState<Huesped | null>(null);
   const [formHuespedNombre, setFormHuespedNombre] = useState('');
+  const [formHuespedEmail, setFormHuespedEmail] = useState('');
   const [formHuespedDoc, setFormHuespedDoc] = useState('');
   const [formHuespedContacto, setFormHuespedContacto] = useState('');
   const [formHuespedFotocopia, setFormHuespedFotocopia] = useState(false);
@@ -332,6 +335,17 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const [formUserNombre, setFormUserNombre] = useState('');
   const [formUserRol, setFormUserRol] = useState<'administrador' | 'recepcionista' | 'limpieza'>('recepcionista');
   const [formUserActivo, setFormUserActivo] = useState(true);
+
+  // Modal Editar Reserva (CRUD)
+  const [reservaAEditar, setReservaAEditar] = useState<Reserva | null>(null);
+  const [formResHuesped, setFormResHuesped] = useState('');
+  const [formResDoc, setFormResDoc] = useState('');
+  const [formResTel, setFormResTel] = useState('');
+  const [formResAmbiente, setFormResAmbiente] = useState('');
+  const [formResEntrada, setFormResEntrada] = useState('');
+  const [formResSalida, setFormResSalida] = useState('');
+  const [formResPago, setFormResPago] = useState<'pendiente' | 'confirmada'>('pendiente');
+  const [formResTotal, setFormResTotal] = useState(300);
 
   // Form Ingreso (Fiel a la Imagen 2)
   const [nuevoMovFecha, setNuevoMovFecha] = useState(new Date().toISOString().split('T')[0]);
@@ -417,11 +431,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         .from('huespedes')
         .select('*');
 
-      if (hData) {
+      if (hData && hData.length > 0) {
         setHuespedes(hData.map(h => ({
           id: String(h.id),
           codigo: h.codigo || `HU-${String(h.id).padStart(4, '0')}`,
           nombre: h.nombre || h.nombres || h.nombre_completo || '',
+          email: h.email || '',
           documento: h.documento || h.documento_identidad || '',
           contacto: h.contacto || h.telefono || '',
           estadiasTotal: Number(h.estadias_total) || 1,
@@ -430,6 +445,55 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           fotocopiaRecibida: Boolean(h.fotocopia_recibida),
           fotocopiaUrl: h.fotocopia_url
         })));
+      } else {
+        setHuespedes([
+          {
+            id: 'h-1',
+            codigo: 'HU-0001',
+            nombre: 'Juana Franco',
+            email: 'juana.franco@gmail.com',
+            documento: '5849201 TJ',
+            contacto: '+591 71829304',
+            estadiasTotal: 3,
+            montoAcumulado: 960,
+            codigoEstadiaActiva: 'AS-101',
+            fotocopiaRecibida: true
+          },
+          {
+            id: 'h-2',
+            codigo: 'HU-0002',
+            nombre: 'Carlos Mendoza',
+            email: 'carlos.mendoza@hotmail.com',
+            documento: '4928172 SC',
+            contacto: '+591 63920014',
+            estadiasTotal: 2,
+            montoAcumulado: 640,
+            codigoEstadiaActiva: 'AS-102',
+            fotocopiaRecibida: true
+          },
+          {
+            id: 'h-3',
+            codigo: 'HU-0003',
+            nombre: 'Valeria Quispe',
+            email: 'valeria.quispe@gmail.com',
+            documento: '6820194 LP',
+            contacto: '+591 75928100',
+            estadiasTotal: 1,
+            montoAcumulado: 320,
+            fotocopiaRecibida: false
+          },
+          {
+            id: 'h-4',
+            codigo: 'HU-0004',
+            nombre: 'Roberto Flores',
+            email: 'roberto.flores@yahoo.com',
+            documento: '3920182 CB',
+            contacto: '+591 70294819',
+            estadiasTotal: 4,
+            montoAcumulado: 1280,
+            fotocopiaRecibida: true
+          }
+        ]);
       }
 
       // 3. Reservas
@@ -1370,6 +1434,26 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                   <button
                     onClick={() => {
+                      if (ambientes.length === 0) {
+                        mostrarNotificacion('No hay ambientes para modificar.');
+                        return;
+                      }
+                      const amb = ambientes[0];
+                      setAmbienteAEditar(amb);
+                      setFormAmbCodigo(amb.codigo);
+                      setFormAmbNombre(amb.nombre);
+                      setFormAmbTipo(amb.tipo);
+                      setFormAmbCapacidad(amb.capacidad);
+                      setFormAmbPrecio(amb.tarifa_base);
+                      setFormAmbEstado(amb.estado === 'disponible' || amb.estado === 'ocupada' || amb.estado === 'limpieza' ? amb.estado : 'disponible');
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>✏️ Modificar Ambiente</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
                       setFormAmbCodigo(`HAB-${ambientes.length + 101}`);
                       setFormAmbNombre(`Habitación ${ambientes.length + 101}`);
                       setFormAmbTipo('Simple');
@@ -1456,31 +1540,24 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   return (
                     <div
                       key={a.id}
-                      className="rounded-2xl p-4 bg-[#24170E] border border-[#3D2817] hover:border-[#E0A526] transition-all flex flex-col justify-between min-h-[170px] shadow-lg"
+                      onClick={() => {
+                        setAmbienteAEditar(a);
+                        setFormAmbCodigo(a.codigo);
+                        setFormAmbNombre(a.nombre);
+                        setFormAmbTipo(a.tipo);
+                        setFormAmbCapacidad(a.capacidad);
+                        setFormAmbPrecio(a.tarifa_base);
+                        setFormAmbEstado(a.estado === 'disponible' || a.estado === 'ocupada' || a.estado === 'limpieza' ? a.estado : 'disponible');
+                      }}
+                      className="rounded-2xl p-4 bg-[#24170E] border border-[#3D2817] hover:border-[#E0A526] transition-all flex flex-col justify-between min-h-[170px] shadow-lg cursor-pointer group"
+                      title="Click para modificar capacidad, precio o datos"
                     >
                       <div>
                         <div className="flex items-center justify-between">
                           <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">{a.codigo}</span>
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              onClick={() => {
-                                setAmbienteAEditar(a);
-                                setFormAmbCodigo(a.codigo);
-                                setFormAmbNombre(a.nombre);
-                                setFormAmbTipo(a.tipo);
-                                setFormAmbCapacidad(a.capacidad);
-                                setFormAmbPrecio(a.tarifa_base);
-                                setFormAmbEstado(a.estado === 'disponible' || a.estado === 'ocupada' || a.estado === 'limpieza' ? a.estado : 'disponible');
-                              }}
-                              className="text-[10px] px-2 py-0.5 rounded bg-[#1E140C] border border-[#5A3418] text-[#E0A526] hover:bg-[#E0A526] hover:text-[#1E140C] transition-colors font-medium cursor-pointer"
-                              title="Modificar capacidad y precio"
-                            >
-                              Editar
-                            </button>
-                            <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
-                              {estadoTexto}
-                            </span>
-                          </div>
+                          <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
+                            {estadoTexto}
+                          </span>
                         </div>
 
                         <div className="my-2">
@@ -1506,7 +1583,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         {a.estado === 'disponible' && (
                           <>
                             <button
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 const nomAmb = a.nombre || a.codigo;
                                 setReservaAmbiente(nomAmb);
                                 setReservaAmbienteId(a.id);
@@ -1520,7 +1598,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                               Reservar
                             </button>
                             <button
-                              onClick={() => handleAsignarLimpieza(a.codigo)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAsignarLimpieza(a.codigo);
+                              }}
                               className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-[#6DB7D9] hover:bg-[#3D2817] cursor-pointer"
                             >
                               Limpieza
@@ -1530,7 +1611,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                         {a.estado === 'limpieza' && (
                           <button
-                            onClick={() => handleLiberarHabitacion(a.codigo)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleLiberarHabitacion(a.codigo);
+                            }}
                             className="w-full py-1 rounded-lg bg-[#2D6F8E] hover:bg-[#2F7D4F] text-white font-bold cursor-pointer"
                           >
                             ✓ Marcar como Lista
@@ -1541,7 +1625,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           <div className="w-full flex items-center justify-between">
                             <span className="text-[#E0A526] truncate text-[10px]">{a.huespedActual || 'Ocupada'}</span>
                             <button
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 const est = estadias.find(e => e.ambienteCodigo === a.codigo && e.estado === 'en_curso');
                                 if (est) setShowCheckOutWarning(est);
                               }}
@@ -1602,6 +1687,28 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       )}
                     </button>
                   </div>
+
+                  <button
+                    onClick={() => {
+                      if (reservas.length === 0) {
+                        mostrarNotificacion('No hay reservas registradas para modificar.');
+                        return;
+                      }
+                      const r = reservas[0];
+                      setReservaAEditar(r);
+                      setFormResHuesped(r.huespedNombre);
+                      setFormResDoc(r.documento || '');
+                      setFormResTel(r.contacto || '');
+                      setFormResAmbiente(r.ambienteCodigo);
+                      setFormResEntrada(r.fechaEntrada);
+                      setFormResSalida(r.fechaSalida);
+                      setFormResPago(r.estadoPago);
+                      setFormResTotal(r.montoTotal || 300);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>✏️ Modificar Reserva</span>
+                  </button>
 
                   <button
                     onClick={() => {
@@ -1724,10 +1831,24 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                 return (
                                   <td
                                     key={idx}
-                                    onClick={() => handleCeldaClick(nombreLimpio, d.fecha)}
+                                    onClick={() => {
+                                      if (res) {
+                                        setReservaAEditar(res);
+                                        setFormResHuesped(res.huespedNombre);
+                                        setFormResDoc(res.documento || '');
+                                        setFormResTel(res.contacto || '');
+                                        setFormResAmbiente(res.ambienteCodigo);
+                                        setFormResEntrada(res.fechaEntrada);
+                                        setFormResSalida(res.fechaSalida);
+                                        setFormResPago(res.estadoPago);
+                                        setFormResTotal(res.montoTotal || 300);
+                                      } else {
+                                        handleCeldaClick(nombreLimpio, d.fecha);
+                                      }
+                                    }}
                                     className={celdaClase}
                                     style={{ height: '32px' }}
-                                    title={`${nombreLimpio} — ${d.fecha}`}
+                                    title={res ? `Click para gestionar reserva de ${res.huespedNombre}` : `${nombreLimpio} — ${d.fecha}`}
                                   >
                                     {contenido}
                                   </td>
@@ -1752,13 +1873,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <th className="p-3.5 font-semibold">Ambiente</th>
                         <th className="p-3.5 font-semibold">Fecha Entrada</th>
                         <th className="p-3.5 font-semibold">Fecha Salida</th>
+                        <th className="p-3.5 font-semibold">Monto (Bs)</th>
                         <th className="p-3.5 font-semibold">Estado de Pago</th>
+                        <th className="p-3.5 font-semibold text-right">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       {reservas.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="p-4 text-center text-[#C9B096]">No hay reservas registradas en la base de datos.</td>
+                          <td colSpan={7} className="p-4 text-center text-[#C9B096]">No hay reservas registradas en la base de datos.</td>
                         </tr>
                       ) : (
                         reservas.map(r => (
@@ -1767,12 +1890,47 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             <td className="p-3.5 text-[#F5EBDC]">{r.ambienteCodigo}</td>
                             <td className="p-3.5 text-[#C9B096]">{r.fechaEntrada}</td>
                             <td className="p-3.5 text-[#C9B096]">{r.fechaSalida}</td>
+                            <td className="p-3.5 text-[#E0A526] font-bold">Bs {r.montoTotal || 300}</td>
                             <td className="p-3.5">
                               <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                                 r.estadoPago === 'confirmada' ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]' : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]'
                               }`}>
                                 {r.estadoPago === 'confirmada' ? 'Pagada' : 'Pendiente'}
                               </span>
+                            </td>
+                            <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
+                              <button
+                                onClick={() => {
+                                  setReservaAEditar(r);
+                                  setFormResHuesped(r.huespedNombre);
+                                  setFormResDoc(r.documento || '');
+                                  setFormResTel(r.contacto || '');
+                                  setFormResAmbiente(r.ambienteCodigo);
+                                  setFormResEntrada(r.fechaEntrada);
+                                  setFormResSalida(r.fechaSalida);
+                                  setFormResPago(r.estadoPago);
+                                  setFormResTotal(r.montoTotal || 300);
+                                }}
+                                className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
+                              >
+                                Editar
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  if (confirm(`¿Eliminar la reserva de ${r.huespedNombre} en ${r.ambienteCodigo}?`)) {
+                                    setReservas(reservas.filter(x => x.id !== r.id));
+                                    mostrarNotificacion('Reserva eliminada con éxito.');
+                                    try {
+                                      await supabase.from('reservas').delete().eq('id', r.id);
+                                    } catch (e) {
+                                      console.warn(e);
+                                    }
+                                  }
+                                }}
+                                className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                              >
+                                ✕ Eliminar
+                              </button>
                             </td>
                           </tr>
                         ))
@@ -1938,18 +2096,40 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <p className="text-sm text-[#C9B096] mt-0.5">Directorio de huéspedes, códigos HU- y control de fotocopias</p>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setFormHuespedNombre('');
-                    setFormHuespedDoc('');
-                    setFormHuespedContacto('');
-                    setFormHuespedFotocopia(false);
-                    setShowNuevoHuespedModal(true);
-                  }}
-                  className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>+ Nuevo Huésped</span>
-                </button>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={() => {
+                      if (huespedes.length === 0) {
+                        mostrarNotificacion('No hay huéspedes registrados para modificar.');
+                        return;
+                      }
+                      const h = huespedes[0];
+                      setHuespedAEditar(h);
+                      setFormHuespedNombre(h.nombre);
+                      setFormHuespedDoc(h.documento);
+                      setFormHuespedEmail(h.email || '');
+                      setFormHuespedContacto(h.contacto);
+                      setFormHuespedFotocopia(h.fotocopiaRecibida);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>✏️ Modificar Huésped</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setFormHuespedNombre('');
+                      setFormHuespedDoc('');
+                      setFormHuespedContacto('');
+                      setFormHuespedEmail('');
+                      setFormHuespedFotocopia(false);
+                      setShowNuevoHuespedModal(true);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>+ Nuevo Huésped</span>
+                  </button>
+                </div>
               </div>
 
               <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
@@ -1958,8 +2138,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
                       <th className="p-3.5 font-semibold">Perfil</th>
                       <th className="p-3.5 font-semibold">Nombre Completo</th>
-                      <th className="p-3.5 font-semibold">Documento</th>
-                      <th className="p-3.5 font-semibold">Contacto</th>
+                      <th className="p-3.5 font-semibold">Documento (CI)</th>
+                      <th className="p-3.5 font-semibold">Correo Electrónico</th>
+                      <th className="p-3.5 font-semibold">Teléfono / WhatsApp</th>
                       <th className="p-3.5 font-semibold">Estadías</th>
                       <th className="p-3.5 font-semibold">Estadía Activa</th>
                       <th className="p-3.5 font-semibold">Fotocopia Carnet</th>
@@ -1972,6 +2153,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <td className="p-3.5 font-bold text-[#E0A526]">{h.codigo}</td>
                         <td className="p-3.5 font-medium text-white">{h.nombre}</td>
                         <td className="p-3.5 text-[#F5EBDC]">{h.documento}</td>
+                        <td className="p-3.5 text-[#C9B096]">{h.email || '—'}</td>
                         <td className="p-3.5 text-[#C9B096]">{h.contacto}</td>
                         <td className="p-3.5 text-[#F5EBDC]">{h.estadiasTotal} visita{h.estadiasTotal > 1 ? 's' : ''}</td>
                         <td className="p-3.5">
@@ -1994,12 +2176,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             </span>
                           )}
                         </td>
-                        <td className="p-3.5 text-right space-x-2 whitespace-nowrap">
+                        <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                           <button
                             onClick={() => {
                               setHuespedAEditar(h);
                               setFormHuespedNombre(h.nombre);
                               setFormHuespedDoc(h.documento);
+                              setFormHuespedEmail(h.email || '');
                               setFormHuespedContacto(h.contacto);
                               setFormHuespedFotocopia(h.fotocopiaRecibida);
                             }}
@@ -2012,6 +2195,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-[#F5EBDC] hover:bg-[#3D2817] text-[11px] cursor-pointer"
                           >
                             Historial
+                          </button>
+                          <button
+                            onClick={async () => {
+                              if (confirm(`¿Estás seguro de que deseas eliminar permanentemente al huésped ${h.nombre}?`)) {
+                                setHuespedes(huespedes.filter(x => x.id !== h.id));
+                                mostrarNotificacion(`Huésped ${h.nombre} eliminado.`);
+                                try {
+                                  await supabase.from('huespedes').delete().eq('id', h.id);
+                                } catch (e) {
+                                  console.warn(e);
+                                }
+                              }
+                            }}
+                            className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                          >
+                            ✕ Eliminar
                           </button>
                         </td>
                       </tr>
@@ -2173,12 +2372,31 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <p className="text-sm text-[#C9B096] mt-0.5">Altas, bajas y roles del personal del hotel</p>
                 </div>
 
-                <button
-                  onClick={() => setShowAddUserModal(true)}
-                  className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow transition-all cursor-pointer"
-                >
-                  + Añadir Nuevo Personal
-                </button>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={() => {
+                      if (personal.length === 0) {
+                        mostrarNotificacion('No hay personal registrado para modificar.');
+                        return;
+                      }
+                      const p = personal[0];
+                      setUsuarioAEditar(p);
+                      setFormUserNombre(p.nombre);
+                      setFormUserRol(p.rol);
+                      setFormUserActivo(p.activo);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>✏️ Modificar Personal</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowAddUserModal(true)}
+                    className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow transition-all cursor-pointer"
+                  >
+                    + Añadir Nuevo Personal
+                  </button>
+                </div>
               </div>
 
               <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
@@ -2215,7 +2433,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             <span className="text-[#6E5644]">Inactivo</span>
                           )}
                         </td>
-                        <td className="p-3.5 text-right">
+                        <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                           <button
                             onClick={() => {
                               setUsuarioAEditar(p);
@@ -2226,6 +2444,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
                           >
                             Editar
+                          </button>
+                          <button
+                            onClick={async () => {
+                              if (confirm(`¿Estás seguro de que deseas eliminar al usuario ${p.nombre}?`)) {
+                                setPersonal(personal.filter(x => x.id !== p.id));
+                                mostrarNotificacion(`Usuario ${p.nombre} eliminado.`);
+                                try {
+                                  await supabase.from('perfiles').delete().eq('id', p.id);
+                                } catch (e) {
+                                  console.warn(e);
+                                }
+                              }
+                            }}
+                            className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                          >
+                            ✕ Eliminar
                           </button>
                         </td>
                       </tr>
@@ -2245,21 +2479,44 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <p className="text-sm text-[#C9B096] mt-0.5">Peticiones, requerimientos especiales y quejas de huéspedes</p>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setFormAtencionAmbiente(ambientes[0]?.codigo || 'HAB-101');
-                    setFormAtencionHuesped('');
-                    setFormAtencionTipo('Petición especial');
-                    setFormAtencionDesc('');
-                    setFormAtencionPrioridad('Normal');
-                    setFormAtencionResponsable('Recepción');
-                    setFormAtencionEstado('pendiente');
-                    setShowNuevaTareaAtencionModal(true);
-                  }}
-                  className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>+ Nueva Tarea / Atención</span>
-                </button>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={() => {
+                      if (tareasAtencion.length === 0) {
+                        mostrarNotificacion('No hay tareas registradas para modificar.');
+                        return;
+                      }
+                      const t = tareasAtencion[0];
+                      setTareaAtencionAEditar(t);
+                      setFormAtencionAmbiente(t.ambienteCodigo);
+                      setFormAtencionHuesped(t.huespedNombre);
+                      setFormAtencionTipo(t.tipo);
+                      setFormAtencionDesc(t.descripcion);
+                      setFormAtencionPrioridad(t.prioridad);
+                      setFormAtencionResponsable(t.responsable);
+                      setFormAtencionEstado(t.estado);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>✏️ Modificar Tarea</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setFormAtencionAmbiente(ambientes[0]?.codigo || 'HAB-101');
+                      setFormAtencionHuesped('');
+                      setFormAtencionTipo('Petición especial');
+                      setFormAtencionDesc('');
+                      setFormAtencionPrioridad('Normal');
+                      setFormAtencionResponsable('Recepción');
+                      setFormAtencionEstado('pendiente');
+                      setShowNuevaTareaAtencionModal(true);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>+ Nueva Tarea / Atención</span>
+                  </button>
+                </div>
               </div>
 
               {/* Filtros por estado */}
@@ -2336,15 +2593,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                               <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                                 {t.estado !== 'resuelta' && (
                                   <button
-                                    onClick={() => {
-                                      const nuevoEstado = t.estado === 'pendiente' ? 'en_proceso' : 'resuelta';
-                                      setTareasAtencion(tareasAtencion.map(x => x.id === t.id ? { ...x, estado: nuevoEstado } : x));
-                                      mostrarNotificacion(nuevoEstado === 'resuelta' ? 'Tarea marcada como resuelta.' : 'Tarea puesta en proceso.');
+                                    onClick={async () => {
+                                      setTareasAtencion(tareasAtencion.map(x => x.id === t.id ? { ...x, estado: 'resuelta' } : x));
+                                      mostrarNotificacion('Tarea marcada como completa.');
+                                      try {
+                                        await supabase.from('tareas_atencion').update({ estado: 'resuelta' }).eq('id', t.id);
+                                      } catch (e) {
+                                        console.warn(e);
+                                      }
                                     }}
-                                    className="px-2 py-1 rounded bg-[#2D6F8E] hover:bg-[#2F7D4F] text-white text-[10px] font-bold cursor-pointer"
-                                    title="Avanzar estado"
+                                    className="px-2.5 py-1 rounded-lg bg-[#2F7D4F] hover:bg-[#3FA066] text-white text-[10px] font-bold cursor-pointer transition-colors shadow-sm"
+                                    title="Marcar tarea como completa"
                                   >
-                                    {t.estado === 'pendiente' ? 'Iniciar' : '✓ Resolver'}
+                                    ✓ Marcar Completa
                                   </button>
                                 )}
                                 <button
@@ -2363,10 +2624,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                   Editar
                                 </button>
                                 <button
-                                  onClick={() => {
+                                  onClick={async () => {
                                     if (confirm('¿Eliminar esta tarea de atención?')) {
                                       setTareasAtencion(tareasAtencion.filter(x => x.id !== t.id));
                                       mostrarNotificacion('Tarea eliminada.');
+                                      try {
+                                        await supabase.from('tareas_atencion').delete().eq('id', t.id);
+                                      } catch (e) {
+                                        console.warn(e);
+                                      }
                                     }
                                   }}
                                   className="px-2 py-1 rounded bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-[10px] font-semibold cursor-pointer"
@@ -2606,6 +2872,31 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     </div>
                   );
                 })()}
+              </div>
+
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Elegir de huésped registrado (opcional):
+                </label>
+                <select
+                  onChange={(e) => {
+                    const sel = huespedes.find(h => h.id === e.target.value);
+                    if (sel) {
+                      setReservaHuesped(sel.nombre);
+                      setReservaDoc(sel.documento);
+                      setReservaTel(sel.contacto);
+                      mostrarNotificacion(`Datos de ${sel.nombre} cargados.`);
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#E0A526] outline-none mb-2"
+                >
+                  <option value="">— Seleccionar huésped existente —</option>
+                  {huespedes.map(h => (
+                    <option key={h.id} value={h.id}>
+                      {h.nombre} · CI: {h.documento} ({h.estadiasTotal} estadías)
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
@@ -2962,12 +3253,52 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Añadir nuevo ambiente</h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Código del ambiente *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Tipo de ambiente a registrar *</label>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormAmbCategoria('Habitacion');
+                      setFormAmbTipo('Matrimonial');
+                      const siguienteNum = ambientes.filter(a => a.codigo.startsWith('HAB')).length + 101;
+                      setFormAmbCodigo(`HAB-${siguienteNum}`);
+                      setFormAmbNombre(`Habitación ${siguienteNum}`);
+                      setFormAmbCapacidad(2);
+                      setFormAmbPrecio(300);
+                    }}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      formAmbCategoria === 'Habitacion' ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' : 'bg-[#1E140C] border-[#3D2817] text-[#C9B096]'
+                    }`}
+                  >
+                    <span>🛏️ Habitación</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormAmbCategoria('Coworking');
+                      setFormAmbTipo('Coworking');
+                      const siguienteCW = String(ambientes.filter(a => a.codigo.startsWith('CW')).length + 1).padStart(2, '0');
+                      setFormAmbCodigo(`CW-${siguienteCW}`);
+                      setFormAmbNombre(`Coworking Sala ${siguienteCW}`);
+                      setFormAmbCapacidad(6);
+                      setFormAmbPrecio(80);
+                    }}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      formAmbCategoria === 'Coworking' ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' : 'bg-[#1E140C] border-[#3D2817] text-[#C9B096]'
+                    }`}
+                  >
+                    <span>💼 Coworking</span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Código / Número *</label>
                 <input
                   type="text"
                   value={formAmbCodigo}
                   onChange={(e) => setFormAmbCodigo(e.target.value)}
-                  placeholder="Ej. HAB-106"
+                  placeholder="Ej. HAB-106 o CW-03"
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
@@ -2977,7 +3308,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   type="text"
                   value={formAmbNombre}
                   onChange={(e) => setFormAmbNombre(e.target.value)}
-                  placeholder="Ej. Habitación 106 Simple"
+                  placeholder="Ej. Habitación 106 Matrimonial o Coworking Sala 3"
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
@@ -3091,13 +3422,49 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre del ambiente *</label>
-                <input
-                  type="text"
-                  value={formAmbNombre}
-                  onChange={(e) => setFormAmbNombre(e.target.value)}
-                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
-                />
+                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar ambiente a modificar:</label>
+                <select
+                  value={ambienteAEditar.id}
+                  onChange={(e) => {
+                    const ambSel = ambientes.find(a => a.id === e.target.value);
+                    if (ambSel) {
+                      setAmbienteAEditar(ambSel);
+                      setFormAmbCodigo(ambSel.codigo);
+                      setFormAmbNombre(ambSel.nombre);
+                      setFormAmbTipo(ambSel.tipo);
+                      setFormAmbCapacidad(ambSel.capacidad);
+                      setFormAmbPrecio(ambSel.tarifa_base);
+                      setFormAmbEstado(ambSel.estado === 'disponible' || ambSel.estado === 'ocupada' || ambSel.estado === 'limpieza' ? ambSel.estado : 'disponible');
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
+                >
+                  {ambientes.map(a => (
+                    <option key={a.id} value={a.id}>
+                      {a.codigo} — {a.nombre} ({a.tipo} · Bs {a.tarifa_base})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Código / Número *</label>
+                  <input
+                    type="text"
+                    value={formAmbCodigo}
+                    onChange={(e) => setFormAmbCodigo(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Nombre descriptivo *</label>
+                  <input
+                    type="text"
+                    value={formAmbNombre}
+                    onChange={(e) => setFormAmbNombre(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -3151,15 +3518,35 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setAmbienteAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
-                Cancelar
+            <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
+              <button
+                onClick={async () => {
+                  if (confirm(`¿Estás seguro de eliminar el ambiente ${ambienteAEditar.codigo} (${ambienteAEditar.nombre})?`)) {
+                    setAmbientes(ambientes.filter(a => a.id !== ambienteAEditar.id));
+                    setAmbienteAEditar(null);
+                    mostrarNotificacion(`Ambiente ${ambienteAEditar.codigo} eliminado.`);
+                    try {
+                      await supabase.from('ambientes').delete().eq('id', ambienteAEditar.id);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }
+                }}
+                className="px-3.5 py-2 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-xs font-semibold cursor-pointer"
+              >
+                ✕ Eliminar
               </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setAmbienteAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                  Cancelar
+                </button>
               <button
                 onClick={async () => {
                   const idEdit = ambienteAEditar.id;
+                  const nuevoCod = formAmbCodigo.trim().toUpperCase() || ambienteAEditar.codigo;
                   setAmbientes(ambientes.map(a => a.id === idEdit ? {
                     ...a,
+                    codigo: nuevoCod,
                     nombre: formAmbNombre.trim(),
                     tipo: formAmbTipo,
                     capacidad: Number(formAmbCapacidad) || 1,
@@ -3167,10 +3554,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     estado: formAmbEstado
                   } : a));
                   setAmbienteAEditar(null);
-                  mostrarNotificacion(`Ambiente ${ambienteAEditar.codigo} actualizado.`);
+                  mostrarNotificacion(`Ambiente ${nuevoCod} actualizado.`);
 
                   try {
                     await supabase.from('ambientes').update({
+                      codigo: nuevoCod,
                       nombre: formAmbNombre.trim(),
                       tipo: formAmbTipo,
                       capacidad: Number(formAmbCapacidad) || 1,
@@ -3206,23 +3594,35 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
-              <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad (CI / Pasaporte) *</label>
-                <input
-                  type="text"
-                  value={formHuespedDoc}
-                  onChange={(e) => setFormHuespedDoc(e.target.value)}
-                  placeholder="Ej. 7483921 TJ"
-                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Documento (CI / Pasaporte) *</label>
+                  <input
+                    type="text"
+                    value={formHuespedDoc}
+                    onChange={(e) => setFormHuespedDoc(e.target.value)}
+                    placeholder="Ej. 7483921 TJ"
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                  <input
+                    type="tel"
+                    value={formHuespedContacto}
+                    onChange={(e) => setFormHuespedContacto(e.target.value)}
+                    placeholder="+591 70000000"
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Correo Electrónico</label>
                 <input
-                  type="tel"
-                  value={formHuespedContacto}
-                  onChange={(e) => setFormHuespedContacto(e.target.value)}
-                  placeholder="+591 70000000"
+                  type="email"
+                  value={formHuespedEmail}
+                  onChange={(e) => setFormHuespedEmail(e.target.value)}
+                  placeholder="ejemplo@correo.com"
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
@@ -3252,6 +3652,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     nombre: formHuespedNombre.trim(),
                     documento: formHuespedDoc.trim(),
                     contacto: formHuespedContacto.trim() || 'Sin teléfono',
+                    email: formHuespedEmail.trim(),
                     estadiasTotal: 1,
                     montoAcumulado: 0,
                     fotocopiaRecibida: formHuespedFotocopia
@@ -3266,6 +3667,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       nombre: nuevoH.nombre,
                       documento: nuevoH.documento,
                       contacto: nuevoH.contacto,
+                      email: nuevoH.email,
                       fotocopia_recibida: nuevoH.fotocopiaRecibida
                     });
                   } catch (e) {
@@ -3291,6 +3693,30 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </div>
             <div className="space-y-3 text-xs">
               <div>
+                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar huésped a modificar:</label>
+                <select
+                  value={huespedAEditar.id}
+                  onChange={(e) => {
+                    const hSel = huespedes.find(h => h.id === e.target.value);
+                    if (hSel) {
+                      setHuespedAEditar(hSel);
+                      setFormHuespedNombre(hSel.nombre);
+                      setFormHuespedDoc(hSel.documento);
+                      setFormHuespedEmail(hSel.email || '');
+                      setFormHuespedContacto(hSel.contacto);
+                      setFormHuespedFotocopia(hSel.fotocopiaRecibida);
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
+                >
+                  {huespedes.map(h => (
+                    <option key={h.id} value={h.id}>
+                      {h.nombre} ({h.codigo}) — CI: {h.documento}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
                 <label className="block text-[#C9B096] mb-1 font-semibold">Nombre completo *</label>
                 <input
                   type="text"
@@ -3299,21 +3725,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
-              <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad *</label>
-                <input
-                  type="text"
-                  value={formHuespedDoc}
-                  onChange={(e) => setFormHuespedDoc(e.target.value)}
-                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad *</label>
+                  <input
+                    type="text"
+                    value={formHuespedDoc}
+                    onChange={(e) => setFormHuespedDoc(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                  <input
+                    type="tel"
+                    value={formHuespedContacto}
+                    onChange={(e) => setFormHuespedContacto(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Correo Electrónico</label>
                 <input
-                  type="tel"
-                  value={formHuespedContacto}
-                  onChange={(e) => setFormHuespedContacto(e.target.value)}
+                  type="email"
+                  value={formHuespedEmail}
+                  onChange={(e) => setFormHuespedEmail(e.target.value)}
+                  placeholder="ejemplo@correo.com"
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                 />
               </div>
@@ -3327,38 +3765,59 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 <span className="text-xs text-[#F5EBDC]">Fotocopia de documento de identidad recibida</span>
               </label>
             </div>
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setHuespedAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
-                Cancelar
-              </button>
+            <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  const idEdit = huespedAEditar.id;
-                  setHuespedes(huespedes.map(h => h.id === idEdit ? {
-                    ...h,
-                    nombre: formHuespedNombre.trim(),
-                    documento: formHuespedDoc.trim(),
-                    contacto: formHuespedContacto.trim(),
-                    fotocopiaRecibida: formHuespedFotocopia
-                  } : h));
-                  setHuespedAEditar(null);
-                  mostrarNotificacion('Datos del huésped actualizados.');
-
-                  try {
-                    await supabase.from('huespedes').update({
+                  if (confirm(`¿Estás seguro de que deseas eliminar permanentemente a ${huespedAEditar.nombre}?`)) {
+                    setHuespedes(huespedes.filter(h => h.id !== huespedAEditar.id));
+                    setHuespedAEditar(null);
+                    mostrarNotificacion(`Huésped ${huespedAEditar.nombre} eliminado.`);
+                    try {
+                      await supabase.from('huespedes').delete().eq('id', huespedAEditar.id);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }
+                }}
+                className="px-3.5 py-2 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-xs font-semibold cursor-pointer"
+              >
+                ✕ Eliminar
+              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setHuespedAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    const idEdit = huespedAEditar.id;
+                    setHuespedes(huespedes.map(h => h.id === idEdit ? {
+                      ...h,
                       nombre: formHuespedNombre.trim(),
                       documento: formHuespedDoc.trim(),
                       contacto: formHuespedContacto.trim(),
-                      fotocopia_recibida: formHuespedFotocopia
-                    }).eq('id', idEdit);
-                  } catch (e) {
-                    console.warn(e);
-                  }
-                }}
-                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
-              >
-                Guardar Cambios
-              </button>
+                      email: formHuespedEmail.trim(),
+                      fotocopiaRecibida: formHuespedFotocopia
+                    } : h));
+                    setHuespedAEditar(null);
+                    mostrarNotificacion('Datos del huésped actualizados.');
+
+                    try {
+                      await supabase.from('huespedes').update({
+                        nombre: formHuespedNombre.trim(),
+                        documento: formHuespedDoc.trim(),
+                        contacto: formHuespedContacto.trim(),
+                        email: formHuespedEmail.trim(),
+                        fotocopia_recibida: formHuespedFotocopia
+                      }).eq('id', idEdit);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -3428,30 +3887,56 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Nueva tarea / atención</h3>
             <div className="space-y-3 text-xs">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Habitación / Ambiente *</label>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Huésped solicitante</label>
+                <div className="space-y-1.5">
                   <select
-                    value={formAtencionAmbiente}
-                    onChange={(e) => setFormAtencionAmbiente(e.target.value)}
+                    value={formAtencionHuesped}
+                    onChange={(e) => {
+                      const selNom = e.target.value;
+                      setFormAtencionHuesped(selNom);
+                      if (selNom) {
+                        const estAct = estadias.find(es => es.huespedNombre.toLowerCase() === selNom.toLowerCase());
+                        const resAct = reservas.find(r => r.huespedNombre.toLowerCase() === selNom.toLowerCase());
+                        const ambDetectado = estAct?.ambienteCodigo || resAct?.ambienteCodigo;
+                        if (ambDetectado) {
+                          setFormAtencionAmbiente(ambDetectado);
+                        }
+                      }
+                    }}
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
-                    {ambientes.map(a => (
-                      <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                    <option value="">-- Seleccionar de huéspedes registrados --</option>
+                    {huespedes.map(h => (
+                      <option key={h.id} value={h.nombre}>{h.nombre} ({h.codigo})</option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Huésped solicitante</label>
                   <input
                     type="text"
                     value={formAtencionHuesped}
                     onChange={(e) => setFormAtencionHuesped(e.target.value)}
-                    placeholder="Ej. Roberto Flores"
+                    placeholder="O escribe nombre del huésped..."
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                   />
                 </div>
               </div>
+
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Habitación / Ambiente asignado *</label>
+                <select
+                  value={formAtencionAmbiente}
+                  onChange={(e) => setFormAtencionAmbiente(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                >
+                  {ambientes.map(a => (
+                    <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                  ))}
+                </select>
+                <span className="text-[10px] text-[#5FD08E] mt-1 block">
+                  ⚡ Se autoselecciona según la habitación del huésped
+                </span>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[#C9B096] mb-1 font-semibold">Tipo de solicitud *</label>
@@ -3562,6 +4047,32 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               <button onClick={() => setTareaAtencionAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
             </div>
             <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar tarea / atención a modificar:</label>
+                <select
+                  value={tareaAtencionAEditar.id}
+                  onChange={(e) => {
+                    const tSel = tareasAtencion.find(t => t.id === e.target.value);
+                    if (tSel) {
+                      setTareaAtencionAEditar(tSel);
+                      setFormAtencionAmbiente(tSel.ambienteCodigo);
+                      setFormAtencionHuesped(tSel.huespedNombre);
+                      setFormAtencionTipo(tSel.tipo);
+                      setFormAtencionDesc(tSel.descripcion);
+                      setFormAtencionPrioridad(tSel.prioridad);
+                      setFormAtencionResponsable(tSel.responsable);
+                      setFormAtencionEstado(tSel.estado);
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
+                >
+                  {tareasAtencion.map(t => (
+                    <option key={t.id} value={t.id}>
+                      {t.ambienteCodigo} ({t.huespedNombre}) — {t.tipo} [{t.estado.toUpperCase()}]
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[#C9B096] mb-1 font-semibold">Habitación</label>
@@ -3651,44 +4162,248 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setTareaAtencionAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
-                Cancelar
-              </button>
+            <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  const idEdit = tareaAtencionAEditar.id;
-                  setTareasAtencion(tareasAtencion.map(t => t.id === idEdit ? {
-                    ...t,
-                    ambienteCodigo: formAtencionAmbiente,
-                    huespedNombre: formAtencionHuesped.trim() || 'Huésped',
-                    tipo: formAtencionTipo,
-                    descripcion: formAtencionDesc.trim(),
-                    prioridad: formAtencionPrioridad,
-                    responsable: formAtencionResponsable,
-                    estado: formAtencionEstado
-                  } : t));
-                  setTareaAtencionAEditar(null);
-                  mostrarNotificacion('Tarea de atención actualizada.');
-
-                  try {
-                    await supabase.from('tareas_atencion').update({
-                      ambiente_codigo: formAtencionAmbiente,
-                      huesped_nombre: formAtencionHuesped.trim(),
+                  if (confirm('¿Estás seguro de que deseas eliminar esta tarea de atención?')) {
+                    setTareasAtencion(tareasAtencion.filter(t => t.id !== tareaAtencionAEditar.id));
+                    setTareaAtencionAEditar(null);
+                    mostrarNotificacion('Tarea eliminada.');
+                    try {
+                      await supabase.from('tareas_atencion').delete().eq('id', tareaAtencionAEditar.id);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }
+                }}
+                className="px-3.5 py-2 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-xs font-semibold cursor-pointer"
+              >
+                ✕ Eliminar
+              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setTareaAtencionAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    const idEdit = tareaAtencionAEditar.id;
+                    setTareasAtencion(tareasAtencion.map(t => t.id === idEdit ? {
+                      ...t,
+                      ambienteCodigo: formAtencionAmbiente,
+                      huespedNombre: formAtencionHuesped.trim() || 'Huésped',
                       tipo: formAtencionTipo,
                       descripcion: formAtencionDesc.trim(),
                       prioridad: formAtencionPrioridad,
                       responsable: formAtencionResponsable,
                       estado: formAtencionEstado
-                    }).eq('id', idEdit);
-                  } catch (e) {
-                    console.warn(e);
+                    } : t));
+                    setTareaAtencionAEditar(null);
+                    mostrarNotificacion('Tarea de atención actualizada.');
+
+                    try {
+                      await supabase.from('tareas_atencion').update({
+                        ambiente_codigo: formAtencionAmbiente,
+                        huesped_nombre: formAtencionHuesped.trim(),
+                        tipo: formAtencionTipo,
+                        descripcion: formAtencionDesc.trim(),
+                        prioridad: formAtencionPrioridad,
+                        responsable: formAtencionResponsable,
+                        estado: formAtencionEstado
+                      }).eq('id', idEdit);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 13.5. MODAL EDITAR / ELIMINAR RESERVA */}
+      {reservaAEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Reserva</h3>
+              <button onClick={() => setReservaAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar reserva a modificar:</label>
+                <select
+                  value={reservaAEditar.id}
+                  onChange={(e) => {
+                    const resSel = reservas.find(r => r.id === e.target.value);
+                    if (resSel) {
+                      setReservaAEditar(resSel);
+                      setFormResHuesped(resSel.huespedNombre);
+                      setFormResDoc(resSel.documento || '');
+                      setFormResTel(resSel.contacto || '');
+                      setFormResAmbiente(resSel.ambienteCodigo);
+                      setFormResEntrada(resSel.fechaEntrada);
+                      setFormResSalida(resSel.fechaSalida);
+                      setFormResPago(resSel.estadoPago);
+                      setFormResTotal(resSel.montoTotal || 300);
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
+                >
+                  {reservas.map(r => (
+                    <option key={r.id} value={r.id}>
+                      {r.huespedNombre} — {r.ambienteCodigo} ({r.fechaEntrada} al {r.fechaSalida}) [Bs {r.montoTotal || 300}]
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Huésped *</label>
+                <input
+                  type="text"
+                  value={formResHuesped}
+                  onChange={(e) => setFormResHuesped(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">C.I. / Documento</label>
+                  <input
+                    type="text"
+                    value={formResDoc}
+                    onChange={(e) => setFormResDoc(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp</label>
+                  <input
+                    type="text"
+                    value={formResTel}
+                    onChange={(e) => setFormResTel(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Ambiente / Habitación *</label>
+                  <select
+                    value={formResAmbiente}
+                    onChange={(e) => setFormResAmbiente(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                  >
+                    {ambientes.map(a => (
+                      <option key={a.id} value={a.nombre || a.codigo}>{a.codigo} - {a.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Monto Total (Bs) *</label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={formResTotal}
+                    onChange={(e) => setFormResTotal(Number(e.target.value))}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Entrada *</label>
+                  <input
+                    type="date"
+                    value={formResEntrada}
+                    onChange={(e) => setFormResEntrada(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Salida *</label>
+                  <input
+                    type="date"
+                    value={formResSalida}
+                    onChange={(e) => setFormResSalida(e.target.value)}
+                    className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Estado de Pago</label>
+                <select
+                  value={formResPago}
+                  onChange={(e) => setFormResPago(e.target.value as any)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
+                >
+                  <option value="pendiente">Pendiente de pago</option>
+                  <option value="confirmada">Pagada (Confirmada)</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
+              <button
+                onClick={async () => {
+                  if (confirm(`¿Estás seguro de que deseas eliminar la reserva de ${reservaAEditar.huespedNombre}?`)) {
+                    setReservas(reservas.filter(r => r.id !== reservaAEditar.id));
+                    setReservaAEditar(null);
+                    mostrarNotificacion('Reserva eliminada.');
+                    try {
+                      await supabase.from('reservas').delete().eq('id', reservaAEditar.id);
+                    } catch (e) {
+                      console.warn(e);
+                    }
                   }
                 }}
-                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                className="px-3 py-2 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-xs font-semibold cursor-pointer"
               >
-                Guardar Cambios
+                ✕ Eliminar
               </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setReservaAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    const idEdit = reservaAEditar.id;
+                    setReservas(reservas.map(r => r.id === idEdit ? {
+                      ...r,
+                      huespedNombre: formResHuesped.trim() || r.huespedNombre,
+                      documento: formResDoc.trim(),
+                      contacto: formResTel.trim(),
+                      ambienteCodigo: formResAmbiente,
+                      fechaEntrada: formResEntrada,
+                      fechaSalida: formResSalida,
+                      estadoPago: formResPago,
+                      montoTotal: Number(formResTotal) || 300
+                    } : r));
+                    setReservaAEditar(null);
+                    mostrarNotificacion('Reserva modificada correctamente.');
+
+                    try {
+                      await supabase.from('reservas').update({
+                        huesped_nombre: formResHuesped.trim(),
+                        documento: formResDoc.trim(),
+                        contacto: formResTel.trim(),
+                        ambiente_codigo: formResAmbiente,
+                        fecha_entrada: formResEntrada,
+                        fecha_salida: formResSalida,
+                        estado_pago: formResPago,
+                        monto_total: Number(formResTotal) || 300
+                      }).eq('id', idEdit);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -3703,6 +4418,28 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               <button onClick={() => setUsuarioAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
             </div>
             <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar personal a modificar:</label>
+                <select
+                  value={usuarioAEditar.id}
+                  onChange={(e) => {
+                    const uSel = personal.find(p => p.id === e.target.value);
+                    if (uSel) {
+                      setUsuarioAEditar(uSel);
+                      setFormUserNombre(uSel.nombre);
+                      setFormUserRol(uSel.rol);
+                      setFormUserActivo(uSel.activo);
+                    }
+                  }}
+                  className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
+                >
+                  {personal.map(p => (
+                    <option key={p.id} value={p.id}>
+                      {p.nombre} ({p.rol.toUpperCase()}) — {p.email}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-[#C9B096] mb-1 font-semibold">Correo (invariable)</label>
                 <input
@@ -3743,36 +4480,55 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 <span className="text-xs text-[#F5EBDC]">Usuario Activo (permitir acceso al sistema)</span>
               </label>
             </div>
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setUsuarioAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
-                Cancelar
-              </button>
+            <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  const idEdit = usuarioAEditar.id;
-                  setPersonal(personal.map(p => p.id === idEdit ? {
-                    ...p,
-                    nombre: formUserNombre.trim(),
-                    rol: formUserRol,
-                    activo: formUserActivo
-                  } : p));
-                  setUsuarioAEditar(null);
-                  mostrarNotificacion('Datos del personal actualizados.');
-
-                  try {
-                    await supabase.from('perfiles').update({
+                  if (confirm(`¿Estás seguro de que deseas eliminar permanentemente a ${usuarioAEditar.nombre}?`)) {
+                    setPersonal(personal.filter(x => x.id !== usuarioAEditar.id));
+                    setUsuarioAEditar(null);
+                    mostrarNotificacion(`Usuario ${usuarioAEditar.nombre} eliminado.`);
+                    try {
+                      await supabase.from('perfiles').delete().eq('id', usuarioAEditar.id);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }
+                }}
+                className="px-3 py-2 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-rose-400 hover:bg-rose-950/40 text-xs font-semibold cursor-pointer"
+              >
+                ✕ Eliminar
+              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setUsuarioAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    const idEdit = usuarioAEditar.id;
+                    setPersonal(personal.map(p => p.id === idEdit ? {
+                      ...p,
                       nombre: formUserNombre.trim(),
                       rol: formUserRol,
                       activo: formUserActivo
-                    }).eq('id', idEdit);
-                  } catch (e) {
-                    console.warn(e);
-                  }
-                }}
-                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
-              >
-                Guardar Cambios
-              </button>
+                    } : p));
+                    setUsuarioAEditar(null);
+                    mostrarNotificacion('Datos del personal actualizados.');
+
+                    try {
+                      await supabase.from('perfiles').update({
+                        nombre: formUserNombre.trim(),
+                        rol: formUserRol,
+                        activo: formUserActivo
+                      }).eq('id', idEdit);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
             </div>
           </div>
         </div>

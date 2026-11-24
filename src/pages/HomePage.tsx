@@ -588,7 +588,7 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
                 className="flex items-center gap-3 hover:text-[#E0A526] transition-colors group cursor-pointer"
               >
                 <Phone className="w-5 h-5 text-[#E0A526] shrink-0 group-hover:scale-110 transition-transform" />
-                <span>(591) 706-95 403 <span className="text-xs text-[#25D366] font-semibold ml-1">(WhatsApp)</span></span>
+                <span><strong className="text-[#E0A526] font-semibold">Contacto recepcionista:</strong> (591) 68705002 <span className="text-xs text-[#25D366] font-semibold ml-1">(WhatsApp)</span></span>
               </a>
               <a 
                 href="mailto:hotelasiritarijabolivia@gmail.com" 
@@ -682,25 +682,6 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <a href="mailto:hotelasiritarijabolivia@gmail.com" className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer">
-                <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4" />
-                </div>
-                <span>hotelasiritarijabolivia@gmail.com</span>
-              </a>
-
-              <a 
-                href="https://www.whatsapp.com/catalog/59168705002/?app_absent=0" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer"
-              >
-                <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <span>(591) 706-95 403</span>
-              </a>
-
               <a 
                 href="https://www.facebook.com/HotelAsiri/" 
                 target="_blank" 
@@ -714,6 +695,18 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
               </a>
 
               <a 
+                href="https://www.whatsapp.com/catalog/59168705002/?app_absent=0" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-2.5 text-xs text-[#F5EBDC] hover:text-[#E0A526] transition-colors cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-full bg-white text-[#190F08] flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <span>Contacto recepcionista: (591) 68705002</span>
+              </a>
+
+              <a 
                 href="https://www.instagram.com/hotel_asiri_tja/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
@@ -722,7 +715,7 @@ export default function HomePage({ user, onLogout, onLoginSuccess }: HomePagePro
                 <div className="w-8 h-8 rounded-full bg-white text-[#E4405F] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-sm">
                   <InstagramIcon className="w-4 h-4 text-[#E4405F]" />
                 </div>
-                <span className="font-medium">Instagram</span>
+                <span className="font-medium">Hotel Asiri</span>
               </a>
             </div>
           </div>
