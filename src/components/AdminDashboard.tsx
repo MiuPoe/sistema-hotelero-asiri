@@ -263,8 +263,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
   // Modales
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [, setShowCheckInModal] = useState<Estadia | null>(null);
-  const [, setShowCheckOutWarning] = useState<Estadia | null>(null);
+  const [showCheckInModal, setShowCheckInModal] = useState<{
+    reservaId?: string;
+    estadiaId?: string;
+    huespedNombre: string;
+    documento: string;
+    contacto: string;
+    ambienteCodigo: string;
+    fechaEntrada: string;
+    fechaSalida: string;
+    saldoPendiente: number;
+  } | null>(null);
+  const [showCheckOutWarning, setShowCheckOutWarning] = useState<Estadia | null>(null);
+  const [formCheckInDoc, setFormCheckInDoc] = useState('');
+  const [formCheckInFotocopia, setFormCheckInFotocopia] = useState(true);
+  const [formCheckInObs, setFormCheckInObs] = useState('');
+  const [formCheckOutLlave, setFormCheckOutLlave] = useState(true);
+  const [formCheckOutHabitacionOk, setFormCheckOutHabitacionOk] = useState(true);
   const [showNuevaTareaModal, setShowNuevaTareaModal] = useState(false);
   const [showNuevoIngresoModal, setShowNuevoIngresoModal] = useState(false);
   const [showNuevoEgresoModal, setShowNuevoEgresoModal] = useState(false);
@@ -1161,6 +1176,42 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     }
   };
 
+  // Llegadas pendientes para Check-in: todas las reservas pendientes/confirmadas que NO hayan hecho check-in aún
+  const reservasPendientesCheckin = reservas.filter(r => 
+    r.estado !== 'en_curso' && r.estado !== 'finalizada' && r.estado !== 'cancelada'
+  );
+  const estadiasPendientes = estadias.filter(e => e.estado === 'confirmada');
+
+  // Deduplicar por nombre y ambiente para evitar filas duplicadas en pantalla
+  const llegadasPendientes = [
+    ...reservasPendientesCheckin.map(r => ({
+      reservaId: r.id,
+      id: r.id,
+      huespedNombre: r.huespedNombre,
+      documento: r.documento || '',
+      contacto: r.contacto || '',
+      ambienteCodigo: r.ambienteCodigo,
+      fechaEntrada: r.fechaEntrada,
+      fechaSalida: r.fechaSalida,
+      saldoPendiente: r.estadoPago === 'confirmada' ? 0 : (r.montoTotal || 300)
+    })),
+    ...estadiasPendientes
+      .filter(e => !reservasPendientesCheckin.some(r => r.huespedNombre.toLowerCase() === e.huespedNombre.toLowerCase()))
+      .map(e => ({
+        estadiaId: e.id,
+        id: e.id,
+        huespedNombre: e.huespedNombre,
+        documento: e.documento || '',
+        contacto: e.contacto || '',
+        ambienteCodigo: e.ambienteCodigo,
+        fechaEntrada: e.fechaEntrada,
+        fechaSalida: e.fechaSalida,
+        saldoPendiente: e.saldoPendiente || 0
+      }))
+  ].filter((item, idx, arr) => 
+    arr.findIndex(x => x.huespedNombre.toLowerCase() === item.huespedNombre.toLowerCase() && x.ambienteCodigo === item.ambienteCodigo) === idx
+  );
+
   return (
     <div className="min-h-screen bg-[#1E140C] text-[#F5EBDC] font-['Instrument_Sans',sans-serif] flex flex-col justify-between selection:bg-[#E0A526]/30">
       
@@ -1900,22 +1951,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             </td>
                             <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                               <button
-                                onClick={() => {
-                                  setReservaAEditar(r);
-                                  setFormResHuesped(r.huespedNombre);
-                                  setFormResDoc(r.documento || '');
-                                  setFormResTel(r.contacto || '');
-                                  setFormResAmbiente(r.ambienteCodigo);
-                                  setFormResEntrada(r.fechaEntrada);
-                                  setFormResSalida(r.fechaSalida);
-                                  setFormResPago(r.estadoPago);
-                                  setFormResTotal(r.montoTotal || 300);
-                                }}
-                                className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
-                              >
-                                Editar
-                              </button>
-                              <button
                                 onClick={async () => {
                                   if (confirm(`¿Eliminar la reserva de ${r.huespedNombre} en ${r.ambienteCodigo}?`)) {
                                     setReservas(reservas.filter(x => x.id !== r.id));
@@ -1927,7 +1962,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                     }
                                   }
                                 }}
-                                className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                                className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                              >
+                                ✕ Eliminar
+                              </button>
+                            </td>
                               >
                                 ✕ Eliminar
                               </button>
@@ -2041,21 +2080,43 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-5 space-y-3.5 shadow-xl">
-                  <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] border-b border-[#3D2817] pb-3">Llegadas pendientes</h3>
-                  {estadias.filter(e => e.estado === 'confirmada').length === 0 ? (
-                    <p className="text-xs text-[#C9B096]">No hay check-ins pendientes.</p>
+                  <div className="border-b border-[#3D2817] pb-3 flex items-center justify-between">
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">Llegadas pendientes</h3>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E0A526]/20 text-[#E0A526] border border-[#E0A526]/40 font-bold">
+                      {llegadasPendientes.length} por ingresar
+                    </span>
+                  </div>
+
+                  {llegadasPendientes.length === 0 ? (
+                    <p className="text-xs text-[#C9B096]">No hay check-ins pendientes en este momento.</p>
                   ) : (
-                    estadias.filter(e => e.estado === 'confirmada').map(e => (
-                      <div key={e.id} className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] flex items-center justify-between">
+                    llegadasPendientes.map((item, idx) => (
+                      <div key={item.id || idx} className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] hover:border-[#E0A526]/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                          <p className="font-bold text-[#F5EBDC] text-sm">{e.huespedNombre} · {e.ambienteCodigo}</p>
-                          <p className="text-xs text-[#C9B096]">Doc: {e.documento}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-bold text-[#F5EBDC] text-sm">{item.huespedNombre}</p>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E0A526]/20 text-[#E0A526] font-semibold border border-[#E0A526]/30">
+                              {item.ambienteCodigo}
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#C9B096] mt-0.5">
+                            Fechas: {item.fechaEntrada} al {item.fechaSalida}
+                            {item.documento ? ` · Doc: ${item.documento}` : ''}
+                          </p>
+                          <span className="text-[11px] text-[#F0C14B] font-medium block mt-1">
+                            ⚠️ Requiere Check-in para ingresar y ocupar habitación
+                          </span>
                         </div>
                         <button
-                          onClick={() => setShowCheckInModal(e)}
-                          className="px-3.5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs cursor-pointer"
+                          onClick={() => {
+                            setShowCheckInModal(item);
+                            setFormCheckInDoc(item.documento || '');
+                            setFormCheckInFotocopia(true);
+                            setFormCheckInObs('');
+                          }}
+                          className="px-4 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                         >
-                          Check-in →
+                          <span>Check-in →</span>
                         </button>
                       </div>
                     ))
@@ -2063,7 +2124,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
 
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-5 space-y-3.5 shadow-xl">
-                  <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] border-b border-[#3D2817] pb-3">Huéspedes Alojados</h3>
+                  <div className="border-b border-[#3D2817] pb-3 flex items-center justify-between">
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">Huéspedes Alojados</h3>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#5FD08E]/20 text-[#5FD08E] border border-[#5FD08E]/40 font-bold">
+                      {estadias.filter(e => e.estado === 'en_curso').length} hospedados
+                    </span>
+                  </div>
+
                   {estadias.filter(e => e.estado === 'en_curso').length === 0 ? (
                     <p className="text-xs text-[#C9B096]">No hay huéspedes alojados actualmente.</p>
                   ) : (
@@ -2071,13 +2138,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       <div key={e.id} className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] flex items-center justify-between">
                         <div>
                           <p className="font-bold text-[#F5EBDC] text-sm">{e.huespedNombre} · {e.ambienteCodigo}</p>
-                          <p className="text-xs text-[#C9B096]">Salida: {e.fechaSalida}</p>
+                          <p className="text-xs text-[#C9B096]">Salida programada: {e.fechaSalida}</p>
+                          <span className="text-[11px] text-[#5FD08E] font-medium block mt-0.5">✓ En estadía activa</span>
                         </div>
                         <button
-                          onClick={() => setShowCheckOutWarning(e)}
-                          className="px-3.5 py-2 rounded-xl bg-[#3D2817] hover:bg-[#C2570C] text-[#F5EBDC] font-bold text-xs border border-[#5A3418] cursor-pointer"
+                          onClick={() => {
+                            setShowCheckOutWarning(e);
+                            setFormCheckOutLlave(true);
+                            setFormCheckOutHabitacionOk(true);
+                          }}
+                          className="px-4 py-2 rounded-xl bg-[#3D2817] hover:bg-[#C2570C] text-[#F5EBDC] font-bold text-xs border border-[#5A3418] cursor-pointer"
                         >
-                          Check-out
+                          Check-out →
                         </button>
                       </div>
                     ))
@@ -2177,19 +2249,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           )}
                         </td>
                         <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
-                          <button
-                            onClick={() => {
-                              setHuespedAEditar(h);
-                              setFormHuespedNombre(h.nombre);
-                              setFormHuespedDoc(h.documento);
-                              setFormHuespedEmail(h.email || '');
-                              setFormHuespedContacto(h.contacto);
-                              setFormHuespedFotocopia(h.fotocopiaRecibida);
-                            }}
-                            className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
-                          >
-                            Editar
-                          </button>
                           <button
                             onClick={() => setHuespedHistorial(h)}
                             className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-[#F5EBDC] hover:bg-[#3D2817] text-[11px] cursor-pointer"
@@ -2435,17 +2494,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         </td>
                         <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                           <button
-                            onClick={() => {
-                              setUsuarioAEditar(p);
-                              setFormUserNombre(p.nombre);
-                              setFormUserRol(p.rol);
-                              setFormUserActivo(p.activo);
-                            }}
-                            className="px-2.5 py-1 rounded-lg bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] font-semibold text-[11px] cursor-pointer"
-                          >
-                            Editar
-                          </button>
-                          <button
                             onClick={async () => {
                               if (confirm(`¿Estás seguro de que deseas eliminar al usuario ${p.nombre}?`)) {
                                 setPersonal(personal.filter(x => x.id !== p.id));
@@ -2457,7 +2505,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                 }
                               }
                             }}
-                            className="px-2 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
+                            className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
                           >
                             ✕ Eliminar
                           </button>
@@ -2608,21 +2656,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                     ✓ Marcar Completa
                                   </button>
                                 )}
-                                <button
-                                  onClick={() => {
-                                    setTareaAtencionAEditar(t);
-                                    setFormAtencionAmbiente(t.ambienteCodigo);
-                                    setFormAtencionHuesped(t.huespedNombre);
-                                    setFormAtencionTipo(t.tipo);
-                                    setFormAtencionDesc(t.descripcion);
-                                    setFormAtencionPrioridad(t.prioridad);
-                                    setFormAtencionResponsable(t.responsable);
-                                    setFormAtencionEstado(t.estado);
-                                  }}
-                                  className="px-2 py-1 rounded bg-[#3D2817] hover:bg-[#5A3418] text-[#E0A526] text-[10px] font-semibold cursor-pointer"
-                                >
-                                  Editar
-                                </button>
                                 <button
                                   onClick={async () => {
                                     if (confirm('¿Eliminar esta tarea de atención?')) {
@@ -4529,6 +4562,293 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   Guardar Cambios
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 15. MODAL DE CHECK-IN Y VERIFICACIÓN DE FOTOCOPIA */}
+      {showCheckInModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Check-in de Huésped</h3>
+              <button onClick={() => setShowCheckInModal(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+
+            <div className="p-3 bg-[#1E140C] border border-[#3D2817] rounded-xl text-xs space-y-1">
+              <p className="text-white font-bold text-sm">{showCheckInModal.huespedNombre}</p>
+              <p className="text-[#E0A526] font-semibold">Habitación / Ambiente: {showCheckInModal.ambienteCodigo}</p>
+              <p className="text-[#C9B096]">Estadía: {showCheckInModal.fechaEntrada} al {showCheckInModal.fechaSalida}</p>
+              {showCheckInModal.saldoPendiente > 0 ? (
+                <p className="text-[#F28C38] font-bold">Saldo pendiente de cobro: Bs {showCheckInModal.saldoPendiente}</p>
+              ) : (
+                <p className="text-[#5FD08E] font-bold">✓ Reserva totalmente pagada</p>
+              )}
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Cédula de Identidad / Pasaporte *</label>
+                <input
+                  type="text"
+                  value={formCheckInDoc}
+                  onChange={(e) => setFormCheckInDoc(e.target.value)}
+                  placeholder="Ej. 5849201 TJ"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
+                />
+              </div>
+
+              <label className="flex items-center gap-2.5 p-3 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formCheckInFotocopia}
+                  onChange={(e) => setFormCheckInFotocopia(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <div>
+                  <span className="text-xs font-bold text-[#F5EBDC] block">Fotocopia de Carnet de Identidad recibida</span>
+                  <span className="text-[11px] text-[#C9B096]">Requisito legal para registro de huéspedes y Policía Turística</span>
+                </div>
+              </label>
+
+              <div className="p-3 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-[11px] text-[#C9B096] space-y-1">
+                <p className="font-bold text-[#E0A526]">Control de Horarios PMS:</p>
+                <p>• Horario oficial Check-in: <strong>8:30 a 12:00</strong></p>
+                <p>• Al confirmar, la habitación pasará a estado <strong>OCUPADA</strong> y se activará la estadía.</p>
+              </div>
+
+              <div>
+                <label className="block text-[#C9B096] mb-1 font-semibold">Observaciones de ingreso (opcional)</label>
+                <input
+                  type="text"
+                  value={formCheckInObs}
+                  onChange={(e) => setFormCheckInObs(e.target.value)}
+                  placeholder="Ej. Equipaje en custodia, requerimientos..."
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button
+                onClick={() => setShowCheckInModal(null)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const check = showCheckInModal;
+                  const docFinal = formCheckInDoc.trim() || check.documento || 'Sin doc';
+
+                  // 1. Actualizar reserva a en_curso
+                  if (check.reservaId) {
+                    setReservas(prev => prev.map(r => r.id === check.reservaId ? { ...r, estado: 'en_curso', documento: docFinal } : r));
+                  }
+
+                  // 2. Crear o actualizar estadía en_curso
+                  const nuevaEstadia: Estadia = {
+                    id: check.estadiaId || `est-${Date.now()}`,
+                    codigoEstadia: `AS-${Date.now().toString().slice(-4)}`,
+                    huespedNombre: check.huespedNombre,
+                    documento: docFinal,
+                    contacto: check.contacto,
+                    ambienteCodigo: check.ambienteCodigo,
+                    fechaEntrada: check.fechaEntrada,
+                    fechaSalida: check.fechaSalida,
+                    personas: 1,
+                    saldoPendiente: check.saldoPendiente,
+                    estado: 'en_curso',
+                    fotocopiaRecibida: formCheckInFotocopia
+                  };
+
+                  setEstadias(prev => [nuevaEstadia, ...prev.filter(e => e.id !== check.estadiaId)]);
+
+                  // 3. Ocupar habitación
+                  setAmbientes(prev => prev.map(a => 
+                    (a.codigo === check.ambienteCodigo || a.nombre === check.ambienteCodigo || check.ambienteCodigo.includes(a.codigo))
+                      ? { ...a, estado: 'ocupada', huespedActual: check.huespedNombre, codigoEstadia: nuevaEstadia.codigoEstadia }
+                      : a
+                  ));
+
+                  // 4. Actualizar o registrar huésped
+                  setHuespedes(prev => {
+                    const yaExiste = prev.find(h => h.nombre.toLowerCase() === check.huespedNombre.toLowerCase());
+                    if (yaExiste) {
+                      return prev.map(h => h.id === yaExiste.id ? {
+                        ...h,
+                        documento: docFinal,
+                        codigoEstadiaActiva: nuevaEstadia.codigoEstadia,
+                        fotocopiaRecibida: formCheckInFotocopia
+                      } : h);
+                    } else {
+                      const nuevoH: Huesped = {
+                        id: `h-${Date.now()}`,
+                        codigo: `HU-${String(prev.length + 1).padStart(4, '0')}`,
+                        nombre: check.huespedNombre,
+                        documento: docFinal,
+                        contacto: check.contacto || 'Sin teléfono',
+                        estadiasTotal: 1,
+                        montoAcumulado: 0,
+                        codigoEstadiaActiva: nuevaEstadia.codigoEstadia,
+                        fotocopiaRecibida: formCheckInFotocopia
+                      };
+                      return [nuevoH, ...prev];
+                    }
+                  });
+
+                  setShowCheckInModal(null);
+                  mostrarNotificacion(`✓ Check-in completado para ${check.huespedNombre}. ${check.ambienteCodigo} ahora está OCUPADA.`);
+
+                  try {
+                    if (check.reservaId) {
+                      await supabase.from('reservas').update({ estado: 'en_curso', documento: docFinal }).eq('id', check.reservaId);
+                    }
+                    await supabase.from('ambientes').update({
+                      estado: 'ocupada',
+                      huesped_actual: check.huespedNombre,
+                      codigo_estadia: nuevaEstadia.codigoEstadia
+                    }).or(`codigo.eq.${check.ambienteCodigo},nombre.eq.${check.ambienteCodigo}`);
+                    await supabase.from('estadias').insert({
+                      codigo_estadia: nuevaEstadia.codigoEstadia,
+                      huesped_nombre: check.huespedNombre,
+                      documento: docFinal,
+                      contacto: check.contacto,
+                      ambiente_codigo: check.ambienteCodigo,
+                      fecha_entrada: check.fechaEntrada,
+                      fecha_salida: check.fechaSalida,
+                      estado: 'en_curso',
+                      fotocopia_recibida: formCheckInFotocopia
+                    });
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+              >
+                ✓ Confirmar Check-in e Ingreso
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 16. MODAL DE CHECK-OUT Y ASIGNACIÓN AUTOMÁTICA A LIMPIEZA */}
+      {showCheckOutWarning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#C2570C]">Salida / Check-out</h3>
+              <button onClick={() => setShowCheckOutWarning(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+            </div>
+
+            <div className="p-3 bg-[#1E140C] border border-[#3D2817] rounded-xl text-xs space-y-1">
+              <p className="text-white font-bold text-sm">{showCheckOutWarning.huespedNombre}</p>
+              <p className="text-[#E0A526] font-semibold">Habitación: {showCheckOutWarning.ambienteCodigo}</p>
+              <p className="text-[#C9B096]">Estadía: {showCheckOutWarning.fechaEntrada} al {showCheckOutWarning.fechaSalida}</p>
+              {showCheckOutWarning.saldoPendiente > 0 && (
+                <p className="text-[#F28C38] font-bold">⚠️ Saldo pendiente de pago: Bs {showCheckOutWarning.saldoPendiente}</p>
+              )}
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <label className="flex items-center gap-2.5 p-3 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formCheckOutLlave}
+                  onChange={(e) => setFormCheckOutLlave(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <span className="text-xs font-semibold text-[#F5EBDC]">Llaves de habitación entregadas en recepción</span>
+              </label>
+
+              <label className="flex items-center gap-2.5 p-3 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formCheckOutHabitacionOk}
+                  onChange={(e) => setFormCheckOutHabitacionOk(e.target.checked)}
+                  className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
+                />
+                <span className="text-xs font-semibold text-[#F5EBDC]">Revisión de habitación completada (sin daños)</span>
+              </label>
+
+              <div className="p-3 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-[11px] text-[#6DB7D9]">
+                ⚡ Al confirmar la salida, la habitación {showCheckOutWarning.ambienteCodigo} pasará automáticamente a estado <strong>EN LIMPIEZA</strong> y se creará la orden de preparación.
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
+              <button
+                onClick={() => setShowCheckOutWarning(null)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  const est = showCheckOutWarning;
+
+                  // 1. Finalizar estadía
+                  setEstadias(prev => prev.map(e => e.id === est.id ? { ...e, estado: 'finalizada' } : e));
+
+                  // 2. Finalizar reserva si existe
+                  setReservas(prev => prev.map(r => 
+                    r.huespedNombre.toLowerCase() === est.huespedNombre.toLowerCase() && r.estado === 'en_curso'
+                      ? { ...r, estado: 'finalizada' }
+                      : r
+                  ));
+
+                  // 3. Habitación a Limpieza
+                  setAmbientes(prev => prev.map(a => 
+                    (a.codigo === est.ambienteCodigo || a.nombre === est.ambienteCodigo || est.ambienteCodigo.includes(a.codigo))
+                      ? { ...a, estado: 'limpieza', huespedActual: undefined, codigoEstadia: undefined }
+                      : a
+                  ));
+
+                  // 4. Crear tarea de limpieza automática
+                  const nuevaLimpieza: TareaLimpieza = {
+                    id: `t-out-${Date.now()}`,
+                    ambienteCodigo: est.ambienteCodigo,
+                    tarea: `Limpieza y desinfección completa tras salida de ${est.huespedNombre}`,
+                    responsable: 'Grimanez Cordero',
+                    origen: 'checkout',
+                    estado: 'pendiente'
+                  };
+                  setTareasLimpieza(prev => [nuevaLimpieza, ...prev]);
+
+                  // 5. Quitar estadía activa en huésped
+                  setHuespedes(prev => prev.map(h => 
+                    h.nombre.toLowerCase() === est.huespedNombre.toLowerCase()
+                      ? { ...h, codigoEstadiaActiva: undefined, estadiasTotal: h.estadiasTotal + 1 }
+                      : h
+                  ));
+
+                  setShowCheckOutWarning(null);
+                  mostrarNotificacion(`✓ Check-out realizado. Habitación ${est.ambienteCodigo} enviada a LIMPIEZA.`);
+
+                  try {
+                    await supabase.from('estadias').update({ estado: 'finalizada' }).eq('id', est.id);
+                    await supabase.from('ambientes').update({
+                      estado: 'limpieza',
+                      huesped_actual: null,
+                      codigo_estadia: null
+                    }).or(`codigo.eq.${est.ambienteCodigo},nombre.eq.${est.ambienteCodigo}`);
+                    await supabase.from('tareas_limpieza').insert({
+                      ambiente_codigo: est.ambienteCodigo,
+                      tarea: `Limpieza tras salida de ${est.huespedNombre}`,
+                      responsable: 'Grimanez Cordero',
+                      origen: 'checkout',
+                      estado: 'pendiente'
+                    });
+                  } catch (e) {
+                    console.warn(e);
+                  }
+                }}
+                className="px-5 py-2.5 rounded-xl bg-[#C2570C] hover:bg-[#E0A526] hover:text-[#1E140C] text-white font-bold text-xs shadow cursor-pointer"
+              >
+                ✓ Confirmar Salida y Enviar a Limpieza
+              </button>
             </div>
           </div>
         </div>
