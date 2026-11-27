@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 
 interface AdminDashboardProps {
   user: {
@@ -16,15 +16,32 @@ interface AdminDashboardProps {
 
 function LogoAsiriIsotipo({ className = "w-10 h-10" }: { className?: string }) {
   return (
-    <div className={`${className} rounded-full bg-white p-1 flex items-center justify-center flex-shrink-0 shadow-md border border-[#E0A526] overflow-hidden`}>
-      <img src="/logo.png" alt="Hotel Asiri" className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLElement).style.display = 'none' }} />
+    <div
+      className={`${className} rounded-full bg-white p-1 flex items-center justify-center flex-shrink-0 shadow-md border border-[#E0A526] overflow-hidden`}
+    >
+      <img
+        src="/logo.png"
+        alt="Hotel Asiri"
+        className="w-full h-full object-contain"
+        onError={(e) => {
+          (e.target as HTMLElement).style.display = "none";
+        }}
+      />
     </div>
   );
 }
 
 function IconPanel({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="3" y="3" width="7" height="9" rx="1" />
       <rect x="14" y="3" width="7" height="5" rx="1" />
       <rect x="14" y="12" width="7" height="9" rx="1" />
@@ -35,7 +52,15 @@ function IconPanel({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconKey({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="m21 2-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L9 14" />
       <circle cx="7.5" cy="16.5" r="5.5" />
       <path d="m15.5 4.5 4 4" />
@@ -45,7 +70,15 @@ function IconKey({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconAmbientes({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9" />
     </svg>
   );
@@ -53,7 +86,15 @@ function IconAmbientes({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconReservas({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
       <line x1="8" y1="2" x2="8" y2="6" />
@@ -65,7 +106,15 @@ function IconReservas({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconHuespedes({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="12" cy="7" r="4" />
       <path d="M6 21v-2a6 6 0 0 1 12 0v2" />
     </svg>
@@ -74,7 +123,15 @@ function IconHuespedes({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconCheckInOut({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M9 11l3 3L22 4" />
       <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
     </svg>
@@ -83,7 +140,15 @@ function IconCheckInOut({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconCaja({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="2" y="6" width="20" height="12" rx="2" />
       <circle cx="12" cy="12" r="2.5" />
       <path d="M6 12h.01M18 12h.01" />
@@ -93,7 +158,15 @@ function IconCaja({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconLimpieza({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="m3 21 8.5-8.5" />
       <path d="M12.5 11 17 6.5a2.12 2.12 0 0 1 3 3L15.5 14" />
       <path d="m10 14 4 4" />
@@ -104,7 +177,15 @@ function IconLimpieza({ className = "w-5 h-5" }: { className?: string }) {
 
 function IconAtencion({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
     </svg>
   );
@@ -118,7 +199,7 @@ interface PersonalUsuario {
   id: string;
   nombre: string;
   email: string;
-  rol: 'administrador' | 'recepcionista' | 'limpieza';
+  rol: "administrador" | "recepcionista" | "limpieza";
   activo: boolean;
   ultimoAcceso: string;
 }
@@ -130,7 +211,7 @@ interface Ambiente {
   tipo: string;
   capacidad: number;
   tarifa_base: number;
-  estado: 'disponible' | 'ocupada' | 'pendiente' | 'pagada' | 'limpieza';
+  estado: "disponible" | "ocupada" | "pendiente" | "pagada" | "limpieza";
   huespedActual?: string;
   codigoEstadia?: string;
 }
@@ -160,7 +241,7 @@ interface Estadia {
   fechaSalida: string;
   personas: number;
   saldoPendiente: number;
-  estado: 'confirmada' | 'en_curso' | 'finalizada';
+  estado: "confirmada" | "en_curso" | "finalizada";
   fotocopiaRecibida: boolean;
   fotocopiaUrl?: string;
   motivoFueraHorario?: string;
@@ -177,8 +258,8 @@ interface Reserva {
   contacto?: string;
   fechaEntrada: string;
   fechaSalida: string;
-  estado: 'pendiente' | 'confirmada' | 'en_curso' | 'finalizada';
-  estadoPago: 'pendiente' | 'confirmada';
+  estado: "pendiente" | "confirmada" | "en_curso" | "finalizada";
+  estadoPago: "pendiente" | "confirmada";
   montoTotal: number;
 }
 
@@ -187,18 +268,18 @@ interface TareaLimpieza {
   ambienteCodigo: string;
   tarea: string;
   responsable: string;
-  origen: 'checkout' | 'manual';
-  estado: 'pendiente' | 'realizada';
+  origen: "checkout" | "manual";
+  estado: "pendiente" | "realizada";
 }
 
 interface MovimientoCaja {
   id: string;
-  tipo: 'ingreso' | 'egreso';
+  tipo: "ingreso" | "egreso";
   fecha: string;
   categoria: string;
   detalle: string;
   monto: number;
-  metodo: 'Efectivo' | 'Pago QR (Presencial)' | 'Tarjeta' | 'Transferencia';
+  metodo: "Efectivo" | "Pago QR (Presencial)" | "Tarjeta" | "Transferencia";
   comprobanteUrl?: string;
   estadiaVinculada?: string;
 }
@@ -213,7 +294,7 @@ interface SolicitudReserva {
   fechaEntrada: string;
   fechaSalida: string;
   personas: number;
-  estado: 'pendiente' | 'confirmada' | 'rechazada';
+  estado: "pendiente" | "confirmada" | "rechazada";
   createdAt: string;
 }
 
@@ -221,23 +302,42 @@ interface TareaAtencion {
   id: string;
   ambienteCodigo: string;
   huespedNombre: string;
-  tipo: 'Petición especial' | 'Requerimiento' | 'Queja' | 'Toallas / Amenities' | 'Mantenimiento' | 'Otro';
+  tipo:
+    | "Petición especial"
+    | "Requerimiento"
+    | "Queja"
+    | "Toallas / Amenities"
+    | "Mantenimiento"
+    | "Otro";
   descripcion: string;
-  prioridad: 'Baja' | 'Normal' | 'Alta' | 'Urgente';
+  prioridad: "Baja" | "Normal" | "Alta" | "Urgente";
   responsable: string;
-  estado: 'pendiente' | 'en_proceso' | 'resuelta';
+  estado: "pendiente" | "en_proceso" | "resuelta";
   fecha: string;
 }
 
-export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) {
-  const esAdmin = user.rol === 'administrador';
+export default function AdminDashboard({
+  user,
+  onLogout,
+}: AdminDashboardProps) {
+  const esAdmin = user.rol === "administrador";
 
   const [seccionActiva, setSeccionActiva] = useState<
-    'panel' | 'ambientes' | 'reservas' | 'huespedes' | 'checkin_out' | 'caja' | 'limpieza' | 'usuarios' | 'atencion'
-  >('panel');
+    | "panel"
+    | "ambientes"
+    | "reservas"
+    | "huespedes"
+    | "checkin_out"
+    | "caja"
+    | "limpieza"
+    | "usuarios"
+    | "atencion"
+  >("panel");
 
-  const [tabPanel, setTabPanel] = useState<'modulos' | 'resumen'>('modulos');
-  const [vistaReservas, setVistaReservas] = useState<'calendario' | 'lista' | 'solicitudes'>('calendario');
+  const [tabPanel, setTabPanel] = useState<"modulos" | "resumen">("modulos");
+  const [vistaReservas, setVistaReservas] = useState<
+    "calendario" | "lista" | "solicitudes"
+  >("calendario");
 
   // Notificación flotante
   const [notificacion, setNotificacion] = useState<string | null>(null);
@@ -258,8 +358,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const [guardandoReserva, setGuardandoReserva] = useState(false);
 
   // Filtros y Métricas Rápidas
-  const [filtroAmbienteEstado, setFiltroAmbienteEstado] = useState<string>('todos');
-  const solicitudesPendientes = solicitudes.filter(s => s.estado === 'pendiente').length;
+  const [filtroAmbienteEstado, setFiltroAmbienteEstado] =
+    useState<string>("todos");
+  const solicitudesPendientes = solicitudes.filter(
+    (s) => s.estado === "pendiente",
+  ).length;
 
   // Modales
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -274,12 +377,14 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     fechaSalida: string;
     saldoPendiente: number;
   } | null>(null);
-  const [showCheckOutWarning, setShowCheckOutWarning] = useState<Estadia | null>(null);
-  const [formCheckInDoc, setFormCheckInDoc] = useState('');
+  const [showCheckOutWarning, setShowCheckOutWarning] =
+    useState<Estadia | null>(null);
+  const [formCheckInDoc, setFormCheckInDoc] = useState("");
   const [formCheckInFotocopia, setFormCheckInFotocopia] = useState(true);
-  const [formCheckInObs, setFormCheckInObs] = useState('');
+  const [formCheckInObs, setFormCheckInObs] = useState("");
   const [formCheckOutLlave, setFormCheckOutLlave] = useState(true);
-  const [formCheckOutHabitacionOk, setFormCheckOutHabitacionOk] = useState(true);
+  const [formCheckOutHabitacionOk, setFormCheckOutHabitacionOk] =
+    useState(true);
   const [showNuevaTareaModal, setShowNuevaTareaModal] = useState(false);
   const [showNuevoIngresoModal, setShowNuevoIngresoModal] = useState(false);
   const [showNuevoEgresoModal, setShowNuevoEgresoModal] = useState(false);
@@ -289,112 +394,157 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   // Estados de Atención al Cliente (Tareas y requerimientos)
   const [tareasAtencion, setTareasAtencion] = useState<TareaAtencion[]>([
     {
-      id: 'tat-1',
-      ambienteCodigo: 'HAB-101',
-      huespedNombre: 'Carlos Mendoza',
-      tipo: 'Toallas / Amenities',
-      descripcion: 'Solicita 2 toallas adicionales y jabón extra para la tarde.',
-      prioridad: 'Normal',
-      responsable: 'Recepción',
-      estado: 'pendiente',
-      fecha: new Date().toISOString().split('T')[0]
+      id: "tat-1",
+      ambienteCodigo: "HAB-101",
+      huespedNombre: "Carlos Mendoza",
+      tipo: "Toallas / Amenities",
+      descripcion:
+        "Solicita 2 toallas adicionales y jabón extra para la tarde.",
+      prioridad: "Normal",
+      responsable: "Recepción",
+      estado: "pendiente",
+      fecha: new Date().toISOString().split("T")[0],
     },
     {
-      id: 'tat-2',
-      ambienteCodigo: 'HAB-203',
-      huespedNombre: 'Valeria Quispe',
-      tipo: 'Petición especial',
-      descripcion: 'Pide secadora de cabello y cobija extra por frío.',
-      prioridad: 'Alta',
-      responsable: 'Limpieza',
-      estado: 'en_proceso',
-      fecha: new Date().toISOString().split('T')[0]
-    }
+      id: "tat-2",
+      ambienteCodigo: "HAB-203",
+      huespedNombre: "Valeria Quispe",
+      tipo: "Petición especial",
+      descripcion: "Pide secadora de cabello y cobija extra por frío.",
+      prioridad: "Alta",
+      responsable: "Limpieza",
+      estado: "en_proceso",
+      fecha: new Date().toISOString().split("T")[0],
+    },
   ]);
-  const [showNuevaTareaAtencionModal, setShowNuevaTareaAtencionModal] = useState(false);
-  const [tareaAtencionAEditar, setTareaAtencionAEditar] = useState<TareaAtencion | null>(null);
-  const [filtroAtencionEstado, setFiltroAtencionEstado] = useState<'todos' | 'pendiente' | 'en_proceso' | 'resuelta'>('todos');
+  const [showNuevaTareaAtencionModal, setShowNuevaTareaAtencionModal] =
+    useState(false);
+  const [tareaAtencionAEditar, setTareaAtencionAEditar] =
+    useState<TareaAtencion | null>(null);
+  const [filtroAtencionEstado, setFiltroAtencionEstado] = useState<
+    "todos" | "pendiente" | "en_proceso" | "resuelta"
+  >("todos");
 
   // Form Tarea Atención
-  const [formAtencionAmbiente, setFormAtencionAmbiente] = useState('HAB-101');
-  const [formAtencionHuesped, setFormAtencionHuesped] = useState('');
-  const [formAtencionTipo, setFormAtencionTipo] = useState<'Petición especial' | 'Requerimiento' | 'Queja' | 'Toallas / Amenities' | 'Mantenimiento' | 'Otro'>('Petición especial');
-  const [formAtencionDesc, setFormAtencionDesc] = useState('');
-  const [formAtencionPrioridad, setFormAtencionPrioridad] = useState<'Baja' | 'Normal' | 'Alta' | 'Urgente'>('Normal');
-  const [formAtencionResponsable, setFormAtencionResponsable] = useState('Recepción');
-  const [formAtencionEstado, setFormAtencionEstado] = useState<'pendiente' | 'en_proceso' | 'resuelta'>('pendiente');
+  const [formAtencionAmbiente, setFormAtencionAmbiente] = useState("HAB-101");
+  const [formAtencionHuesped, setFormAtencionHuesped] = useState("");
+  const [formAtencionTipo, setFormAtencionTipo] = useState<
+    | "Petición especial"
+    | "Requerimiento"
+    | "Queja"
+    | "Toallas / Amenities"
+    | "Mantenimiento"
+    | "Otro"
+  >("Petición especial");
+  const [formAtencionDesc, setFormAtencionDesc] = useState("");
+  const [formAtencionPrioridad, setFormAtencionPrioridad] = useState<
+    "Baja" | "Normal" | "Alta" | "Urgente"
+  >("Normal");
+  const [formAtencionResponsable, setFormAtencionResponsable] =
+    useState("Recepción");
+  const [formAtencionEstado, setFormAtencionEstado] = useState<
+    "pendiente" | "en_proceso" | "resuelta"
+  >("pendiente");
 
   // Modales de Ambientes (CRUD)
   const [showNuevoAmbienteModal, setShowNuevoAmbienteModal] = useState(false);
   const [ambienteAEditar, setAmbienteAEditar] = useState<Ambiente | null>(null);
-  const [formAmbCategoria, setFormAmbCategoria] = useState<'Habitacion' | 'Coworking' | 'Otro'>('Habitacion');
-  const [formAmbCodigo, setFormAmbCodigo] = useState('');
-  const [formAmbNombre, setFormAmbNombre] = useState('');
-  const [formAmbTipo, setFormAmbTipo] = useState('Simple');
+  const [formAmbCategoria, setFormAmbCategoria] = useState<
+    "Habitacion" | "Coworking" | "Otro"
+  >("Habitacion");
+  const [formAmbCodigo, setFormAmbCodigo] = useState("");
+  const [formAmbNombre, setFormAmbNombre] = useState("");
+  const [formAmbTipo, setFormAmbTipo] = useState("Simple");
   const [formAmbCapacidad, setFormAmbCapacidad] = useState(2);
   const [formAmbPrecio, setFormAmbPrecio] = useState(280);
-  const [formAmbEstado, setFormAmbEstado] = useState<'disponible' | 'ocupada' | 'limpieza'>('disponible');
+  const [formAmbEstado, setFormAmbEstado] = useState<
+    "disponible" | "ocupada" | "limpieza"
+  >("disponible");
 
   // Modales de Huéspedes (CRUD)
   const [showNuevoHuespedModal, setShowNuevoHuespedModal] = useState(false);
   const [huespedAEditar, setHuespedAEditar] = useState<Huesped | null>(null);
-  const [huespedHistorial, setHuespedHistorial] = useState<Huesped | null>(null);
-  const [formHuespedNombre, setFormHuespedNombre] = useState('');
-  const [formHuespedEmail, setFormHuespedEmail] = useState('');
-  const [formHuespedDoc, setFormHuespedDoc] = useState('');
-  const [formHuespedContacto, setFormHuespedContacto] = useState('');
+  const [huespedHistorial, setHuespedHistorial] = useState<Huesped | null>(
+    null,
+  );
+  const [formHuespedNombre, setFormHuespedNombre] = useState("");
+  const [formHuespedEmail, setFormHuespedEmail] = useState("");
+  const [formHuespedDoc, setFormHuespedDoc] = useState("");
+  const [formHuespedContacto, setFormHuespedContacto] = useState("");
   const [formHuespedFotocopia, setFormHuespedFotocopia] = useState(false);
 
   // Modal Editar Personal / Usuario (CRUD)
-  const [usuarioAEditar, setUsuarioAEditar] = useState<PersonalUsuario | null>(null);
-  const [formUserNombre, setFormUserNombre] = useState('');
-  const [formUserRol, setFormUserRol] = useState<'administrador' | 'recepcionista' | 'limpieza'>('recepcionista');
+  const [usuarioAEditar, setUsuarioAEditar] = useState<PersonalUsuario | null>(
+    null,
+  );
+  const [formUserNombre, setFormUserNombre] = useState("");
+  const [formUserRol, setFormUserRol] = useState<
+    "administrador" | "recepcionista" | "limpieza"
+  >("recepcionista");
   const [formUserActivo, setFormUserActivo] = useState(true);
 
   // Modal Editar Reserva (CRUD)
   const [reservaAEditar, setReservaAEditar] = useState<Reserva | null>(null);
-  const [formResHuesped, setFormResHuesped] = useState('');
-  const [formResDoc, setFormResDoc] = useState('');
-  const [formResTel, setFormResTel] = useState('');
-  const [formResAmbiente, setFormResAmbiente] = useState('');
-  const [formResEntrada, setFormResEntrada] = useState('');
-  const [formResSalida, setFormResSalida] = useState('');
-  const [formResPago, setFormResPago] = useState<'pendiente' | 'confirmada'>('pendiente');
+  const [formResHuesped, setFormResHuesped] = useState("");
+  const [formResDoc, setFormResDoc] = useState("");
+  const [formResTel, setFormResTel] = useState("");
+  const [formResAmbiente, setFormResAmbiente] = useState("");
+  const [formResEntrada, setFormResEntrada] = useState("");
+  const [formResSalida, setFormResSalida] = useState("");
+  const [formResPago, setFormResPago] = useState<"pendiente" | "confirmada">(
+    "pendiente",
+  );
   const [formResTotal, setFormResTotal] = useState(300);
 
   // Form Ingreso (Fiel a la Imagen 2)
-  const [nuevoMovFecha, setNuevoMovFecha] = useState(new Date().toISOString().split('T')[0]);
-  const [nuevoMovCategoria, setNuevoMovCategoria] = useState('Hospedaje');
-  const [nuevoMovReservaVinculada, setNuevoMovReservaVinculada] = useState('');
-  const [nuevoMovDetalle, setNuevoMovDetalle] = useState('');
-  const [nuevoMovMonto, setNuevoMovMonto] = useState('');
-  const [nuevoMovMetodo, setNuevoMovMetodo] = useState<'Efectivo' | 'Pago QR (Presencial)' | 'Tarjeta' | 'Transferencia'>('Pago QR (Presencial)');
-  const [nuevoMovComprobante, setNuevoMovComprobante] = useState('');
+  const [nuevoMovFecha, setNuevoMovFecha] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+  const [nuevoMovCategoria, setNuevoMovCategoria] = useState("Hospedaje");
+  const [nuevoMovReservaVinculada, setNuevoMovReservaVinculada] = useState("");
+  const [nuevoMovDetalle, setNuevoMovDetalle] = useState("");
+  const [nuevoMovMonto, setNuevoMovMonto] = useState("");
+  const [nuevoMovMetodo, setNuevoMovMetodo] = useState<
+    "Efectivo" | "Pago QR (Presencial)" | "Tarjeta" | "Transferencia"
+  >("Pago QR (Presencial)");
+  const [nuevoMovComprobante, setNuevoMovComprobante] = useState("");
 
   // Form Reserva
-  const [reservaAmbiente, setReservaAmbiente] = useState('Habitación 101');
-  const [reservaAmbienteId, setReservaAmbienteId] = useState('');
-  const [reservaHuesped, setReservaHuesped] = useState('');
-  const [reservaDoc, setReservaDoc] = useState('');
-  const [reservaTel, setReservaTel] = useState('');
-  const [reservaEntrada, setReservaEntrada] = useState(new Date().toISOString().split('T')[0]);
-  const [reservaSalida, setReservaSalida] = useState(new Date(Date.now() + 86400000).toISOString().split('T')[0]);
-  const [reservaEstadoPago, setReservaEstadoPago] = useState<'pendiente' | 'confirmada'>('pendiente');
+  const [reservaAmbiente, setReservaAmbiente] = useState("Habitación 101");
+  const [reservaAmbienteId, setReservaAmbienteId] = useState("");
+  const [reservaHuesped, setReservaHuesped] = useState("");
+  const [reservaDoc, setReservaDoc] = useState("");
+  const [reservaTel, setReservaTel] = useState("");
+  const [reservaEntrada, setReservaEntrada] = useState(
+    new Date().toISOString().split("T")[0],
+  );
+  const [reservaSalida, setReservaSalida] = useState(
+    new Date(Date.now() + 86400000).toISOString().split("T")[0],
+  );
+  const [reservaEstadoPago, setReservaEstadoPago] = useState<
+    "pendiente" | "confirmada"
+  >("pendiente");
 
   // Form Personal
-  const [nuevoUserNombre, setNuevoUserNombre] = useState('');
-  const [nuevoUserEmail, setNuevoUserEmail] = useState('');
-  const [nuevoUserPass, setNuevoUserPass] = useState('');
-  const [nuevoUserRol, setNuevoUserRol] = useState<'administrador' | 'recepcionista' | 'limpieza'>('recepcionista');
+  const [nuevoUserNombre, setNuevoUserNombre] = useState("");
+  const [nuevoUserEmail, setNuevoUserEmail] = useState("");
+  const [nuevoUserPass, setNuevoUserPass] = useState("");
+  const [nuevoUserRol, setNuevoUserRol] = useState<
+    "administrador" | "recepcionista" | "limpieza"
+  >("recepcionista");
 
   // Form Limpieza
-  const [nuevaTareaAmbiente, setNuevaTareaAmbiente] = useState('HAB-101');
-  const [nuevaTareaDesc, setNuevaTareaDesc] = useState('');
-  const [nuevaTareaResponsable, setNuevaTareaResponsable] = useState('Grimanez Cordero');
+  const [nuevaTareaAmbiente, setNuevaTareaAmbiente] = useState("HAB-101");
+  const [nuevaTareaDesc, setNuevaTareaDesc] = useState("");
+  const [nuevaTareaResponsable, setNuevaTareaResponsable] =
+    useState("Grimanez Cordero");
 
   // Calendario tipo Excel (Imagen 3)
   const [offsetDias, setOffsetDias] = useState(0);
-  const [celdaInicio, setCeldaInicio] = useState<{ room: string; fecha: string } | null>(null);
+  const [celdaInicio, setCeldaInicio] = useState<{
+    room: string;
+    fecha: string;
+  } | null>(null);
 
   // Generador de ventana de 14 días
   const hoyBase = new Date();
@@ -403,18 +553,21 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const diasVentana = Array.from({ length: 14 }).map((_, i) => {
     const d = new Date(hoyBase);
     d.setDate(d.getDate() + i);
-    const diasLetra = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-    const fechaISO = d.toISOString().split('T')[0];
+    const diasLetra = ["D", "L", "M", "M", "J", "V", "S"];
+    const fechaISO = d.toISOString().split("T")[0];
     return {
-      num: String(d.getDate()).padStart(2, '0'),
+      num: String(d.getDate()).padStart(2, "0"),
       dia: diasLetra[d.getDay()],
       fecha: fechaISO,
-      mesNombre: d.toLocaleDateString('es-ES', { month: 'short' }),
-      esHoy: fechaISO === new Date().toISOString().split('T')[0]
+      mesNombre: d.toLocaleDateString("es-ES", { month: "short" }),
+      esHoy: fechaISO === new Date().toISOString().split("T")[0],
     };
   });
 
-  const mesVisible = diasVentana[0].mesNombre.toUpperCase() + ' ' + diasVentana[0].fecha.split('-')[0];
+  const mesVisible =
+    diasVentana[0].mesNombre.toUpperCase() +
+    " " +
+    diasVentana[0].fecha.split("-")[0];
 
   // -------------------------------------------------------------
   // CARGA COMPLETA EN TIEMPO REAL DESDE SUPABASE
@@ -423,211 +576,254 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     try {
       // 1. Ambientes
       const { data: ambData } = await supabase
-        .from('ambientes')
-        .select('*')
-        .order('codigo', { ascending: true });
+        .from("ambientes")
+        .select("*")
+        .order("codigo", { ascending: true });
 
       if (ambData && ambData.length > 0) {
-        setAmbientes(ambData.map(a => ({
-          id: String(a.id),
-          codigo: a.codigo || a.numero || `HAB-${a.id}`,
-          nombre: a.nombre || `${a.codigo || a.numero} ${a.tipo || ''}`,
-          tipo: a.tipo || 'Simple',
-          capacidad: Number(a.capacidad) || 2,
-          tarifa_base: Number(a.tarifa_base || a.precio) || 300,
-          estado: (a.estado === 'en_limpieza' ? 'limpieza' : a.estado) || 'disponible',
-          huespedActual: a.huesped_actual || a.huespedActual,
-          codigoEstadia: a.codigo_estadia || a.codigoEstadia
-        })));
+        setAmbientes(
+          ambData.map((a) => ({
+            id: String(a.id),
+            codigo: a.codigo || a.numero || `HAB-${a.id}`,
+            nombre: a.nombre || `${a.codigo || a.numero} ${a.tipo || ""}`,
+            tipo: a.tipo || "Simple",
+            capacidad: Number(a.capacidad) || 2,
+            tarifa_base: Number(a.tarifa_base || a.precio) || 300,
+            estado:
+              (a.estado === "en_limpieza" ? "limpieza" : a.estado) ||
+              "disponible",
+            huespedActual: a.huesped_actual || a.huespedActual,
+            codigoEstadia: a.codigo_estadia || a.codigoEstadia,
+          })),
+        );
       }
 
       // 2. Huéspedes
-      const { data: hData } = await supabase
-        .from('huespedes')
-        .select('*');
+      const { data: hData } = await supabase.from("huespedes").select("*");
 
       if (hData && hData.length > 0) {
-        setHuespedes(hData.map(h => ({
-          id: String(h.id),
-          codigo: h.codigo || `HU-${String(h.id).padStart(4, '0')}`,
-          nombre: h.nombre || h.nombres || h.nombre_completo || '',
-          email: h.email || '',
-          documento: h.documento || h.documento_identidad || '',
-          contacto: h.contacto || h.telefono || '',
-          estadiasTotal: Number(h.estadias_total) || 1,
-          montoAcumulado: Number(h.monto_acumulado) || 0,
-          codigoEstadiaActiva: h.codigo_estadia_activa,
-          fotocopiaRecibida: Boolean(h.fotocopia_recibida),
-          fotocopiaUrl: h.fotocopia_url
-        })));
+        setHuespedes(
+          hData.map((h) => ({
+            id: String(h.id),
+            codigo: h.codigo || `HU-${String(h.id).padStart(4, "0")}`,
+            nombre: h.nombre || h.nombres || h.nombre_completo || "",
+            email: h.email || "",
+            documento: h.documento || h.documento_identidad || "",
+            contacto: h.contacto || h.telefono || "",
+            estadiasTotal: Number(h.estadias_total) || 1,
+            montoAcumulado: Number(h.monto_acumulado) || 0,
+            codigoEstadiaActiva: h.codigo_estadia_activa,
+            fotocopiaRecibida: Boolean(h.fotocopia_recibida),
+            fotocopiaUrl: h.fotocopia_url,
+          })),
+        );
       } else {
         setHuespedes([
           {
-            id: 'h-1',
-            codigo: 'HU-0001',
-            nombre: 'Juana Franco',
-            email: 'juana.franco@gmail.com',
-            documento: '5849201 TJ',
-            contacto: '+591 71829304',
+            id: "h-1",
+            codigo: "HU-0001",
+            nombre: "Juana Franco",
+            email: "juana.franco@gmail.com",
+            documento: "5849201 TJ",
+            contacto: "+591 71829304",
             estadiasTotal: 3,
             montoAcumulado: 960,
-            codigoEstadiaActiva: 'AS-101',
-            fotocopiaRecibida: true
+            codigoEstadiaActiva: "AS-101",
+            fotocopiaRecibida: true,
           },
           {
-            id: 'h-2',
-            codigo: 'HU-0002',
-            nombre: 'Carlos Mendoza',
-            email: 'carlos.mendoza@hotmail.com',
-            documento: '4928172 SC',
-            contacto: '+591 63920014',
+            id: "h-2",
+            codigo: "HU-0002",
+            nombre: "Carlos Mendoza",
+            email: "carlos.mendoza@hotmail.com",
+            documento: "4928172 SC",
+            contacto: "+591 63920014",
             estadiasTotal: 2,
             montoAcumulado: 640,
-            codigoEstadiaActiva: 'AS-102',
-            fotocopiaRecibida: true
+            codigoEstadiaActiva: "AS-102",
+            fotocopiaRecibida: true,
           },
           {
-            id: 'h-3',
-            codigo: 'HU-0003',
-            nombre: 'Valeria Quispe',
-            email: 'valeria.quispe@gmail.com',
-            documento: '6820194 LP',
-            contacto: '+591 75928100',
+            id: "h-3",
+            codigo: "HU-0003",
+            nombre: "Valeria Quispe",
+            email: "valeria.quispe@gmail.com",
+            documento: "6820194 LP",
+            contacto: "+591 75928100",
             estadiasTotal: 1,
             montoAcumulado: 320,
-            fotocopiaRecibida: false
+            fotocopiaRecibida: false,
           },
           {
-            id: 'h-4',
-            codigo: 'HU-0004',
-            nombre: 'Roberto Flores',
-            email: 'roberto.flores@yahoo.com',
-            documento: '3920182 CB',
-            contacto: '+591 70294819',
+            id: "h-4",
+            codigo: "HU-0004",
+            nombre: "Roberto Flores",
+            email: "roberto.flores@yahoo.com",
+            documento: "3920182 CB",
+            contacto: "+591 70294819",
             estadiasTotal: 4,
             montoAcumulado: 1280,
-            fotocopiaRecibida: true
-          }
+            fotocopiaRecibida: true,
+          },
         ]);
       }
 
       // 3. Reservas
-      const { data: resData } = await supabase
-        .from('reservas')
-        .select('*');
+      const { data: resData } = await supabase.from("reservas").select("*");
 
       if (resData) {
-        setReservas(resData.map(r => {
-          const ambRel = ambData?.find((a: any) => a.id === r.ambiente_id || a.codigo === r.ambiente_codigo);
-          const huespRel = hData?.find((h: any) => h.id === r.huesped_id);
+        setReservas(
+          resData.map((r) => {
+            const ambRel = ambData?.find(
+              (a: any) =>
+                a.id === r.ambiente_id || a.codigo === r.ambiente_codigo,
+            );
+            const huespRel = hData?.find((h: any) => h.id === r.huesped_id);
 
-          return {
-            id: String(r.id),
-            codigo: r.codigo || `RES-${String(r.id).slice(0, 5)}`,
-            ambienteId: r.ambiente_id || ambRel?.id,
-            ambienteCodigo: r.ambiente_codigo || ambRel?.nombre || ambRel?.codigo || '',
-            huespedId: r.huesped_id || huespRel?.id,
-            huespedNombre: r.huesped_nombre || huespRel?.nombre || huespRel?.nombres || 'Huésped',
-            documento: r.documento || huespRel?.documento || '',
-            contacto: r.contacto || huespRel?.contacto || huespRel?.telefono || '',
-            fechaEntrada: r.fecha_entrada || '',
-            fechaSalida: r.fecha_salida || '',
-            estado: r.estado || 'pendiente',
-            estadoPago: r.estado_pago || (r.estado === 'confirmada' ? 'confirmada' : 'pendiente'),
-            montoTotal: Number(r.total || r.monto_total) || 300
-          };
-        }));
+            return {
+              id: String(r.id),
+              codigo: r.codigo || `RES-${String(r.id).slice(0, 5)}`,
+              ambienteId: r.ambiente_id || ambRel?.id,
+              ambienteCodigo:
+                r.ambiente_codigo || ambRel?.nombre || ambRel?.codigo || "",
+              huespedId: r.huesped_id || huespRel?.id,
+              huespedNombre:
+                r.huesped_nombre ||
+                huespRel?.nombre ||
+                huespRel?.nombres ||
+                "Huésped",
+              documento: r.documento || huespRel?.documento || "",
+              contacto:
+                r.contacto || huespRel?.contacto || huespRel?.telefono || "",
+              fechaEntrada: r.fecha_entrada || "",
+              fechaSalida: r.fecha_salida || "",
+              estado: r.estado || "pendiente",
+              estadoPago:
+                r.estado_pago ||
+                (r.estado === "confirmada" ? "confirmada" : "pendiente"),
+              montoTotal: Number(r.total || r.monto_total) || 300,
+            };
+          }),
+        );
       }
 
       // 4. Estadías
-      const { data: estData } = await supabase
-        .from('estadias')
-        .select('*');
+      const { data: estData } = await supabase.from("estadias").select("*");
 
       if (estData) {
-        setEstadias(estData.map(e => ({
-          id: String(e.id),
-          codigoEstadia: e.codigo_estadia || e.codigoEstadia || `AS-${e.id}`,
-          huespedNombre: e.huesped_nombre || e.huespedNombre || '',
-          documento: e.documento || '',
-          contacto: e.contacto || '',
-          ambienteCodigo: e.ambiente_codigo || e.ambienteCodigo || '',
-          fechaEntrada: e.fecha_entrada || e.fecha_checkin || '',
-          fechaSalida: e.fecha_salida || e.fecha_checkout || '',
-          personas: Number(e.personas) || 1,
-          saldoPendiente: Number(e.saldo_pendiente) || 0,
-          estado: e.estado || 'en_curso',
-          fotocopiaRecibida: Boolean(e.fotocopia_recibida),
-          fotocopiaUrl: e.fotocopia_url,
-          motivoFueraHorario: e.motivo_fuera_horario
-        })));
+        setEstadias(
+          estData.map((e) => ({
+            id: String(e.id),
+            codigoEstadia: e.codigo_estadia || e.codigoEstadia || `AS-${e.id}`,
+            huespedNombre: e.huesped_nombre || e.huespedNombre || "",
+            documento: e.documento || "",
+            contacto: e.contacto || "",
+            ambienteCodigo: e.ambiente_codigo || e.ambienteCodigo || "",
+            fechaEntrada: e.fecha_entrada || e.fecha_checkin || "",
+            fechaSalida: e.fecha_salida || e.fecha_checkout || "",
+            personas: Number(e.personas) || 1,
+            saldoPendiente: Number(e.saldo_pendiente) || 0,
+            estado: e.estado || "en_curso",
+            fotocopiaRecibida: Boolean(e.fotocopia_recibida),
+            fotocopiaUrl: e.fotocopia_url,
+            motivoFueraHorario: e.motivo_fuera_horario,
+          })),
+        );
       }
 
       // 5. Tareas Limpieza
       const { data: limpData } = await supabase
-        .from('tareas_limpieza')
-        .select('*')
-        .order('id', { ascending: false });
+        .from("tareas_limpieza")
+        .select("*")
+        .order("id", { ascending: false });
 
       if (limpData) {
-        setTareasLimpieza(limpData.map(t => ({
-          id: String(t.id),
-          ambienteCodigo: t.ambiente_codigo || t.ambienteCodigo || '',
-          tarea: t.tarea || t.descripcion || '',
-          responsable: t.responsable || 'Grimanez Cordero',
-          origen: t.origen || 'manual',
-          estado: t.estado === 'completada' ? 'realizada' : (t.estado || 'pendiente')
-        })));
+        setTareasLimpieza(
+          limpData.map((t) => ({
+            id: String(t.id),
+            ambienteCodigo: t.ambiente_codigo || t.ambienteCodigo || "",
+            tarea: t.tarea || t.descripcion || "",
+            responsable: t.responsable || "Grimanez Cordero",
+            origen: t.origen || "manual",
+            estado:
+              t.estado === "completada" ? "realizada" : t.estado || "pendiente",
+          })),
+        );
       }
 
       // 6. Movimientos Caja
       const { data: movData } = await supabase
-        .from('movimientos_caja')
-        .select('*')
-        .order('fecha', { ascending: false });
+        .from("movimientos_caja")
+        .select("*")
+        .order("fecha", { ascending: false });
 
       if (movData) {
-        setCajaMovimientos(movData.map(m => ({
-          id: String(m.id),
-          tipo: m.tipo || 'ingreso',
-          fecha: m.fecha ? m.fecha.split('T')[0] : new Date().toISOString().split('T')[0],
-          categoria: m.categoria || 'Hospedaje',
-          detalle: m.detalle || m.concepto || '',
-          monto: Number(m.monto) || 0,
-          metodo: m.metodo || 'Pago QR (Presencial)',
-          comprobanteUrl: m.comprobante_url,
-          estadiaVinculada: m.estadia_vinculada
-        })));
+        setCajaMovimientos(
+          movData.map((m) => ({
+            id: String(m.id),
+            tipo: m.tipo || "ingreso",
+            fecha: m.fecha
+              ? m.fecha.split("T")[0]
+              : new Date().toISOString().split("T")[0],
+            categoria: m.categoria || "Hospedaje",
+            detalle: m.detalle || m.concepto || "",
+            monto: Number(m.monto) || 0,
+            metodo: m.metodo || "Pago QR (Presencial)",
+            comprobanteUrl: m.comprobante_url,
+            estadiaVinculada: m.estadia_vinculada,
+          })),
+        );
       }
 
       // 7. Personal (Perfiles)
-      const { data: perfData } = await supabase
-        .from('perfiles')
-        .select('*');
+      const { data: perfData } = await supabase.from("perfiles").select("*");
 
       if (perfData && perfData.length > 0) {
-        setPersonal(perfData.map(p => ({
-          id: String(p.id),
-          nombre: p.nombre || p.nombre_completo || '',
-          email: p.email || '',
-          rol: p.rol || 'recepcionista',
-          activo: p.activo !== false,
-          ultimoAcceso: p.ultimo_acceso || 'Hoy'
-        })));
+        setPersonal(
+          perfData.map((p) => ({
+            id: String(p.id),
+            nombre: p.nombre || p.nombre_completo || "",
+            email: p.email || "",
+            rol: p.rol || "recepcionista",
+            activo: p.activo !== false,
+            ultimoAcceso: p.ultimo_acceso || "Hoy",
+          })),
+        );
       } else {
         setPersonal([
-          { id: 'u1', nombre: 'Tamara Franco Betancur', email: 'tamfranco63@gmail.com', rol: 'administrador', activo: true, ultimoAcceso: 'Hoy 22:30' },
-          { id: 'u2', nombre: 'Leonel Armin Mayta Tarqui', email: 'leonel17mayta@gmail.com', rol: 'recepcionista', activo: true, ultimoAcceso: 'Hoy 18:30' },
-          { id: 'u3', nombre: 'Grimanez Cordero Villasante', email: 'grimsvillasante@gmail.com', rol: 'limpieza', activo: true, ultimoAcceso: 'Hoy 15:45' }
+          {
+            id: "u1",
+            nombre: "Tamara Franco Betancur",
+            email: "tamfranco63@gmail.com",
+            rol: "administrador",
+            activo: true,
+            ultimoAcceso: "Hoy 22:30",
+          },
+          {
+            id: "u2",
+            nombre: "Leonel Armin Mayta Tarqui",
+            email: "leonel17mayta@gmail.com",
+            rol: "recepcionista",
+            activo: true,
+            ultimoAcceso: "Hoy 18:30",
+          },
+          {
+            id: "u3",
+            nombre: "Grimanez Cordero Villasante",
+            email: "grimsvillasante@gmail.com",
+            rol: "limpieza",
+            activo: true,
+            ultimoAcceso: "Hoy 15:45",
+          },
         ]);
       }
       // 8. Solicitudes de Reserva Web
       const { data: solData, error: solErr } = await supabase
-        .from('solicitudes_reserva')
-        .select('*');
+        .from("solicitudes_reserva")
+        .select("*");
 
       if (solErr) {
-        console.warn('Error cargando solicitudes_reserva:', solErr);
+        console.warn("Error cargando solicitudes_reserva:", solErr);
       }
 
       if (solData) {
@@ -637,45 +833,50 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           return tB - tA;
         });
 
-        setSolicitudes(ordenadas.map((s: any) => ({
-          id: String(s.id),
-          clienteId: s.cliente_id,
-          nombre: s.nombre || 'Cliente Web',
-          telefono: s.telefono || 'Sin teléfono',
-          email: s.email || '',
-          ambienteCodigo: s.ambiente_codigo || '',
-          fechaEntrada: s.fecha_entrada || '',
-          fechaSalida: s.fecha_salida || '',
-          personas: Number(s.personas) || 1,
-          estado: s.estado || 'pendiente',
-          createdAt: s.created_at || s.creado_en || ''
-        })));
+        setSolicitudes(
+          ordenadas.map((s: any) => ({
+            id: String(s.id),
+            clienteId: s.cliente_id,
+            nombre: s.nombre || "Cliente Web",
+            telefono: s.telefono || "Sin teléfono",
+            email: s.email || "",
+            ambienteCodigo: s.ambiente_codigo || "",
+            fechaEntrada: s.fecha_entrada || "",
+            fechaSalida: s.fecha_salida || "",
+            personas: Number(s.personas) || 1,
+            estado: s.estado || "pendiente",
+            createdAt: s.created_at || s.creado_en || "",
+          })),
+        );
       }
 
       // 9. Tareas Atención al Cliente
       try {
         const { data: atData } = await supabase
-          .from('tareas_atencion')
-          .select('*');
+          .from("tareas_atencion")
+          .select("*");
 
         if (atData && atData.length > 0) {
-          setTareasAtencion(atData.map((a: any) => ({
-            id: String(a.id),
-            ambienteCodigo: a.ambiente_codigo || a.ambienteCodigo || 'HAB-101',
-            huespedNombre: a.huesped_nombre || a.huespedNombre || 'Huésped',
-            tipo: a.tipo || 'Petición especial',
-            descripcion: a.descripcion || a.detalle || '',
-            prioridad: a.prioridad || 'Normal',
-            responsable: a.responsable || 'Recepción',
-            estado: a.estado || 'pendiente',
-            fecha: a.fecha || new Date().toISOString().split('T')[0]
-          })));
+          setTareasAtencion(
+            atData.map((a: any) => ({
+              id: String(a.id),
+              ambienteCodigo:
+                a.ambiente_codigo || a.ambienteCodigo || "HAB-101",
+              huespedNombre: a.huesped_nombre || a.huespedNombre || "Huésped",
+              tipo: a.tipo || "Petición especial",
+              descripcion: a.descripcion || a.detalle || "",
+              prioridad: a.prioridad || "Normal",
+              responsable: a.responsable || "Recepción",
+              estado: a.estado || "pendiente",
+              fecha: a.fecha || new Date().toISOString().split("T")[0],
+            })),
+          );
         }
       } catch {
         // Fallback al estado local si no existe la tabla
       }
     } catch (err) {
-      console.error('Error cargando datos de Supabase:', err);
+      console.error("Error cargando datos de Supabase:", err);
     }
   };
 
@@ -684,26 +885,52 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     cargarDatos();
 
     const canal = supabase
-      .channel('hotel-asiri-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'reservas' }, () => {
-        cargarDatos();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'ambientes' }, () => {
-        cargarDatos();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'huespedes' }, () => {
-        cargarDatos();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos_caja' }, () => {
-        cargarDatos();
-      })
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'solicitudes_reserva' }, (payload: any) => {
-        mostrarNotificacion(`🔔 ¡Nueva solicitud de reserva de ${payload.new?.nombre || 'un cliente'}!`);
-        cargarDatos();
-      })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes_reserva' }, () => {
-        cargarDatos();
-      })
+      .channel("hotel-asiri-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "reservas" },
+        () => {
+          cargarDatos();
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "ambientes" },
+        () => {
+          cargarDatos();
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "huespedes" },
+        () => {
+          cargarDatos();
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "movimientos_caja" },
+        () => {
+          cargarDatos();
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "solicitudes_reserva" },
+        (payload: any) => {
+          mostrarNotificacion(
+            ` ¡Nueva solicitud de reserva de ${payload.new?.nombre || "un cliente"}!`,
+          );
+          cargarDatos();
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "solicitudes_reserva" },
+        () => {
+          cargarDatos();
+        },
+      )
       .subscribe();
 
     return () => {
@@ -712,82 +939,108 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   }, []);
 
   // Función de auto-limpieza al cambiar fechas
-  const verificarYLimpiarPorFecha = (nuevaEntrada: string, nuevaSalida: string) => {
+  const verificarYLimpiarPorFecha = (
+    nuevaEntrada: string,
+    nuevaSalida: string,
+  ) => {
     setReservaEntrada(nuevaEntrada);
     setReservaSalida(nuevaSalida);
 
-    const amb = ambientes.find(a => 
-      (reservaAmbienteId && a.id === reservaAmbienteId) ||
-      a.nombre === reservaAmbiente || 
-      a.codigo === reservaAmbiente || 
-      reservaAmbiente.includes(a.codigo)
+    const amb = ambientes.find(
+      (a) =>
+        (reservaAmbienteId && a.id === reservaAmbienteId) ||
+        a.nombre === reservaAmbiente ||
+        a.codigo === reservaAmbiente ||
+        reservaAmbiente.includes(a.codigo),
     );
 
-    const existente = reservas.find(r => 
-      (r.ambienteId === amb?.id || r.ambienteCodigo === amb?.codigo || r.ambienteCodigo === amb?.nombre || r.ambienteCodigo === reservaAmbiente) &&
-      r.fechaEntrada === nuevaEntrada && r.fechaSalida === nuevaSalida
+    const existente = reservas.find(
+      (r) =>
+        (r.ambienteId === amb?.id ||
+          r.ambienteCodigo === amb?.codigo ||
+          r.ambienteCodigo === amb?.nombre ||
+          r.ambienteCodigo === reservaAmbiente) &&
+        r.fechaEntrada === nuevaEntrada &&
+        r.fechaSalida === nuevaSalida,
     );
 
     if (existente) {
       setReservaHuesped(existente.huespedNombre);
-      setReservaDoc(existente.documento || '');
-      setReservaTel(existente.contacto || '');
-      setReservaEstadoPago(existente.estadoPago as any || 'pendiente');
+      setReservaDoc(existente.documento || "");
+      setReservaTel(existente.contacto || "");
+      setReservaEstadoPago((existente.estadoPago as any) || "pendiente");
     } else {
       // Limpia automáticamente los campos para llenar fácilmente la nueva reserva
-      setReservaHuesped('');
-      setReservaDoc('');
-      setReservaTel('');
+      setReservaHuesped("");
+      setReservaDoc("");
+      setReservaTel("");
     }
   };
 
   // Totales
-  const conteoLibres = ambientes.filter(a => a.estado === 'disponible').length;
-  const conteoOcupadas = ambientes.filter(a => a.estado === 'ocupada').length;
-  const conteoPendientes = ambientes.filter(a => a.estado === 'pendiente').length;
-  const conteoPagadas = ambientes.filter(a => a.estado === 'pagada').length;
-  const conteoLimpieza = ambientes.filter(a => a.estado === 'limpieza').length;
+  const conteoLibres = ambientes.filter(
+    (a) => a.estado === "disponible",
+  ).length;
+  const conteoOcupadas = ambientes.filter((a) => a.estado === "ocupada").length;
+  const conteoPendientes = ambientes.filter(
+    (a) => a.estado === "pendiente",
+  ).length;
+  const conteoPagadas = ambientes.filter((a) => a.estado === "pagada").length;
+  const conteoLimpieza = ambientes.filter(
+    (a) => a.estado === "limpieza",
+  ).length;
 
-  const totalIngresos = cajaMovimientos.filter(m => m.tipo === 'ingreso').reduce((acc, m) => acc + m.monto, 0);
-  const totalEgresos = cajaMovimientos.filter(m => m.tipo === 'egreso').reduce((acc, m) => acc + m.monto, 0);
+  const totalIngresos = cajaMovimientos
+    .filter((m) => m.tipo === "ingreso")
+    .reduce((acc, m) => acc + m.monto, 0);
+  const totalEgresos = cajaMovimientos
+    .filter((m) => m.tipo === "egreso")
+    .reduce((acc, m) => acc + m.monto, 0);
   const saldoCaja = totalIngresos - totalEgresos;
 
-  const ambientesFiltrados = ambientes.filter(a => {
-    return filtroAmbienteEstado === 'todos' || a.estado === filtroAmbienteEstado;
+  const ambientesFiltrados = ambientes.filter((a) => {
+    return (
+      filtroAmbienteEstado === "todos" || a.estado === filtroAmbienteEstado
+    );
   });
 
-   const handleGuardarReserva = async () => {
+  const handleGuardarReserva = async () => {
     // Evitar clics múltiples mientras está procesando
     if (guardandoReserva) return;
 
     if (!reservaHuesped || (!reservaAmbiente && !reservaAmbienteId)) {
-      mostrarNotificacion('Completa el nombre del huésped y el ambiente.');
+      mostrarNotificacion("Completa el nombre del huésped y el ambiente.");
       return;
     }
 
     if (reservaEntrada > reservaSalida) {
-      mostrarNotificacion('La fecha de entrada no puede ser mayor a la fecha de salida.');
+      mostrarNotificacion(
+        "La fecha de entrada no puede ser mayor a la fecha de salida.",
+      );
       return;
     }
 
     // 1. Encontrar el ambiente
-    const amb = ambientes.find(a => 
-      (reservaAmbienteId && a.id === reservaAmbienteId) ||
-      a.codigo === reservaAmbiente || 
-      a.nombre === reservaAmbiente || 
-      (a.nombre && reservaAmbiente.includes(a.nombre)) ||
-      (a.codigo && reservaAmbiente.includes(a.codigo))
-    ) || ambientes[0];
+    const amb =
+      ambientes.find(
+        (a) =>
+          (reservaAmbienteId && a.id === reservaAmbienteId) ||
+          a.codigo === reservaAmbiente ||
+          a.nombre === reservaAmbiente ||
+          (a.nombre && reservaAmbiente.includes(a.nombre)) ||
+          (a.codigo && reservaAmbiente.includes(a.codigo)),
+      ) || ambientes[0];
 
     const ambId = amb?.id;
     const ambCod = amb?.nombre || amb?.codigo || reservaAmbiente;
 
     // 2. VALIDACIÓN DE SOBRE-REGISTRO: ¿Ya está ocupada en ese rango?
-    const existeSolapamiento = reservas.find(r => {
-      const mismoAmbiente = r.ambienteId === ambId || 
-                            r.ambienteCodigo === amb?.codigo || 
-                            r.ambienteCodigo === amb?.nombre || 
-                            r.ambienteCodigo === reservaAmbiente;
+    const existeSolapamiento = reservas.find((r) => {
+      const mismoAmbiente =
+        r.ambienteId === ambId ||
+        r.ambienteCodigo === amb?.codigo ||
+        r.ambienteCodigo === amb?.nombre ||
+        r.ambienteCodigo === reservaAmbiente;
       if (!mismoAmbiente) return false;
 
       // Se solapa si: EntradaNueva <= SalidaExistente Y SalidaNueva >= EntradaExistente
@@ -795,7 +1048,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     });
 
     if (existeSolapamiento) {
-      mostrarNotificacion(`⚠️ Ya existe una reserva para ${existeSolapamiento.huespedNombre} (${existeSolapamiento.fechaEntrada} al ${existeSolapamiento.fechaSalida}). No se puede sobre-registrar.`);
+      mostrarNotificacion(
+        `⚠️ Ya existe una reserva para ${existeSolapamiento.huespedNombre} (${existeSolapamiento.fechaEntrada} al ${existeSolapamiento.fechaSalida}). No se puede sobre-registrar.`,
+      );
       return;
     }
 
@@ -803,16 +1058,16 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
     setGuardandoReserva(true);
 
     try {
-      const hoyStr = new Date().toISOString().split('T')[0];
+      const hoyStr = new Date().toISOString().split("T")[0];
       const esFechaActual = reservaEntrada <= hoyStr && reservaSalida >= hoyStr;
-      const estadoCalculado = esFechaActual ? 'en_curso' : reservaEstadoPago;
+      const estadoCalculado = esFechaActual ? "en_curso" : reservaEstadoPago;
 
       // 3. Obtener o crear el huésped en Supabase
       let huespedId: string | null = null;
       try {
         const { data: hExist } = await supabase
-          .from('huespedes')
-          .select('id')
+          .from("huespedes")
+          .select("id")
           .or(`nombre.eq.${reservaHuesped},nombres.eq.${reservaHuesped}`)
           .maybeSingle();
 
@@ -820,16 +1075,28 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           huespedId = hExist.id;
         } else {
           const intentos = [
-            { nombre: reservaHuesped, documento: reservaDoc || null, telefono: reservaTel || null },
-            { nombres: reservaHuesped, documento: reservaDoc || null, telefono: reservaTel || null },
-            { nombre_completo: reservaHuesped, documento_identidad: reservaDoc || null, contacto: reservaTel || null }
+            {
+              nombre: reservaHuesped,
+              documento: reservaDoc || null,
+              telefono: reservaTel || null,
+            },
+            {
+              nombres: reservaHuesped,
+              documento: reservaDoc || null,
+              telefono: reservaTel || null,
+            },
+            {
+              nombre_completo: reservaHuesped,
+              documento_identidad: reservaDoc || null,
+              contacto: reservaTel || null,
+            },
           ];
 
           for (const item of intentos) {
             const { data: hNuevo } = await supabase
-              .from('huespedes')
+              .from("huespedes")
               .insert(item as any)
-              .select('id')
+              .select("id")
               .maybeSingle();
             if (hNuevo?.id) {
               huespedId = hNuevo.id;
@@ -838,7 +1105,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           }
         }
       } catch (e) {
-        console.warn('Sync huésped:', e);
+        console.warn("Sync huésped:", e);
       }
 
       if (!huespedId && huespedes.length > 0) {
@@ -847,24 +1114,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
       // 4. Obtener profile_id
       let profileId: string | null = null;
-      const miPerfil = personal.find(p => p.email.toLowerCase() === user.email.toLowerCase());
-      if (miPerfil?.id && miPerfil.id.includes('-') && miPerfil.id.length > 30) {
+      const miPerfil = personal.find(
+        (p) => p.email.toLowerCase() === user.email.toLowerCase(),
+      );
+      if (
+        miPerfil?.id &&
+        miPerfil.id.includes("-") &&
+        miPerfil.id.length > 30
+      ) {
         profileId = miPerfil.id;
       } else {
         try {
-          const { data: perfDb } = await supabase.from('perfiles').select('id').maybeSingle();
+          const { data: perfDb } = await supabase
+            .from("perfiles")
+            .select("id")
+            .maybeSingle();
           if (perfDb?.id) profileId = perfDb.id;
         } catch (e) {}
       }
 
       // 5. Inserción única en reservas
-      const codigoReserva = `RES-${amb?.codigo || '105'}-${Date.now().toString().slice(-4)}`;
-      
+      const codigoReserva = `RES-${amb?.codigo || "105"}-${Date.now().toString().slice(-4)}`;
+
       const payloadBase: any = {
         codigo: codigoReserva,
         fecha_entrada: reservaEntrada,
         fecha_salida: reservaSalida,
-        cantidad_huespedes: 1
+        cantidad_huespedes: 1,
       };
 
       if (ambId) payloadBase.ambiente_id = ambId;
@@ -879,21 +1155,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         contacto: reservaTel,
         estado: estadoCalculado,
         estado_pago: reservaEstadoPago,
-        total: 300
+        total: 300,
       };
 
       let resFinalId: string = `res-${Date.now()}`;
 
-      const { data: dExt, error: errExt } = await supabase.from('reservas').insert(payloadExtendido).select('id').maybeSingle();
+      const { data: dExt, error: errExt } = await supabase
+        .from("reservas")
+        .insert(payloadExtendido)
+        .select("id")
+        .maybeSingle();
       if (!errExt && dExt) {
         resFinalId = dExt.id;
       } else {
-        const { data: dBase, error: errBase } = await supabase.from('reservas').insert(payloadBase).select('id').maybeSingle();
+        const { data: dBase, error: errBase } = await supabase
+          .from("reservas")
+          .insert(payloadBase)
+          .select("id")
+          .maybeSingle();
         if (!errBase && dBase) {
           resFinalId = dBase.id;
         } else {
           delete payloadBase.profile_id;
-          const { data: dBase2 } = await supabase.from('reservas').insert(payloadBase).select('id').maybeSingle();
+          const { data: dBase2 } = await supabase
+            .from("reservas")
+            .insert(payloadBase)
+            .select("id")
+            .maybeSingle();
           if (dBase2) resFinalId = dBase2.id;
         }
       }
@@ -912,27 +1200,48 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         fechaSalida: reservaSalida,
         estado: estadoCalculado,
         estadoPago: reservaEstadoPago,
-        montoTotal: 300
+        montoTotal: 300,
       };
 
-      setReservas(prev => [nuevaRes, ...prev.filter(r => r.id !== nuevaRes.id)]);
+      setReservas((prev) => [
+        nuevaRes,
+        ...prev.filter((r) => r.id !== nuevaRes.id),
+      ]);
 
       // 7. Actualizar ambiente
-      const nuevoEstadoAmb = esFechaActual ? 'ocupada' : (reservaEstadoPago === 'confirmada' ? 'pagada' : 'pendiente');
-      setAmbientes(prev => prev.map(a => a.id === ambId || a.codigo === amb?.codigo ? { ...a, estado: nuevoEstadoAmb, huespedActual: reservaHuesped } : a));
+      const nuevoEstadoAmb = esFechaActual
+        ? "ocupada"
+        : reservaEstadoPago === "confirmada"
+          ? "pagada"
+          : "pendiente";
+      setAmbientes((prev) =>
+        prev.map((a) =>
+          a.id === ambId || a.codigo === amb?.codigo
+            ? { ...a, estado: nuevoEstadoAmb, huespedActual: reservaHuesped }
+            : a,
+        ),
+      );
 
       if (ambId) {
-        await supabase.from('ambientes').update({
-          estado: nuevoEstadoAmb,
-          huesped_actual: reservaHuesped
-        }).eq('id', ambId);
+        await supabase
+          .from("ambientes")
+          .update({
+            estado: nuevoEstadoAmb,
+            huesped_actual: reservaHuesped,
+          })
+          .eq("id", ambId);
       }
 
       // 8. Desplazar calendario al día de la reserva
       try {
-        const fechaResDate = new Date(reservaEntrada + 'T00:00:00');
-        const fechaHoyDate = new Date(new Date().toISOString().split('T')[0] + 'T00:00:00');
-        const diffDias = Math.round((fechaResDate.getTime() - fechaHoyDate.getTime()) / (1000 * 60 * 60 * 24));
+        const fechaResDate = new Date(reservaEntrada + "T00:00:00");
+        const fechaHoyDate = new Date(
+          new Date().toISOString().split("T")[0] + "T00:00:00",
+        );
+        const diffDias = Math.round(
+          (fechaResDate.getTime() - fechaHoyDate.getTime()) /
+            (1000 * 60 * 60 * 24),
+        );
         setOffsetDias(diffDias >= 0 ? diffDias : 0);
       } catch (e) {}
 
@@ -940,9 +1249,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
       setShowNuevaReservaModal(false);
       setCeldaInicio(null);
-      mostrarNotificacion(`✓ Reserva para ${reservaHuesped} guardada exitosamente.`);
+      mostrarNotificacion(
+        `✓ Reserva para ${reservaHuesped} guardada exitosamente.`,
+      );
     } catch (err: any) {
-      mostrarNotificacion('Error al guardar: ' + (err.message || 'Error'));
+      mostrarNotificacion("Error al guardar: " + (err.message || "Error"));
     } finally {
       setGuardandoReserva(false);
     }
@@ -951,13 +1262,16 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const handleAprobarSolicitud = async (sol: SolicitudReserva) => {
     try {
       // 1. Buscar ambiente adecuado
-      const amb = ambientes.find(a => 
-        a.codigo === sol.ambienteCodigo || 
-        a.nombre === sol.ambienteCodigo || 
-        (a.nombre && sol.ambienteCodigo.includes(a.nombre)) ||
-        (a.codigo && sol.ambienteCodigo.includes(a.codigo)) ||
-        (a.tipo && sol.ambienteCodigo.toLowerCase().includes(a.tipo.toLowerCase()))
-      ) || ambientes[0];
+      const amb =
+        ambientes.find(
+          (a) =>
+            a.codigo === sol.ambienteCodigo ||
+            a.nombre === sol.ambienteCodigo ||
+            (a.nombre && sol.ambienteCodigo.includes(a.nombre)) ||
+            (a.codigo && sol.ambienteCodigo.includes(a.codigo)) ||
+            (a.tipo &&
+              sol.ambienteCodigo.toLowerCase().includes(a.tipo.toLowerCase())),
+        ) || ambientes[0];
 
       const ambId = amb?.id;
 
@@ -965,8 +1279,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       let huespedId: string | null = null;
       try {
         const { data: hExist } = await supabase
-          .from('huespedes')
-          .select('id')
+          .from("huespedes")
+          .select("id")
           .or(`nombre.eq.${sol.nombre},nombres.eq.${sol.nombre}`)
           .maybeSingle();
 
@@ -974,111 +1288,129 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           huespedId = hExist.id;
         } else {
           const { data: hNuevo } = await supabase
-            .from('huespedes')
+            .from("huespedes")
             .insert({
               nombre: sol.nombre,
               contacto: sol.telefono,
-              email: sol.email || null
+              email: sol.email || null,
             } as any)
-            .select('id')
+            .select("id")
             .maybeSingle();
           if (hNuevo?.id) huespedId = hNuevo.id;
         }
       } catch (e) {}
 
       // 3. Crear la reserva confirmada en la tabla reservas
-      const codigoRes = `RES-${amb?.codigo || '101'}-${Date.now().toString().slice(-4)}`;
+      const codigoRes = `RES-${amb?.codigo || "101"}-${Date.now().toString().slice(-4)}`;
       const payloadBase: any = {
         codigo: codigoRes,
         fecha_entrada: sol.fechaEntrada,
         fecha_salida: sol.fechaSalida,
-        cantidad_huespedes: sol.personas || 1
+        cantidad_huespedes: sol.personas || 1,
       };
       if (ambId) payloadBase.ambiente_id = ambId;
       if (huespedId) payloadBase.huesped_id = huespedId;
 
-      await supabase.from('reservas').insert(payloadBase);
+      await supabase.from("reservas").insert(payloadBase);
 
       // 4. Actualizar estado de la solicitud a 'confirmada'
       await supabase
-        .from('solicitudes_reserva')
-        .update({ estado: 'confirmada' })
-        .eq('id', sol.id);
+        .from("solicitudes_reserva")
+        .update({ estado: "confirmada" })
+        .eq("id", sol.id);
 
       // 5. Actualizar ambiente a 'reservado'
       if (ambId) {
-        await supabase.from('ambientes').update({
-          estado: 'reservado',
-          huesped_actual: sol.nombre
-        }).eq('id', ambId);
+        await supabase
+          .from("ambientes")
+          .update({
+            estado: "reservado",
+            huesped_actual: sol.nombre,
+          })
+          .eq("id", ambId);
       }
 
       await cargarDatos();
-      mostrarNotificacion(`✓ Solicitud de ${sol.nombre} aprobada y registrada en el hotel.`);
+      mostrarNotificacion(
+        `✓ Solicitud de ${sol.nombre} aprobada y registrada en el hotel.`,
+      );
     } catch (err: any) {
-      mostrarNotificacion('Error al aprobar: ' + (err.message || 'Error'));
+      mostrarNotificacion("Error al aprobar: " + (err.message || "Error"));
     }
   };
 
   const handleRechazarSolicitud = async (solicitudId: string) => {
     try {
       await supabase
-        .from('solicitudes_reserva')
-        .update({ estado: 'rechazada' })
-        .eq('id', solicitudId);
+        .from("solicitudes_reserva")
+        .update({ estado: "rechazada" })
+        .eq("id", solicitudId);
 
-      setSolicitudes(prev => prev.map(s => s.id === solicitudId ? { ...s, estado: 'rechazada' } : s));
-      mostrarNotificacion('Solicitud marcada como rechazada.');
+      setSolicitudes((prev) =>
+        prev.map((s) =>
+          s.id === solicitudId ? { ...s, estado: "rechazada" } : s,
+        ),
+      );
+      mostrarNotificacion("Solicitud marcada como rechazada.");
     } catch (err: any) {
-      mostrarNotificacion('Error al rechazar: ' + (err.message || 'Error'));
+      mostrarNotificacion("Error al rechazar: " + (err.message || "Error"));
     }
   };
 
   const handleGuardarIngreso = async () => {
     if (!nuevoMovMonto || !nuevoMovDetalle) {
-      mostrarNotificacion('Por favor completa el detalle y el monto.');
+      mostrarNotificacion("Por favor completa el detalle y el monto.");
       return;
     }
 
     const montoNum = parseFloat(nuevoMovMonto);
     const nuevoIng: MovimientoCaja = {
       id: `c-${Date.now()}`,
-      tipo: 'ingreso',
+      tipo: "ingreso",
       fecha: nuevoMovFecha,
       categoria: nuevoMovCategoria,
       detalle: nuevoMovDetalle,
       monto: montoNum,
       metodo: nuevoMovMetodo,
       comprobanteUrl: nuevoMovComprobante || undefined,
-      estadiaVinculada: nuevoMovReservaVinculada || undefined
+      estadiaVinculada: nuevoMovReservaVinculada || undefined,
     };
 
-    setCajaMovimientos(prev => [nuevoIng, ...prev]);
+    setCajaMovimientos((prev) => [nuevoIng, ...prev]);
 
     if (nuevoMovReservaVinculada) {
-      setReservas(prev => prev.map(r => r.id === nuevoMovReservaVinculada ? { ...r, estadoPago: 'confirmada', estado: 'confirmada' } : r));
+      setReservas((prev) =>
+        prev.map((r) =>
+          r.id === nuevoMovReservaVinculada
+            ? { ...r, estadoPago: "confirmada", estado: "confirmada" }
+            : r,
+        ),
+      );
     }
 
     setShowNuevoIngresoModal(false);
-    setNuevoMovDetalle('');
-    setNuevoMovMonto('');
-    setNuevoMovComprobante('');
-    mostrarNotificacion('Ingreso registrado en caja.');
+    setNuevoMovDetalle("");
+    setNuevoMovMonto("");
+    setNuevoMovComprobante("");
+    mostrarNotificacion("Ingreso registrado en caja.");
 
     try {
-      await supabase.from('movimientos_caja').insert({
-        tipo: 'ingreso',
+      await supabase.from("movimientos_caja").insert({
+        tipo: "ingreso",
         fecha: nuevoMovFecha,
         categoria: nuevoMovCategoria,
         detalle: nuevoMovDetalle,
         monto: montoNum,
         metodo: nuevoMovMetodo,
         comprobante_url: nuevoMovComprobante || null,
-        estadia_vinculada: nuevoMovReservaVinculada || null
+        estadia_vinculada: nuevoMovReservaVinculada || null,
       });
 
       if (nuevoMovReservaVinculada) {
-        await supabase.from('reservas').update({ estado: 'confirmada', estado_pago: 'confirmada' }).eq('id', nuevoMovReservaVinculada);
+        await supabase
+          .from("reservas")
+          .update({ estado: "confirmada", estado_pago: "confirmada" })
+          .eq("id", nuevoMovReservaVinculada);
       }
     } catch (e) {
       console.error(e);
@@ -1087,7 +1419,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
   const handleGuardarPersonal = async () => {
     if (!nuevoUserNombre || !nuevoUserEmail) {
-      mostrarNotificacion('Por favor ingresa nombre y correo.');
+      mostrarNotificacion("Por favor ingresa nombre y correo.");
       return;
     }
 
@@ -1097,23 +1429,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       email: nuevoUserEmail,
       rol: nuevoUserRol,
       activo: true,
-      ultimoAcceso: 'Hoy'
+      ultimoAcceso: "Hoy",
     };
 
-    setPersonal(prev => [nuevo, ...prev]);
+    setPersonal((prev) => [nuevo, ...prev]);
     setShowAddUserModal(false);
-    setNuevoUserNombre('');
-    setNuevoUserEmail('');
-    setNuevoUserPass('');
+    setNuevoUserNombre("");
+    setNuevoUserEmail("");
+    setNuevoUserPass("");
     mostrarNotificacion(`Usuario ${nuevoUserNombre} añadido.`);
 
     try {
-      await supabase.from('perfiles').insert({
+      await supabase.from("perfiles").insert({
         nombre: nuevoUserNombre,
         email: nuevoUserEmail,
         rol: nuevoUserRol,
         activo: true,
-        ultimo_acceso: 'Hoy'
+        ultimo_acceso: "Hoy",
       });
     } catch (e) {
       console.error(e);
@@ -1121,39 +1453,58 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   };
 
   const handleLiberarHabitacion = async (codigo: string) => {
-    setAmbientes(prev => prev.map(a => a.codigo === codigo ? { ...a, estado: 'disponible', huespedActual: undefined } : a));
-    setTareasLimpieza(prev => prev.filter(t => t.ambienteCodigo !== codigo));
+    setAmbientes((prev) =>
+      prev.map((a) =>
+        a.codigo === codigo
+          ? { ...a, estado: "disponible", huespedActual: undefined }
+          : a,
+      ),
+    );
+    setTareasLimpieza((prev) =>
+      prev.filter((t) => t.ambienteCodigo !== codigo),
+    );
     mostrarNotificacion(`Habitación ${codigo} marcada como DISPONIBLE.`);
 
     try {
-      await supabase.from('ambientes').update({ estado: 'disponible', huesped_actual: null }).eq('codigo', codigo);
-      await supabase.from('tareas_limpieza').update({ estado: 'realizada' }).eq('ambiente_codigo', codigo);
+      await supabase
+        .from("ambientes")
+        .update({ estado: "disponible", huesped_actual: null })
+        .eq("codigo", codigo);
+      await supabase
+        .from("tareas_limpieza")
+        .update({ estado: "realizada" })
+        .eq("ambiente_codigo", codigo);
     } catch (e) {
       console.error(e);
     }
   };
 
   const handleAsignarLimpieza = async (codigo: string) => {
-    setAmbientes(prev => prev.map(a => a.codigo === codigo ? { ...a, estado: 'limpieza' } : a));
+    setAmbientes((prev) =>
+      prev.map((a) => (a.codigo === codigo ? { ...a, estado: "limpieza" } : a)),
+    );
     const nuevaTarea: TareaLimpieza = {
       id: `t-${Date.now()}`,
       ambienteCodigo: codigo,
-      tarea: 'Limpieza y preparación de habitación',
-      responsable: 'Grimanez Cordero',
-      origen: 'manual',
-      estado: 'pendiente'
+      tarea: "Limpieza y preparación de habitación",
+      responsable: "Grimanez Cordero",
+      origen: "manual",
+      estado: "pendiente",
     };
-    setTareasLimpieza(prev => [nuevaTarea, ...prev]);
+    setTareasLimpieza((prev) => [nuevaTarea, ...prev]);
     mostrarNotificacion(`Habitación ${codigo} asignada a Limpieza.`);
 
     try {
-      await supabase.from('ambientes').update({ estado: 'limpieza' }).eq('codigo', codigo);
-      await supabase.from('tareas_limpieza').insert({
+      await supabase
+        .from("ambientes")
+        .update({ estado: "limpieza" })
+        .eq("codigo", codigo);
+      await supabase.from("tareas_limpieza").insert({
         ambiente_codigo: codigo,
-        tarea: 'Limpieza y preparación de habitación',
-        responsable: 'Grimanez Cordero',
-        origen: 'manual',
-        estado: 'pendiente'
+        tarea: "Limpieza y preparación de habitación",
+        responsable: "Grimanez Cordero",
+        origen: "manual",
+        estado: "pendiente",
       });
     } catch (e) {
       console.error(e);
@@ -1164,12 +1515,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   const handleCeldaClick = (roomNombre: string, fechaStr: string) => {
     if (!celdaInicio || celdaInicio.room !== roomNombre) {
       setCeldaInicio({ room: roomNombre, fecha: fechaStr });
-      mostrarNotificacion(`Inicio selección: ${roomNombre} el ${fechaStr}. Haz click en la fecha fin.`);
+      mostrarNotificacion(
+        `Inicio selección: ${roomNombre} el ${fechaStr}. Haz click en la fecha fin.`,
+      );
     } else {
-      const fecha1 = celdaInicio.fecha < fechaStr ? celdaInicio.fecha : fechaStr;
-      const fecha2 = celdaInicio.fecha < fechaStr ? fechaStr : celdaInicio.fecha;
+      const fecha1 =
+        celdaInicio.fecha < fechaStr ? celdaInicio.fecha : fechaStr;
+      const fecha2 =
+        celdaInicio.fecha < fechaStr ? fechaStr : celdaInicio.fecha;
       setReservaAmbiente(roomNombre);
-      const amb = ambientes.find(a => a.nombre === roomNombre || a.codigo === roomNombre);
+      const amb = ambientes.find(
+        (a) => a.nombre === roomNombre || a.codigo === roomNombre,
+      );
       if (amb) setReservaAmbienteId(amb.id);
       verificarYLimpiarPorFecha(fecha1, fecha2);
       setShowNuevaReservaModal(true);
@@ -1177,44 +1534,57 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   };
 
   // Llegadas pendientes para Check-in: todas las reservas pendientes/confirmadas que NO hayan hecho check-in aún
-  const reservasPendientesCheckin = reservas.filter(r => 
-    r.estado !== 'en_curso' && r.estado !== 'finalizada' && r.estado !== 'cancelada'
+  const reservasPendientesCheckin = reservas.filter(
+    (r) =>
+      r.estado !== "en_curso" &&
+      r.estado !== "finalizada" &&
+      (r.estado as string) !== "cancelada",
   );
-  const estadiasPendientes = estadias.filter(e => e.estado === 'confirmada');
+  const estadiasPendientes = estadias.filter((e) => e.estado === "confirmada");
 
   // Deduplicar por nombre y ambiente para evitar filas duplicadas en pantalla
   const llegadasPendientes = [
-    ...reservasPendientesCheckin.map(r => ({
+    ...reservasPendientesCheckin.map((r) => ({
       reservaId: r.id,
       id: r.id,
       huespedNombre: r.huespedNombre,
-      documento: r.documento || '',
-      contacto: r.contacto || '',
+      documento: r.documento || "",
+      contacto: r.contacto || "",
       ambienteCodigo: r.ambienteCodigo,
       fechaEntrada: r.fechaEntrada,
       fechaSalida: r.fechaSalida,
-      saldoPendiente: r.estadoPago === 'confirmada' ? 0 : (r.montoTotal || 300)
+      saldoPendiente: r.estadoPago === "confirmada" ? 0 : r.montoTotal || 300,
     })),
     ...estadiasPendientes
-      .filter(e => !reservasPendientesCheckin.some(r => r.huespedNombre.toLowerCase() === e.huespedNombre.toLowerCase()))
-      .map(e => ({
+      .filter(
+        (e) =>
+          !reservasPendientesCheckin.some(
+            (r) =>
+              r.huespedNombre.toLowerCase() === e.huespedNombre.toLowerCase(),
+          ),
+      )
+      .map((e) => ({
         estadiaId: e.id,
         id: e.id,
         huespedNombre: e.huespedNombre,
-        documento: e.documento || '',
-        contacto: e.contacto || '',
+        documento: e.documento || "",
+        contacto: e.contacto || "",
         ambienteCodigo: e.ambienteCodigo,
         fechaEntrada: e.fechaEntrada,
         fechaSalida: e.fechaSalida,
-        saldoPendiente: e.saldoPendiente || 0
-      }))
-  ].filter((item, idx, arr) => 
-    arr.findIndex(x => x.huespedNombre.toLowerCase() === item.huespedNombre.toLowerCase() && x.ambienteCodigo === item.ambienteCodigo) === idx
+        saldoPendiente: e.saldoPendiente || 0,
+      })),
+  ].filter(
+    (item, idx, arr) =>
+      arr.findIndex(
+        (x) =>
+          x.huespedNombre.toLowerCase() === item.huespedNombre.toLowerCase() &&
+          x.ambienteCodigo === item.ambienteCodigo,
+      ) === idx,
   );
 
   return (
     <div className="min-h-screen bg-[#1E140C] text-[#F5EBDC] font-['Instrument_Sans',sans-serif] flex flex-col justify-between selection:bg-[#E0A526]/30">
-      
       {/* NOTIFICACIÓN FLOTANTE */}
       {notificacion && (
         <div className="fixed top-5 right-5 z-50 px-5 py-3 rounded-2xl bg-[#24170E] border border-[#E0A526] text-[#F5EBDC] text-xs font-semibold shadow-2xl flex items-center gap-3">
@@ -1231,7 +1601,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <h1 className="font-['Young_Serif',serif] text-2xl text-[#F5EBDC] leading-none">
               Hotel <span className="text-[#E0A526]">ASIRI</span>
             </h1>
-            <p className="text-xs text-[#C9B096] tracking-wide mt-1">Sistema de Gestión Hotelera · Tarija, Bolivia</p>
+            <p className="text-xs text-[#C9B096] tracking-wide mt-1">
+              Sistema de Gestión Hotelera · Tarija, Bolivia
+            </p>
           </div>
         </div>
 
@@ -1241,7 +1613,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               {user.email.charAt(0).toUpperCase()}
             </div>
             <span className="text-sm font-semibold text-[#F5EBDC]">
-              {user.nombre || user.email.split('@')[0]} · <span className="text-[#E0A526] uppercase">{user.rol}</span>
+              {user.nombre || user.email.split("@")[0]} ·{" "}
+              <span className="text-[#E0A526] uppercase">{user.rol}</span>
             </span>
           </div>
 
@@ -1260,9 +1633,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <aside className="w-64 bg-[#24170E] border-r border-[#3D2817] p-4 flex flex-col justify-between">
           <nav className="space-y-1.5">
             <button
-              onClick={() => setSeccionActiva('panel')}
+              onClick={() => setSeccionActiva("panel")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'panel' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "panel"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconPanel className="w-5 h-5 text-[#E0A526]" />
@@ -1271,9 +1646,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
             {esAdmin && (
               <button
-                onClick={() => setSeccionActiva('usuarios')}
+                onClick={() => setSeccionActiva("usuarios")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                  seccionActiva === 'usuarios' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                  seccionActiva === "usuarios"
+                    ? "bg-[#3D2817] text-[#E0A526] shadow"
+                    : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
                 }`}
               >
                 <IconKey className="w-5 h-5 text-[#E0A526]" />
@@ -1282,9 +1659,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             )}
 
             <button
-              onClick={() => setSeccionActiva('ambientes')}
+              onClick={() => setSeccionActiva("ambientes")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'ambientes' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "ambientes"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconAmbientes className="w-5 h-5 text-[#E0A526]" />
@@ -1292,9 +1671,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </button>
 
             <button
-              onClick={() => setSeccionActiva('reservas')}
+              onClick={() => setSeccionActiva("reservas")}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'reservas' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "reservas"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -1303,15 +1684,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               {solicitudesPendientes > 0 && (
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E0A526] text-[#1E140C] shadow animate-pulse">
-                  {solicitudesPendientes} nueva{solicitudesPendientes > 1 ? 's' : ''}
+                  {solicitudesPendientes} nueva
+                  {solicitudesPendientes > 1 ? "s" : ""}
                 </span>
               )}
             </button>
 
             <button
-              onClick={() => setSeccionActiva('huespedes')}
+              onClick={() => setSeccionActiva("huespedes")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'huespedes' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "huespedes"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconHuespedes className="w-5 h-5 text-[#E0A526]" />
@@ -1319,9 +1703,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </button>
 
             <button
-              onClick={() => setSeccionActiva('checkin_out')}
+              onClick={() => setSeccionActiva("checkin_out")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'checkin_out' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "checkin_out"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconCheckInOut className="w-5 h-5 text-[#E0A526]" />
@@ -1329,9 +1715,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </button>
 
             <button
-              onClick={() => setSeccionActiva('caja')}
+              onClick={() => setSeccionActiva("caja")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'caja' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "caja"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconCaja className="w-5 h-5 text-[#E0A526]" />
@@ -1339,9 +1727,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </button>
 
             <button
-              onClick={() => setSeccionActiva('limpieza')}
+              onClick={() => setSeccionActiva("limpieza")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'limpieza' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "limpieza"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconLimpieza className="w-5 h-5 text-[#E0A526]" />
@@ -1349,9 +1739,11 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             </button>
 
             <button
-              onClick={() => setSeccionActiva('atencion')}
+              onClick={() => setSeccionActiva("atencion")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                seccionActiva === 'atencion' ? 'bg-[#3D2817] text-[#E0A526] shadow' : 'text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]'
+                seccionActiva === "atencion"
+                  ? "bg-[#3D2817] text-[#E0A526] shadow"
+                  : "text-[#C9B096] hover:bg-[#2D1E12] hover:text-[#F5EBDC]"
               }`}
             >
               <IconAtencion className="w-5 h-5 text-[#E0A526]" />
@@ -1368,97 +1760,174 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
         {/* CONTENIDO PRINCIPAL */}
         <main className="flex-1 p-6 sm:p-8 overflow-y-auto">
-
           {/* VISTA 1: PANEL */}
-          {seccionActiva === 'panel' && (
+          {seccionActiva === "panel" && (
             <div className="space-y-7">
               <div>
                 <h2 className="font-['Young_Serif',serif] text-3xl sm:text-4xl text-[#F5EBDC]">
-                  Panel {esAdmin ? 'de Administrador' : 'de Recepción'}
+                  Panel {esAdmin ? "de Administrador" : "de Recepción"}
                 </h2>
                 <p className="text-sm text-[#C9B096] mt-1">
-                  {tabPanel === 'modulos' ? 'Selecciona un módulo para gestionar el hotel:' : 'Estado general del hotel hoy.'}
+                  {tabPanel === "modulos"
+                    ? "Selecciona un módulo para gestionar el hotel:"
+                    : "Estado general del hotel hoy."}
                 </p>
               </div>
 
               <div className="flex items-center gap-8 border-b border-[#3D2817] text-sm font-semibold">
                 <button
-                  onClick={() => setTabPanel('modulos')}
-                  className={`pb-3 transition-all relative cursor-pointer ${tabPanel === 'modulos' ? 'text-[#E0A526]' : 'text-[#C9B096] hover:text-[#F5EBDC]'}`}
+                  onClick={() => setTabPanel("modulos")}
+                  className={`pb-3 transition-all relative cursor-pointer ${tabPanel === "modulos" ? "text-[#E0A526]" : "text-[#C9B096] hover:text-[#F5EBDC]"}`}
                 >
                   Módulos
-                  {tabPanel === 'modulos' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E0A526]" />}
+                  {tabPanel === "modulos" && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E0A526]" />
+                  )}
                 </button>
                 <button
-                  onClick={() => setTabPanel('resumen')}
-                  className={`pb-3 transition-all relative cursor-pointer ${tabPanel === 'resumen' ? 'text-[#E0A526]' : 'text-[#C9B096] hover:text-[#F5EBDC]'}`}
+                  onClick={() => setTabPanel("resumen")}
+                  className={`pb-3 transition-all relative cursor-pointer ${tabPanel === "resumen" ? "text-[#E0A526]" : "text-[#C9B096] hover:text-[#F5EBDC]"}`}
                 >
                   Resumen
-                  {tabPanel === 'resumen' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E0A526]" />}
+                  {tabPanel === "resumen" && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E0A526]" />
+                  )}
                 </button>
               </div>
 
-              {tabPanel === 'modulos' ? (
+              {tabPanel === "modulos" ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  <div onClick={() => setSeccionActiva('ambientes')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("ambientes")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconAmbientes className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Ambientes</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">23 ambientes, estado en vivo y asignación rápida a limpieza.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Ver ambientes →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Ambientes
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      23 ambientes, estado en vivo y asignación rápida a
+                      limpieza.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Ver ambientes →
+                    </span>
                   </div>
 
-                  <div onClick={() => setSeccionActiva('reservas')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("reservas")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconReservas className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Reservas</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">Calendario interactivo, vista lista y solicitudes online.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Gestionar reservas →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Reservas
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      Calendario interactivo, vista lista y solicitudes online.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Gestionar reservas →
+                    </span>
                   </div>
 
-                  <div onClick={() => setSeccionActiva('checkin_out')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("checkin_out")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconCheckInOut className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Check-in / Check-out</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">Control de horario (8:30 a 12:00), fotocopias y salidas.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Gestionar accesos →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Check-in / Check-out
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      Control de horario (8:30 a 12:00), fotocopias y salidas.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Gestionar accesos →
+                    </span>
                   </div>
 
-                  <div onClick={() => setSeccionActiva('caja')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("caja")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconCaja className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Caja y pagos</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">Ingresos con comprobantes, egresos y cierre de turno.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Abrir caja →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Caja y pagos
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      Ingresos con comprobantes, egresos y cierre de turno.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Abrir caja →
+                    </span>
                   </div>
 
-                  <div onClick={() => setSeccionActiva('limpieza')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("limpieza")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconLimpieza className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Limpieza</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">Supervisión de cuartos y liberación a disponible.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Ver tareas →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Limpieza
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      Supervisión de cuartos y liberación a disponible.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Ver tareas →
+                    </span>
                   </div>
 
-                  <div onClick={() => setSeccionActiva('huespedes')} className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group">
+                  <div
+                    onClick={() => setSeccionActiva("huespedes")}
+                    className="rounded-2xl p-6 bg-gradient-to-b from-[#8A5326]/80 to-[#5A3418]/70 border border-[#5A3418] hover:border-[#E0A526] cursor-pointer transition-all hover:scale-[1.02] shadow-xl group"
+                  >
                     <IconHuespedes className="w-8 h-8 text-[#F5EBDC] mb-4" />
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">Huéspedes</h3>
-                    <p className="text-sm text-[#F5EBDC]/80">Perfiles HU-xxxx, control de fotocopia de carnet e historial.</p>
-                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">Ver directorio →</span>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC] mb-1.5">
+                      Huéspedes
+                    </h3>
+                    <p className="text-sm text-[#F5EBDC]/80">
+                      Perfiles HU-xxxx, control de fotocopia de carnet e
+                      historial.
+                    </p>
+                    <span className="text-sm text-[#F28C38] font-bold group-hover:translate-x-1 transition-transform inline-block mt-4">
+                      Ver directorio →
+                    </span>
                   </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                   <div className="p-6 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                    <span className="font-['Young_Serif',serif] text-4xl text-[#5FD08E]">{conteoLibres}</span>
-                    <p className="text-sm text-[#C9B096] mt-2 font-medium">Habitaciones libres</p>
+                    <span className="font-['Young_Serif',serif] text-4xl text-[#5FD08E]">
+                      {conteoLibres}
+                    </span>
+                    <p className="text-sm text-[#C9B096] mt-2 font-medium">
+                      Habitaciones libres
+                    </p>
                   </div>
                   <div className="p-6 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                    <span className="font-['Young_Serif',serif] text-4xl text-[#F28C38]">{conteoOcupadas}</span>
-                    <p className="text-sm text-[#C9B096] mt-2 font-medium">Habitaciones en uso</p>
+                    <span className="font-['Young_Serif',serif] text-4xl text-[#F28C38]">
+                      {conteoOcupadas}
+                    </span>
+                    <p className="text-sm text-[#C9B096] mt-2 font-medium">
+                      Habitaciones en uso
+                    </p>
                   </div>
                   <div className="p-6 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                    <span className="font-['Young_Serif',serif] text-4xl text-[#6DB7D9]">{conteoLimpieza}</span>
-                    <p className="text-sm text-[#C9B096] mt-2 font-medium">En limpieza</p>
+                    <span className="font-['Young_Serif',serif] text-4xl text-[#6DB7D9]">
+                      {conteoLimpieza}
+                    </span>
+                    <p className="text-sm text-[#C9B096] mt-2 font-medium">
+                      En limpieza
+                    </p>
                   </div>
                   <div className="p-6 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                    <span className="font-['Young_Serif',serif] text-4xl text-[#E0A526]">Bs {saldoCaja.toFixed(2)}</span>
-                    <p className="text-sm text-[#C9B096] mt-2 font-medium">Saldo en caja hoy</p>
+                    <span className="font-['Young_Serif',serif] text-4xl text-[#E0A526]">
+                      Bs {saldoCaja.toFixed(2)}
+                    </span>
+                    <p className="text-sm text-[#C9B096] mt-2 font-medium">
+                      Saldo en caja hoy
+                    </p>
                   </div>
                 </div>
               )}
@@ -1466,27 +1935,48 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 2: AMBIENTES */}
-          {seccionActiva === 'ambientes' && (
+          {seccionActiva === "ambientes" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Ambientes</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Gestión de ambientes, tarifas, capacidades y asignación a limpieza</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Ambientes
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Gestión de ambientes, tarifas, capacidades y asignación a
+                    limpieza
+                  </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
                   <div className="px-4 py-2 rounded-xl bg-[#24170E] border border-[#3D2817] text-xs font-medium text-[#F5EBDC]">
-                    « <span className="text-[#5FD08E] font-bold">{conteoLibres} libres</span> ·{' '}
-                    <span className="text-[#F28C38] font-bold">{conteoOcupadas} ocupadas</span> ·{' '}
-                    <span className="text-[#F0C14B] font-bold">{conteoPendientes} pendientes</span> ·{' '}
-                    <span className="text-[#F472B6] font-bold">{conteoPagadas} pagadas</span> ·{' '}
-                    <span className="text-[#6DB7D9] font-bold">{conteoLimpieza} en limpieza</span> »
+                    «{" "}
+                    <span className="text-[#5FD08E] font-bold">
+                      {conteoLibres} libres
+                    </span>{" "}
+                    ·{" "}
+                    <span className="text-[#F28C38] font-bold">
+                      {conteoOcupadas} ocupadas
+                    </span>{" "}
+                    ·{" "}
+                    <span className="text-[#F0C14B] font-bold">
+                      {conteoPendientes} pendientes
+                    </span>{" "}
+                    ·{" "}
+                    <span className="text-[#F472B6] font-bold">
+                      {conteoPagadas} pagadas
+                    </span>{" "}
+                    ·{" "}
+                    <span className="text-[#6DB7D9] font-bold">
+                      {conteoLimpieza} en limpieza
+                    </span>{" "}
+                    »
                   </div>
 
                   <button
                     onClick={() => {
                       if (ambientes.length === 0) {
-                        mostrarNotificacion('No hay ambientes para modificar.');
+                        mostrarNotificacion("No hay ambientes para modificar.");
                         return;
                       }
                       const amb = ambientes[0];
@@ -1496,7 +1986,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       setFormAmbTipo(amb.tipo);
                       setFormAmbCapacidad(amb.capacidad);
                       setFormAmbPrecio(amb.tarifa_base);
-                      setFormAmbEstado(amb.estado === 'disponible' || amb.estado === 'ocupada' || amb.estado === 'limpieza' ? amb.estado : 'disponible');
+                      setFormAmbEstado(
+                        amb.estado === "disponible" ||
+                          amb.estado === "ocupada" ||
+                          amb.estado === "limpieza"
+                          ? amb.estado
+                          : "disponible",
+                      );
                     }}
                     className="px-4 py-2.5 rounded-xl bg-[#2D1E12] hover:bg-[#3D2817] border border-[#5A3418] text-[#E0A526] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
                   >
@@ -1507,10 +2003,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     onClick={() => {
                       setFormAmbCodigo(`HAB-${ambientes.length + 101}`);
                       setFormAmbNombre(`Habitación ${ambientes.length + 101}`);
-                      setFormAmbTipo('Simple');
+                      setFormAmbTipo("Simple");
                       setFormAmbCapacidad(2);
                       setFormAmbPrecio(280);
-                      setFormAmbEstado('disponible');
+                      setFormAmbEstado("disponible");
                       setShowNuevoAmbienteModal(true);
                     }}
                     className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
@@ -1525,67 +2021,82 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 <span className="text-xs text-[#C9B096]">Filtrar por:</span>
 
                 <button
-                  onClick={() => setFiltroAmbienteEstado('todos')}
+                  onClick={() => setFiltroAmbienteEstado("todos")}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                    filtroAmbienteEstado === 'todos' ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' : 'bg-[#24170E] border-[#3D2817] text-[#C9B096]'
+                    filtroAmbienteEstado === "todos"
+                      ? "bg-[#E0A526] text-[#1E140C] border-[#E0A526]"
+                      : "bg-[#24170E] border-[#3D2817] text-[#C9B096]"
                   }`}
                 >
                   Todos
                 </button>
 
                 <button
-                  onClick={() => setFiltroAmbienteEstado('disponible')}
+                  onClick={() => setFiltroAmbienteEstado("disponible")}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition-all cursor-pointer ${
-                    filtroAmbienteEstado === 'disponible' ? 'bg-[#2F7D4F] text-white border-[#5FD08E]' : 'bg-[#24170E] border-[#3D2817] text-[#5FD08E]'
+                    filtroAmbienteEstado === "disponible"
+                      ? "bg-[#2F7D4F] text-white border-[#5FD08E]"
+                      : "bg-[#24170E] border-[#3D2817] text-[#5FD08E]"
                   }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-[#5FD08E]" /> Libres
                 </button>
 
                 <button
-                  onClick={() => setFiltroAmbienteEstado('ocupada')}
+                  onClick={() => setFiltroAmbienteEstado("ocupada")}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition-all cursor-pointer ${
-                    filtroAmbienteEstado === 'ocupada' ? 'bg-[#C2570C] text-white border-[#F28C38]' : 'bg-[#24170E] border-[#3D2817] text-[#F28C38]'
+                    filtroAmbienteEstado === "ocupada"
+                      ? "bg-[#C2570C] text-white border-[#F28C38]"
+                      : "bg-[#24170E] border-[#3D2817] text-[#F28C38]"
                   }`}
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#F28C38]" /> Ocupadas
+                  <span className="w-2 h-2 rounded-full bg-[#F28C38]" />{" "}
+                  Ocupadas
                 </button>
 
                 <button
-                  onClick={() => setFiltroAmbienteEstado('limpieza')}
+                  onClick={() => setFiltroAmbienteEstado("limpieza")}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition-all cursor-pointer ${
-                    filtroAmbienteEstado === 'limpieza' ? 'bg-[#2D6F8E] text-white border-[#6DB7D9]' : 'bg-[#24170E] border-[#3D2817] text-[#6DB7D9]'
+                    filtroAmbienteEstado === "limpieza"
+                      ? "bg-[#2D6F8E] text-white border-[#6DB7D9]"
+                      : "bg-[#24170E] border-[#3D2817] text-[#6DB7D9]"
                   }`}
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#6DB7D9]" /> En limpieza
+                  <span className="w-2 h-2 rounded-full bg-[#6DB7D9]" /> En
+                  limpieza
                 </button>
               </div>
 
               {/* Cuadrícula de Ambientes */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {ambientesFiltrados.map((a) => {
-                  let badgeBg = 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]';
-                  let estadoTexto = 'Libre';
+                  let badgeBg =
+                    "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]";
+                  let estadoTexto = "Libre";
 
-                  if (a.estado === 'ocupada') {
-                    badgeBg = 'bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]';
-                    estadoTexto = 'Ocupada';
-                  } else if (a.estado === 'pendiente') {
-                    badgeBg = 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]';
-                    estadoTexto = 'Pendiente';
-                  } else if (a.estado === 'pagada') {
-                    badgeBg = 'bg-[#BE185D]/20 text-[#F472B6] border-[#BE185D]';
-                    estadoTexto = 'Pagada';
-                  } else if (a.estado === 'limpieza') {
-                    badgeBg = 'bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]';
-                    estadoTexto = 'En Limpieza';
+                  if (a.estado === "ocupada") {
+                    badgeBg = "bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]";
+                    estadoTexto = "Ocupada";
+                  } else if (a.estado === "pendiente") {
+                    badgeBg = "bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]";
+                    estadoTexto = "Pendiente";
+                  } else if (a.estado === "pagada") {
+                    badgeBg = "bg-[#BE185D]/20 text-[#F472B6] border-[#BE185D]";
+                    estadoTexto = "Pagada";
+                  } else if (a.estado === "limpieza") {
+                    badgeBg = "bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]";
+                    estadoTexto = "En Limpieza";
                   }
 
                   // Próximas reservas en esta habitación
-                  const hoyStr = new Date().toISOString().split('T')[0];
-                  const proxHab = reservas.filter(r => 
-                    (r.ambienteId === a.id || r.ambienteCodigo === a.codigo || r.ambienteCodigo === a.nombre || (a.nombre && a.nombre.includes(r.ambienteCodigo))) &&
-                    r.fechaSalida >= hoyStr
+                  const hoyStr = new Date().toISOString().split("T")[0];
+                  const proxHab = reservas.filter(
+                    (r) =>
+                      (r.ambienteId === a.id ||
+                        r.ambienteCodigo === a.codigo ||
+                        r.ambienteCodigo === a.nombre ||
+                        (a.nombre && a.nombre.includes(r.ambienteCodigo))) &&
+                      r.fechaSalida >= hoyStr,
                   );
 
                   return (
@@ -1598,32 +2109,57 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         setFormAmbTipo(a.tipo);
                         setFormAmbCapacidad(a.capacidad);
                         setFormAmbPrecio(a.tarifa_base);
-                        setFormAmbEstado(a.estado === 'disponible' || a.estado === 'ocupada' || a.estado === 'limpieza' ? a.estado : 'disponible');
+                        setFormAmbEstado(
+                          a.estado === "disponible" ||
+                            a.estado === "ocupada" ||
+                            a.estado === "limpieza"
+                            ? a.estado
+                            : "disponible",
+                        );
                       }}
                       className="rounded-2xl p-4 bg-[#24170E] border border-[#3D2817] hover:border-[#E0A526] transition-all flex flex-col justify-between min-h-[170px] shadow-lg cursor-pointer group"
                       title="Click para modificar capacidad, precio o datos"
                     >
                       <div>
                         <div className="flex items-center justify-between">
-                          <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">{a.codigo}</span>
-                          <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}>
+                          <span className="font-['Young_Serif',serif] text-lg text-[#F5EBDC]">
+                            {a.codigo}
+                          </span>
+                          <span
+                            className={`text-[11px] px-2.5 py-0.5 rounded-full border ${badgeBg} font-semibold`}
+                          >
                             {estadoTexto}
                           </span>
                         </div>
 
                         <div className="my-2">
-                          <p className="text-xs text-[#C9B096] font-semibold">{a.tipo}</p>
-                          <p className="text-[11px] text-[#F5EBDC]/80 mt-0.5">Cap: {a.capacidad} pers · Bs {a.tarifa_base}</p>
+                          <p className="text-xs text-[#C9B096] font-semibold">
+                            {a.tipo}
+                          </p>
+                          <p className="text-[11px] text-[#F5EBDC]/80 mt-0.5">
+                            Cap: {a.capacidad} pers · Bs {a.tarifa_base}
+                          </p>
                         </div>
 
                         {/* Indicador de reservas próximas en la habitación */}
                         {proxHab.length > 0 && (
                           <div className="mt-1.5 p-1.5 rounded-lg bg-[#1E140C] border border-[#5A3418]/60 text-[10px]">
-                            <span className="text-[#E0A526] font-bold block mb-0.5"> Próximas:</span>
+                            <span className="text-[#E0A526] font-bold block mb-0.5">
+                              {" "}
+                              Próximas:
+                            </span>
                             {proxHab.slice(0, 2).map((p, pIdx) => (
-                              <div key={pIdx} className="text-[#C9B096] flex items-center justify-between">
-                                <span>{p.fechaEntrada.slice(5)} al {p.fechaSalida.slice(5)}</span>
-                                <span className="text-white font-semibold truncate ml-1">{p.huespedNombre}</span>
+                              <div
+                                key={pIdx}
+                                className="text-[#C9B096] flex items-center justify-between"
+                              >
+                                <span>
+                                  {p.fechaEntrada.slice(5)} al{" "}
+                                  {p.fechaSalida.slice(5)}
+                                </span>
+                                <span className="text-white font-semibold truncate ml-1">
+                                  {p.huespedNombre}
+                                </span>
                               </div>
                             ))}
                           </div>
@@ -1631,7 +2167,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       </div>
 
                       <div className="pt-2 border-t border-[#3D2817] flex items-center justify-between gap-1 text-[11px]">
-                        {a.estado === 'disponible' && (
+                        {a.estado === "disponible" && (
                           <>
                             <button
                               onClick={(e) => {
@@ -1639,8 +2175,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                 const nomAmb = a.nombre || a.codigo;
                                 setReservaAmbiente(nomAmb);
                                 setReservaAmbienteId(a.id);
-                                const hoy = new Date().toISOString().split('T')[0];
-                                const man = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+                                const hoy = new Date()
+                                  .toISOString()
+                                  .split("T")[0];
+                                const man = new Date(Date.now() + 86400000)
+                                  .toISOString()
+                                  .split("T")[0];
                                 verificarYLimpiarPorFecha(hoy, man);
                                 setShowNuevaReservaModal(true);
                               }}
@@ -1660,7 +2200,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           </>
                         )}
 
-                        {a.estado === 'limpieza' && (
+                        {a.estado === "limpieza" && (
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1672,13 +2212,19 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           </button>
                         )}
 
-                        {a.estado === 'ocupada' && (
+                        {a.estado === "ocupada" && (
                           <div className="w-full flex items-center justify-between">
-                            <span className="text-[#E0A526] truncate text-[10px]">{a.huespedActual || 'Ocupada'}</span>
+                            <span className="text-[#E0A526] truncate text-[10px]">
+                              {a.huespedActual || "Ocupada"}
+                            </span>
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                const est = estadias.find(e => e.ambienteCodigo === a.codigo && e.estado === 'en_curso');
+                                const est = estadias.find(
+                                  (e) =>
+                                    e.ambienteCodigo === a.codigo &&
+                                    e.estado === "en_curso",
+                                );
                                 if (est) setShowCheckOutWarning(est);
                               }}
                               className="px-2 py-0.5 rounded bg-[#C2570C] text-white font-semibold cursor-pointer"
@@ -1696,43 +2242,58 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 3: RESERVAS CON CALENDARIO TIPO EXCEL */}
-          {seccionActiva === 'reservas' && (
+          {seccionActiva === "reservas" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Reservas</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Gestión de calendario, solicitudes en línea y reservas confirmadas</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Reservas
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Gestión de calendario, solicitudes en línea y reservas
+                    confirmadas
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="flex rounded-xl bg-[#24170E] border border-[#3D2817] p-1 text-xs font-semibold">
                     <button
-                      onClick={() => setVistaReservas('calendario')}
+                      onClick={() => setVistaReservas("calendario")}
                       className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                        vistaReservas === 'calendario' ? 'bg-[#E0A526] text-[#1E140C]' : 'text-[#C9B096] hover:text-white'
+                        vistaReservas === "calendario"
+                          ? "bg-[#E0A526] text-[#1E140C]"
+                          : "text-[#C9B096] hover:text-white"
                       }`}
                     >
                       Por Calendario (Excel)
                     </button>
                     <button
-                      onClick={() => setVistaReservas('lista')}
+                      onClick={() => setVistaReservas("lista")}
                       className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                        vistaReservas === 'lista' ? 'bg-[#E0A526] text-[#1E140C]' : 'text-[#C9B096] hover:text-white'
+                        vistaReservas === "lista"
+                          ? "bg-[#E0A526] text-[#1E140C]"
+                          : "text-[#C9B096] hover:text-white"
                       }`}
                     >
                       Por Lista
                     </button>
                     <button
-                      onClick={() => setVistaReservas('solicitudes')}
+                      onClick={() => setVistaReservas("solicitudes")}
                       className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
-                        vistaReservas === 'solicitudes' ? 'bg-[#E0A526] text-[#1E140C]' : 'text-[#C9B096] hover:text-white'
+                        vistaReservas === "solicitudes"
+                          ? "bg-[#E0A526] text-[#1E140C]"
+                          : "text-[#C9B096] hover:text-white"
                       }`}
                     >
                       <span>Solicitudes Web</span>
                       {solicitudesPendientes > 0 && (
-                        <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-                          vistaReservas === 'solicitudes' ? 'bg-[#1E140C] text-[#E0A526]' : 'bg-[#E0A526] text-[#1E140C]'
-                        }`}>
+                        <span
+                          className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                            vistaReservas === "solicitudes"
+                              ? "bg-[#1E140C] text-[#E0A526]"
+                              : "bg-[#E0A526] text-[#1E140C]"
+                          }`}
+                        >
                           {solicitudesPendientes}
                         </span>
                       )}
@@ -1742,14 +2303,16 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <button
                     onClick={() => {
                       if (reservas.length === 0) {
-                        mostrarNotificacion('No hay reservas registradas para modificar.');
+                        mostrarNotificacion(
+                          "No hay reservas registradas para modificar.",
+                        );
                         return;
                       }
                       const r = reservas[0];
                       setReservaAEditar(r);
                       setFormResHuesped(r.huespedNombre);
-                      setFormResDoc(r.documento || '');
-                      setFormResTel(r.contacto || '');
+                      setFormResDoc(r.documento || "");
+                      setFormResTel(r.contacto || "");
                       setFormResAmbiente(r.ambienteCodigo);
                       setFormResEntrada(r.fechaEntrada);
                       setFormResSalida(r.fechaSalida);
@@ -1763,9 +2326,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                   <button
                     onClick={() => {
-                      setReservaHuesped('');
-                      setReservaDoc('');
-                      setReservaTel('');
+                      setReservaHuesped("");
+                      setReservaDoc("");
+                      setReservaTel("");
                       setShowNuevaReservaModal(true);
                     }}
                     className="px-4 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
@@ -1776,14 +2339,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               {/* CALENDARIO TIPO EXCEL */}
-              {vistaReservas === 'calendario' && (
+              {vistaReservas === "calendario" && (
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-4 shadow-xl space-y-3">
-                  
                   {/* BARRA SUPERIOR: < Anterior, Hoy, Siguiente > y Píldoras de Estado */}
                   <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3D2817] pb-3">
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => setOffsetDias(prev => prev - 7)}
+                        onClick={() => setOffsetDias((prev) => prev - 7)}
                         className="px-3 py-1.5 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-xs font-semibold text-[#F5EBDC] hover:bg-[#3D2817] cursor-pointer"
                       >
                         ‹ Anterior
@@ -1795,12 +2357,14 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         Hoy
                       </button>
                       <button
-                        onClick={() => setOffsetDias(prev => prev + 7)}
+                        onClick={() => setOffsetDias((prev) => prev + 7)}
                         className="px-3 py-1.5 rounded-lg bg-[#2D1E12] border border-[#5A3418] text-xs font-semibold text-[#F5EBDC] hover:bg-[#3D2817] cursor-pointer"
                       >
                         Siguiente ›
                       </button>
-                      <span className="text-xs text-[#E0A526] font-bold ml-2">{mesVisible}</span>
+                      <span className="text-xs text-[#E0A526] font-bold ml-2">
+                        {mesVisible}
+                      </span>
                     </div>
 
                     {/* Leyenda de Píldoras */}
@@ -1829,54 +2393,100 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                             Ambiente
                           </th>
                           {diasVentana.map((d, idx) => (
-                            <th key={idx} className={`p-2 text-center min-w-[42px] border-l border-[#3D2817]/40 ${d.esHoy ? 'bg-[#E0A526]/10 text-[#E0A526] font-bold' : 'text-[#C9B096]'}`}>
+                            <th
+                              key={idx}
+                              className={`p-2 text-center min-w-[42px] border-l border-[#3D2817]/40 ${d.esHoy ? "bg-[#E0A526]/10 text-[#E0A526] font-bold" : "text-[#C9B096]"}`}
+                            >
                               <div className="text-xs font-bold">{d.num}</div>
-                              <div className="text-[10px] opacity-75">{d.dia}</div>
+                              <div className="text-[10px] opacity-75">
+                                {d.dia}
+                              </div>
                             </th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
-                        {ambientes.map(a => {
-                          const nombreLimpio = a.nombre || `${a.codigo} ${a.tipo}`;
+                        {ambientes.map((a) => {
+                          const nombreLimpio =
+                            a.nombre || `${a.codigo} ${a.tipo}`;
                           return (
-                            <tr key={a.id} className="border-b border-[#3D2817]/40 hover:bg-[#2D1E12]/40">
+                            <tr
+                              key={a.id}
+                              className="border-b border-[#3D2817]/40 hover:bg-[#2D1E12]/40"
+                            >
                               <td className="p-2.5 font-medium text-[#F5EBDC] sticky left-0 bg-[#24170E] z-10 text-[11px]">
                                 {nombreLimpio}
                               </td>
 
                               {diasVentana.map((d, idx) => {
                                 // Buscar reserva vinculando por ID único, nombre o código
-                                const res = reservas.find(r => 
-                                  (r.ambienteId === a.id || 
-                                   r.ambienteCodigo === a.codigo || 
-                                   r.ambienteCodigo === nombreLimpio || 
-                                   (a.nombre && r.ambienteCodigo && a.nombre.toLowerCase().includes(r.ambienteCodigo.toLowerCase())) ||
-                                   (r.ambienteCodigo && a.codigo && r.ambienteCodigo.toLowerCase().includes(a.codigo.toLowerCase()))) &&
-                                  d.fecha >= r.fechaEntrada && d.fecha <= r.fechaSalida
+                                const res = reservas.find(
+                                  (r) =>
+                                    (r.ambienteId === a.id ||
+                                      r.ambienteCodigo === a.codigo ||
+                                      r.ambienteCodigo === nombreLimpio ||
+                                      (a.nombre &&
+                                        r.ambienteCodigo &&
+                                        a.nombre
+                                          .toLowerCase()
+                                          .includes(
+                                            r.ambienteCodigo.toLowerCase(),
+                                          )) ||
+                                      (r.ambienteCodigo &&
+                                        a.codigo &&
+                                        r.ambienteCodigo
+                                          .toLowerCase()
+                                          .includes(a.codigo.toLowerCase()))) &&
+                                    d.fecha >= r.fechaEntrada &&
+                                    d.fecha <= r.fechaSalida,
                                 );
 
-                                const esSeleccionada = celdaInicio && celdaInicio.room === nombreLimpio && celdaInicio.fecha === d.fecha;
+                                const esSeleccionada =
+                                  celdaInicio &&
+                                  celdaInicio.room === nombreLimpio &&
+                                  celdaInicio.fecha === d.fecha;
 
-                                let celdaClase = 'border-l border-[#3D2817]/40 p-1 text-center cursor-pointer transition-colors';
+                                let celdaClase =
+                                  "border-l border-[#3D2817]/40 p-1 text-center cursor-pointer transition-colors";
                                 let contenido = null;
 
                                 if (res) {
-                                  const primerNombre = res.huespedNombre ? res.huespedNombre.split(' ')[0] : 'Ocup';
-                                  if (res.estado === 'confirmada' || res.estadoPago === 'confirmada') {
-                                    celdaClase += ' bg-[#2F7D4F]/30 text-[#5FD08E] border border-[#2F7D4F]';
-                                    contenido = <span className="text-[9px] font-bold truncate block">{primerNombre}</span>;
-                                  } else if (res.estado === 'en_curso') {
-                                    celdaClase += ' bg-[#C2570C]/30 text-[#F28C38] border border-[#C2570C]';
-                                    contenido = <span className="text-[9px] font-bold truncate block">{primerNombre}</span>;
+                                  const primerNombre = res.huespedNombre
+                                    ? res.huespedNombre.split(" ")[0]
+                                    : "Ocup";
+                                  if (
+                                    res.estado === "confirmada" ||
+                                    res.estadoPago === "confirmada"
+                                  ) {
+                                    celdaClase +=
+                                      " bg-[#2F7D4F]/30 text-[#5FD08E] border border-[#2F7D4F]";
+                                    contenido = (
+                                      <span className="text-[9px] font-bold truncate block">
+                                        {primerNombre}
+                                      </span>
+                                    );
+                                  } else if (res.estado === "en_curso") {
+                                    celdaClase +=
+                                      " bg-[#C2570C]/30 text-[#F28C38] border border-[#C2570C]";
+                                    contenido = (
+                                      <span className="text-[9px] font-bold truncate block">
+                                        {primerNombre}
+                                      </span>
+                                    );
                                   } else {
-                                    celdaClase += ' bg-[#96690F]/30 text-[#F0C14B] border border-[#96690F]';
-                                    contenido = <span className="text-[9px] font-bold truncate block">{primerNombre}</span>;
+                                    celdaClase +=
+                                      " bg-[#96690F]/30 text-[#F0C14B] border border-[#96690F]";
+                                    contenido = (
+                                      <span className="text-[9px] font-bold truncate block">
+                                        {primerNombre}
+                                      </span>
+                                    );
                                   }
                                 } else if (esSeleccionada) {
-                                  celdaClase += ' bg-[#E0A526]/40 border-2 border-[#E0A526]';
+                                  celdaClase +=
+                                    " bg-[#E0A526]/40 border-2 border-[#E0A526]";
                                 } else {
-                                  celdaClase += ' hover:bg-[#3D2817]/60';
+                                  celdaClase += " hover:bg-[#3D2817]/60";
                                 }
 
                                 return (
@@ -1886,8 +2496,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                       if (res) {
                                         setReservaAEditar(res);
                                         setFormResHuesped(res.huespedNombre);
-                                        setFormResDoc(res.documento || '');
-                                        setFormResTel(res.contacto || '');
+                                        setFormResDoc(res.documento || "");
+                                        setFormResTel(res.contacto || "");
                                         setFormResAmbiente(res.ambienteCodigo);
                                         setFormResEntrada(res.fechaEntrada);
                                         setFormResSalida(res.fechaSalida);
@@ -1898,8 +2508,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                       }
                                     }}
                                     className={celdaClase}
-                                    style={{ height: '32px' }}
-                                    title={res ? `Click para gestionar reserva de ${res.huespedNombre}` : `${nombreLimpio} — ${d.fecha}`}
+                                    style={{ height: "32px" }}
+                                    title={
+                                      res
+                                        ? `Click para gestionar reserva de ${res.huespedNombre}`
+                                        : `${nombreLimpio} — ${d.fecha}`
+                                    }
                                   >
                                     {contenido}
                                   </td>
@@ -1915,7 +2529,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               )}
 
               {/* VISTA 3.2: POR LISTA */}
-              {vistaReservas === 'lista' && (
+              {vistaReservas === "lista" && (
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
                   <table className="w-full border-collapse text-left text-xs">
                     <thead>
@@ -1926,47 +2540,80 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <th className="p-3.5 font-semibold">Fecha Salida</th>
                         <th className="p-3.5 font-semibold">Monto (Bs)</th>
                         <th className="p-3.5 font-semibold">Estado de Pago</th>
-                        <th className="p-3.5 font-semibold text-right">Acciones</th>
+                        <th className="p-3.5 font-semibold text-right">
+                          Acciones
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {reservas.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="p-4 text-center text-[#C9B096]">No hay reservas registradas en la base de datos.</td>
+                          <td
+                            colSpan={7}
+                            className="p-4 text-center text-[#C9B096]"
+                          >
+                            No hay reservas registradas en la base de datos.
+                          </td>
                         </tr>
                       ) : (
-                        reservas.map(r => (
-                          <tr key={r.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
-                            <td className="p-3.5 font-medium text-white">{r.huespedNombre}</td>
-                            <td className="p-3.5 text-[#F5EBDC]">{r.ambienteCodigo}</td>
-                            <td className="p-3.5 text-[#C9B096]">{r.fechaEntrada}</td>
-                            <td className="p-3.5 text-[#C9B096]">{r.fechaSalida}</td>
-                            <td className="p-3.5 text-[#E0A526] font-bold">Bs {r.montoTotal || 300}</td>
+                        reservas.map((r) => (
+                          <tr
+                            key={r.id}
+                            className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50"
+                          >
+                            <td className="p-3.5 font-medium text-white">
+                              {r.huespedNombre}
+                            </td>
+                            <td className="p-3.5 text-[#F5EBDC]">
+                              {r.ambienteCodigo}
+                            </td>
+                            <td className="p-3.5 text-[#C9B096]">
+                              {r.fechaEntrada}
+                            </td>
+                            <td className="p-3.5 text-[#C9B096]">
+                              {r.fechaSalida}
+                            </td>
+                            <td className="p-3.5 text-[#E0A526] font-bold">
+                              Bs {r.montoTotal || 300}
+                            </td>
                             <td className="p-3.5">
-                              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                                r.estadoPago === 'confirmada' ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]' : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]'
-                              }`}>
-                                {r.estadoPago === 'confirmada' ? 'Pagada' : 'Pendiente'}
+                              <span
+                                className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                                  r.estadoPago === "confirmada"
+                                    ? "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]"
+                                    : "bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]"
+                                }`}
+                              >
+                                {r.estadoPago === "confirmada"
+                                  ? "Pagada"
+                                  : "Pendiente"}
                               </span>
                             </td>
                             <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                               <button
                                 onClick={async () => {
-                                  if (confirm(`¿Eliminar la reserva de ${r.huespedNombre} en ${r.ambienteCodigo}?`)) {
-                                    setReservas(reservas.filter(x => x.id !== r.id));
-                                    mostrarNotificacion('Reserva eliminada con éxito.');
+                                  if (
+                                    confirm(
+                                      `¿Eliminar la reserva de ${r.huespedNombre} en ${r.ambienteCodigo}?`,
+                                    )
+                                  ) {
+                                    setReservas(
+                                      reservas.filter((x) => x.id !== r.id),
+                                    );
+                                    mostrarNotificacion(
+                                      "Reserva eliminada con éxito.",
+                                    );
                                     try {
-                                      await supabase.from('reservas').delete().eq('id', r.id);
+                                      await supabase
+                                        .from("reservas")
+                                        .delete()
+                                        .eq("id", r.id);
                                     } catch (e) {
                                       console.warn(e);
                                     }
                                   }
                                 }}
                                 className="px-2.5 py-1 rounded-lg bg-[#2D1E12] border border-[#5A3418] hover:bg-rose-950/40 text-rose-400 font-semibold text-[11px] cursor-pointer"
-                              >
-                                ✕ Eliminar
-                              </button>
-                            </td>
                               >
                                 ✕ Eliminar
                               </button>
@@ -1980,14 +2627,16 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               )}
 
               {/* VISTA 3.3: SOLICITUDES EN LÍNEA DE CLIENTES (WEB) */}
-              {vistaReservas === 'solicitudes' && (
+              {vistaReservas === "solicitudes" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-[#C9B096]">
-                      Solicitudes de reserva recibidas en tiempo real desde la página web pública de Hotel Asiri.
+                      Solicitudes de reserva recibidas en tiempo real desde la
+                      página web pública de Hotel Asiri.
                     </p>
                     <span className="text-xs text-[#E0A526] font-semibold">
-                      {solicitudesPendientes} pendiente{solicitudesPendientes !== 1 ? 's' : ''}
+                      {solicitudesPendientes} pendiente
+                      {solicitudesPendientes !== 1 ? "s" : ""}
                     </span>
                   </div>
 
@@ -1995,50 +2644,79 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     <table className="w-full border-collapse text-left text-xs">
                       <thead>
                         <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
-                          <th className="p-3.5 font-semibold">Cliente / Huésped</th>
+                          <th className="p-3.5 font-semibold">
+                            Cliente / Huésped
+                          </th>
                           <th className="p-3.5 font-semibold">Contacto</th>
                           <th className="p-3.5 font-semibold">Habitación</th>
                           <th className="p-3.5 font-semibold">Fechas</th>
                           <th className="p-3.5 font-semibold">Personas</th>
                           <th className="p-3.5 font-semibold">Estado</th>
-                          <th className="p-3.5 font-semibold text-right">Acciones</th>
+                          <th className="p-3.5 font-semibold text-right">
+                            Acciones
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {solicitudes.length === 0 ? (
                           <tr>
-                            <td colSpan={7} className="p-8 text-center text-[#C9B096]">
-                              No hay solicitudes de reserva web registradas todavía.
+                            <td
+                              colSpan={7}
+                              className="p-8 text-center text-[#C9B096]"
+                            >
+                              No hay solicitudes de reserva web registradas
+                              todavía.
                             </td>
                           </tr>
                         ) : (
-                          solicitudes.map(s => (
-                            <tr key={s.id} className="border-b border-[#3D2817]/60 hover:bg-[#2D1E12]/50">
+                          solicitudes.map((s) => (
+                            <tr
+                              key={s.id}
+                              className="border-b border-[#3D2817]/60 hover:bg-[#2D1E12]/50"
+                            >
                               <td className="p-3.5">
-                                <div className="font-bold text-white">{s.nombre}</div>
-                                {s.email && <div className="text-[11px] text-[#C9B096]">{s.email}</div>}
+                                <div className="font-bold text-white">
+                                  {s.nombre}
+                                </div>
+                                {s.email && (
+                                  <div className="text-[11px] text-[#C9B096]">
+                                    {s.email}
+                                  </div>
+                                )}
                               </td>
-                              <td className="p-3.5 text-[#F5EBDC] font-mono">{s.telefono}</td>
+                              <td className="p-3.5 text-[#F5EBDC] font-mono">
+                                {s.telefono}
+                              </td>
                               <td className="p-3.5">
-                                <span className="font-semibold text-[#E0A526]">{s.ambienteCodigo}</span>
+                                <span className="font-semibold text-[#E0A526]">
+                                  {s.ambienteCodigo}
+                                </span>
                               </td>
                               <td className="p-3.5 text-[#C9B096]">
-                                <div>{s.fechaEntrada} <span className="text-[#E0A526]">→</span> {s.fechaSalida}</div>
+                                <div>
+                                  {s.fechaEntrada}{" "}
+                                  <span className="text-[#E0A526]">→</span>{" "}
+                                  {s.fechaSalida}
+                                </div>
                               </td>
-                              <td className="p-3.5 text-[#F5EBDC]">{s.personas} pers.</td>
+                              <td className="p-3.5 text-[#F5EBDC]">
+                                {s.personas} pers.
+                              </td>
                               <td className="p-3.5">
-                                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                                  s.estado === 'confirmada'
-                                    ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'
-                                    : s.estado === 'rechazada'
-                                    ? 'bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]'
-                                    : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F] animate-pulse'
-                                }`}>
+                                <span
+                                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                                    s.estado === "confirmada"
+                                      ? "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]"
+                                      : s.estado === "rechazada"
+                                        ? "bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]"
+                                        : "bg-[#96690F]/20 text-[#F0C14B] border-[#96690F] animate-pulse"
+                                  }`}
+                                >
                                   {s.estado.toUpperCase()}
                                 </span>
                               </td>
                               <td className="p-3.5 text-right space-x-2">
-                                {s.estado === 'pendiente' ? (
+                                {s.estado === "pendiente" ? (
                                   <>
                                     <button
                                       onClick={() => handleAprobarSolicitud(s)}
@@ -2048,7 +2726,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                       ✓ Aprobar
                                     </button>
                                     <button
-                                      onClick={() => handleRechazarSolicitud(s.id)}
+                                      onClick={() =>
+                                        handleRechazarSolicitud(s.id)
+                                      }
                                       className="px-3 py-1.5 rounded-lg bg-[#2D1E12] hover:bg-[#3D2817] text-[#C9B096] hover:text-white text-xs font-semibold border border-[#5A3418] cursor-pointer"
                                       title="Rechazar solicitud"
                                     >
@@ -2056,7 +2736,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                     </button>
                                   </>
                                 ) : (
-                                  <span className="text-[11px] text-[#C9B096] italic">Procesada</span>
+                                  <span className="text-[11px] text-[#C9B096] italic">
+                                    Procesada
+                                  </span>
                                 )}
                               </td>
                             </tr>
@@ -2071,48 +2753,62 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 4: CHECK-IN / CHECK-OUT */}
-          {seccionActiva === 'checkin_out' && (
+          {seccionActiva === "checkin_out" && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Check-in / Check-out</h2>
-                <p className="text-sm text-[#C9B096] mt-0.5">Control de entradas (8:30 a 12:00) y salidas (hasta 11:00)</p>
+                <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                  Check-in / Check-out
+                </h2>
+                <p className="text-sm text-[#C9B096] mt-0.5">
+                  Control de entradas (8:30 a 12:00) y salidas (hasta 11:00)
+                </p>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-5 space-y-3.5 shadow-xl">
                   <div className="border-b border-[#3D2817] pb-3 flex items-center justify-between">
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">Llegadas pendientes</h3>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">
+                      Llegadas pendientes
+                    </h3>
                     <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E0A526]/20 text-[#E0A526] border border-[#E0A526]/40 font-bold">
                       {llegadasPendientes.length} por ingresar
                     </span>
                   </div>
 
                   {llegadasPendientes.length === 0 ? (
-                    <p className="text-xs text-[#C9B096]">No hay check-ins pendientes en este momento.</p>
+                    <p className="text-xs text-[#C9B096]">
+                      No hay check-ins pendientes en este momento.
+                    </p>
                   ) : (
                     llegadasPendientes.map((item, idx) => (
-                      <div key={item.id || idx} className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] hover:border-[#E0A526]/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div
+                        key={item.id || idx}
+                        className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] hover:border-[#E0A526]/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      >
                         <div>
                           <div className="flex items-center gap-2">
-                            <p className="font-bold text-[#F5EBDC] text-sm">{item.huespedNombre}</p>
+                            <p className="font-bold text-[#F5EBDC] text-sm">
+                              {item.huespedNombre}
+                            </p>
                             <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E0A526]/20 text-[#E0A526] font-semibold border border-[#E0A526]/30">
                               {item.ambienteCodigo}
                             </span>
                           </div>
                           <p className="text-xs text-[#C9B096] mt-0.5">
                             Fechas: {item.fechaEntrada} al {item.fechaSalida}
-                            {item.documento ? ` · Doc: ${item.documento}` : ''}
+                            {item.documento ? ` · Doc: ${item.documento}` : ""}
                           </p>
                           <span className="text-[11px] text-[#F0C14B] font-medium block mt-1">
-                            ⚠️ Requiere Check-in para ingresar y ocupar habitación
+                            ⚠️ Requiere Check-in para ingresar y ocupar
+                            habitación
                           </span>
                         </div>
                         <button
                           onClick={() => {
                             setShowCheckInModal(item);
-                            setFormCheckInDoc(item.documento || '');
+                            setFormCheckInDoc(item.documento || "");
                             setFormCheckInFotocopia(true);
-                            setFormCheckInObs('');
+                            setFormCheckInObs("");
                           }}
                           className="px-4 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                         >
@@ -2125,34 +2821,51 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                 <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] p-5 space-y-3.5 shadow-xl">
                   <div className="border-b border-[#3D2817] pb-3 flex items-center justify-between">
-                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">Huéspedes Alojados</h3>
+                    <h3 className="font-['Young_Serif',serif] text-xl text-[#F5EBDC]">
+                      Huéspedes Alojados
+                    </h3>
                     <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#5FD08E]/20 text-[#5FD08E] border border-[#5FD08E]/40 font-bold">
-                      {estadias.filter(e => e.estado === 'en_curso').length} hospedados
+                      {estadias.filter((e) => e.estado === "en_curso").length}{" "}
+                      hospedados
                     </span>
                   </div>
 
-                  {estadias.filter(e => e.estado === 'en_curso').length === 0 ? (
-                    <p className="text-xs text-[#C9B096]">No hay huéspedes alojados actualmente.</p>
+                  {estadias.filter((e) => e.estado === "en_curso").length ===
+                  0 ? (
+                    <p className="text-xs text-[#C9B096]">
+                      No hay huéspedes alojados actualmente.
+                    </p>
                   ) : (
-                    estadias.filter(e => e.estado === 'en_curso').map(e => (
-                      <div key={e.id} className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] flex items-center justify-between">
-                        <div>
-                          <p className="font-bold text-[#F5EBDC] text-sm">{e.huespedNombre} · {e.ambienteCodigo}</p>
-                          <p className="text-xs text-[#C9B096]">Salida programada: {e.fechaSalida}</p>
-                          <span className="text-[11px] text-[#5FD08E] font-medium block mt-0.5">✓ En estadía activa</span>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setShowCheckOutWarning(e);
-                            setFormCheckOutLlave(true);
-                            setFormCheckOutHabitacionOk(true);
-                          }}
-                          className="px-4 py-2 rounded-xl bg-[#3D2817] hover:bg-[#C2570C] text-[#F5EBDC] font-bold text-xs border border-[#5A3418] cursor-pointer"
+                    estadias
+                      .filter((e) => e.estado === "en_curso")
+                      .map((e) => (
+                        <div
+                          key={e.id}
+                          className="p-4 rounded-xl bg-[#2D1E12] border border-[#3D2817] flex items-center justify-between"
                         >
-                          Check-out →
-                        </button>
-                      </div>
-                    ))
+                          <div>
+                            <p className="font-bold text-[#F5EBDC] text-sm">
+                              {e.huespedNombre} · {e.ambienteCodigo}
+                            </p>
+                            <p className="text-xs text-[#C9B096]">
+                              Salida programada: {e.fechaSalida}
+                            </p>
+                            <span className="text-[11px] text-[#5FD08E] font-medium block mt-0.5">
+                              ✓ En estadía activa
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setShowCheckOutWarning(e);
+                              setFormCheckOutLlave(true);
+                              setFormCheckOutHabitacionOk(true);
+                            }}
+                            className="px-4 py-2 rounded-xl bg-[#3D2817] hover:bg-[#C2570C] text-[#F5EBDC] font-bold text-xs border border-[#5A3418] cursor-pointer"
+                          >
+                            Check-out →
+                          </button>
+                        </div>
+                      ))
                   )}
                 </div>
               </div>
@@ -2160,26 +2873,32 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 5: HUÉSPEDES (CRUD COMPLETO CON HISTORIAL) */}
-          {seccionActiva === 'huespedes' && (
+          {seccionActiva === "huespedes" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Huéspedes</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Directorio de huéspedes, códigos HU- y control de fotocopias</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Huéspedes
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Directorio de huéspedes, códigos HU- y control de fotocopias
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2.5">
                   <button
                     onClick={() => {
                       if (huespedes.length === 0) {
-                        mostrarNotificacion('No hay huéspedes registrados para modificar.');
+                        mostrarNotificacion(
+                          "No hay huéspedes registrados para modificar.",
+                        );
                         return;
                       }
                       const h = huespedes[0];
                       setHuespedAEditar(h);
                       setFormHuespedNombre(h.nombre);
                       setFormHuespedDoc(h.documento);
-                      setFormHuespedEmail(h.email || '');
+                      setFormHuespedEmail(h.email || "");
                       setFormHuespedContacto(h.contacto);
                       setFormHuespedFotocopia(h.fotocopiaRecibida);
                     }}
@@ -2190,10 +2909,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                   <button
                     onClick={() => {
-                      setFormHuespedNombre('');
-                      setFormHuespedDoc('');
-                      setFormHuespedContacto('');
-                      setFormHuespedEmail('');
+                      setFormHuespedNombre("");
+                      setFormHuespedDoc("");
+                      setFormHuespedContacto("");
+                      setFormHuespedEmail("");
                       setFormHuespedFotocopia(false);
                       setShowNuevoHuespedModal(true);
                     }}
@@ -2211,30 +2930,50 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       <th className="p-3.5 font-semibold">Perfil</th>
                       <th className="p-3.5 font-semibold">Nombre Completo</th>
                       <th className="p-3.5 font-semibold">Documento (CI)</th>
-                      <th className="p-3.5 font-semibold">Correo Electrónico</th>
-                      <th className="p-3.5 font-semibold">Teléfono / WhatsApp</th>
+                      <th className="p-3.5 font-semibold">
+                        Correo Electrónico
+                      </th>
+                      <th className="p-3.5 font-semibold">
+                        Teléfono / WhatsApp
+                      </th>
                       <th className="p-3.5 font-semibold">Estadías</th>
                       <th className="p-3.5 font-semibold">Estadía Activa</th>
                       <th className="p-3.5 font-semibold">Fotocopia Carnet</th>
-                      <th className="p-3.5 font-semibold text-right">Acciones</th>
+                      <th className="p-3.5 font-semibold text-right">
+                        Acciones
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {huespedes.map(h => (
-                      <tr key={h.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
-                        <td className="p-3.5 font-bold text-[#E0A526]">{h.codigo}</td>
-                        <td className="p-3.5 font-medium text-white">{h.nombre}</td>
+                    {huespedes.map((h) => (
+                      <tr
+                        key={h.id}
+                        className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50"
+                      >
+                        <td className="p-3.5 font-bold text-[#E0A526]">
+                          {h.codigo}
+                        </td>
+                        <td className="p-3.5 font-medium text-white">
+                          {h.nombre}
+                        </td>
                         <td className="p-3.5 text-[#F5EBDC]">{h.documento}</td>
-                        <td className="p-3.5 text-[#C9B096]">{h.email || '—'}</td>
+                        <td className="p-3.5 text-[#C9B096]">
+                          {h.email || "—"}
+                        </td>
                         <td className="p-3.5 text-[#C9B096]">{h.contacto}</td>
-                        <td className="p-3.5 text-[#F5EBDC]">{h.estadiasTotal} visita{h.estadiasTotal > 1 ? 's' : ''}</td>
+                        <td className="p-3.5 text-[#F5EBDC]">
+                          {h.estadiasTotal} visita
+                          {h.estadiasTotal > 1 ? "s" : ""}
+                        </td>
                         <td className="p-3.5">
                           {h.codigoEstadiaActiva ? (
                             <span className="px-2 py-0.5 rounded bg-[#E0A526]/20 text-[#E0A526] border border-[#E0A526]/40 font-mono text-[11px] font-bold">
                               {h.codigoEstadiaActiva}
                             </span>
                           ) : (
-                            <span className="text-[#6E5644] text-[11px]">Sin estadía activa</span>
+                            <span className="text-[#6E5644] text-[11px]">
+                              Sin estadía activa
+                            </span>
                           )}
                         </td>
                         <td className="p-3.5">
@@ -2257,11 +2996,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                           </button>
                           <button
                             onClick={async () => {
-                              if (confirm(`¿Estás seguro de que deseas eliminar permanentemente al huésped ${h.nombre}?`)) {
-                                setHuespedes(huespedes.filter(x => x.id !== h.id));
-                                mostrarNotificacion(`Huésped ${h.nombre} eliminado.`);
+                              if (
+                                confirm(
+                                  `¿Estás seguro de que deseas eliminar permanentemente al huésped ${h.nombre}?`,
+                                )
+                              ) {
+                                setHuespedes(
+                                  huespedes.filter((x) => x.id !== h.id),
+                                );
+                                mostrarNotificacion(
+                                  `Huésped ${h.nombre} eliminado.`,
+                                );
                                 try {
-                                  await supabase.from('huespedes').delete().eq('id', h.id);
+                                  await supabase
+                                    .from("huespedes")
+                                    .delete()
+                                    .eq("id", h.id);
                                 } catch (e) {
                                   console.warn(e);
                                 }
@@ -2281,12 +3031,17 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 6: CAJA Y PAGOS */}
-          {seccionActiva === 'caja' && (
+          {seccionActiva === "caja" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Caja y Pagos</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Control de ingresos, egresos y comprobantes QR/Transferencias</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Caja y Pagos
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Control de ingresos, egresos y comprobantes
+                    QR/Transferencias
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -2314,16 +3069,28 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               {/* Métricas */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div className="p-5 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                  <span className="text-xs text-[#C9B096] font-semibold">Ingresos registrados hoy</span>
-                  <p className="font-['Young_Serif',serif] text-3xl text-[#5FD08E] mt-1">+ Bs {totalIngresos.toFixed(2)}</p>
+                  <span className="text-xs text-[#C9B096] font-semibold">
+                    Ingresos registrados hoy
+                  </span>
+                  <p className="font-['Young_Serif',serif] text-3xl text-[#5FD08E] mt-1">
+                    + Bs {totalIngresos.toFixed(2)}
+                  </p>
                 </div>
                 <div className="p-5 rounded-2xl bg-[#24170E] border border-[#3D2817] shadow-xl">
-                  <span className="text-xs text-[#C9B096] font-semibold">Egresos registrados hoy</span>
-                  <p className="font-['Young_Serif',serif] text-3xl text-[#F28C38] mt-1">- Bs {totalEgresos.toFixed(2)}</p>
+                  <span className="text-xs text-[#C9B096] font-semibold">
+                    Egresos registrados hoy
+                  </span>
+                  <p className="font-['Young_Serif',serif] text-3xl text-[#F28C38] mt-1">
+                    - Bs {totalEgresos.toFixed(2)}
+                  </p>
                 </div>
                 <div className="p-5 rounded-2xl bg-[#24170E] border border-[#5A3418] shadow-xl">
-                  <span className="text-xs text-[#E0A526] font-semibold">Saldo total en caja</span>
-                  <p className="font-['Young_Serif',serif] text-3xl text-[#E0A526] mt-1">Bs {saldoCaja.toFixed(2)}</p>
+                  <span className="text-xs text-[#E0A526] font-semibold">
+                    Saldo total en caja
+                  </span>
+                  <p className="font-['Young_Serif',serif] text-3xl text-[#E0A526] mt-1">
+                    Bs {saldoCaja.toFixed(2)}
+                  </p>
                 </div>
               </div>
 
@@ -2343,26 +3110,45 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <tbody>
                     {cajaMovimientos.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="p-4 text-center text-[#C9B096]">No hay movimientos registrados en la base de datos.</td>
+                        <td
+                          colSpan={6}
+                          className="p-4 text-center text-[#C9B096]"
+                        >
+                          No hay movimientos registrados en la base de datos.
+                        </td>
                       </tr>
                     ) : (
-                      cajaMovimientos.map(m => (
-                        <tr key={m.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
+                      cajaMovimientos.map((m) => (
+                        <tr
+                          key={m.id}
+                          className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50"
+                        >
                           <td className="p-3.5 text-[#C9B096]">{m.fecha}</td>
                           <td className="p-3.5">
-                            <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                              m.tipo === 'ingreso' ? 'bg-[#2F7D4F]/20 text-[#5FD08E]' : 'bg-[#C2570C]/20 text-[#F28C38]'
-                            }`}>
+                            <span
+                              className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+                                m.tipo === "ingreso"
+                                  ? "bg-[#2F7D4F]/20 text-[#5FD08E]"
+                                  : "bg-[#C2570C]/20 text-[#F28C38]"
+                              }`}
+                            >
                               {m.tipo.toUpperCase()}
                             </span>
                           </td>
-                          <td className="p-3.5 font-bold text-white">{m.categoria}</td>
+                          <td className="p-3.5 font-bold text-white">
+                            {m.categoria}
+                          </td>
                           <td className="p-3.5 text-[#C9B096]">{m.detalle}</td>
                           <td className="p-3.5 text-white">{m.metodo}</td>
-                          <td className={`p-3.5 text-right font-bold text-sm ${
-                            m.tipo === 'ingreso' ? 'text-[#5FD08E]' : 'text-[#F28C38]'
-                          }`}>
-                            {m.tipo === 'ingreso' ? '+' : '-'} Bs {m.monto.toFixed(2)}
+                          <td
+                            className={`p-3.5 text-right font-bold text-sm ${
+                              m.tipo === "ingreso"
+                                ? "text-[#5FD08E]"
+                                : "text-[#F28C38]"
+                            }`}
+                          >
+                            {m.tipo === "ingreso" ? "+" : "-"} Bs{" "}
+                            {m.monto.toFixed(2)}
                           </td>
                         </tr>
                       ))
@@ -2374,12 +3160,17 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 7: LIMPIEZA */}
-          {seccionActiva === 'limpieza' && (
+          {seccionActiva === "limpieza" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Limpieza</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Control de cuartos en desinfección y preparación de ambientes</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Limpieza
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Control de cuartos en desinfección y preparación de
+                    ambientes
+                  </p>
                 </div>
 
                 <button
@@ -2396,21 +3187,35 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {tareasLimpieza.map(t => (
-                    <div key={t.id} className="p-5 rounded-2xl bg-[#24170E] border border-[#3D2817] flex flex-col justify-between space-y-4 shadow-xl">
+                  {tareasLimpieza.map((t) => (
+                    <div
+                      key={t.id}
+                      className="p-5 rounded-2xl bg-[#24170E] border border-[#3D2817] flex flex-col justify-between space-y-4 shadow-xl"
+                    >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-bold text-[#E0A526] text-base">{t.ambienteCodigo}</span>
+                          <span className="font-bold text-[#E0A526] text-base">
+                            {t.ambienteCodigo}
+                          </span>
                           <span className="px-2 py-0.5 rounded text-[11px] bg-[#2D6F8E]/20 text-[#6DB7D9] border border-[#2D6F8E] font-semibold">
-                            {t.origen === 'checkout' ? 'Salida de Huésped' : 'Manual'}
+                            {t.origen === "checkout"
+                              ? "Salida de Huésped"
+                              : "Manual"}
                           </span>
                         </div>
                         <p className="text-sm text-[#F5EBDC]">{t.tarea}</p>
-                        <p className="text-xs text-[#C9B096] mt-2">Asignado a: <strong className="text-white">{t.responsable}</strong></p>
+                        <p className="text-xs text-[#C9B096] mt-2">
+                          Asignado a:{" "}
+                          <strong className="text-white">
+                            {t.responsable}
+                          </strong>
+                        </p>
                       </div>
 
                       <button
-                        onClick={() => handleLiberarHabitacion(t.ambienteCodigo)}
+                        onClick={() =>
+                          handleLiberarHabitacion(t.ambienteCodigo)
+                        }
                         className="w-full py-2.5 rounded-xl bg-[#2D6F8E] hover:bg-[#2F7D4F] text-white text-xs font-bold transition-all shadow cursor-pointer"
                       >
                         ✓ Marcar como Lista (Liberar Habitación)
@@ -2423,19 +3228,25 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 8: CONTROL DE PERSONAL (USUARIOS) */}
-          {seccionActiva === 'usuarios' && esAdmin && (
+          {seccionActiva === "usuarios" && esAdmin && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Control de personal</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Altas, bajas y roles del personal del hotel</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Control de personal
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Altas, bajas y roles del personal del hotel
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2.5">
                   <button
                     onClick={() => {
                       if (personal.length === 0) {
-                        mostrarNotificacion('No hay personal registrado para modificar.');
+                        mostrarNotificacion(
+                          "No hay personal registrado para modificar.",
+                        );
                         return;
                       }
                       const p = personal[0];
@@ -2463,31 +3274,44 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <thead>
                     <tr className="border-b border-[#3D2817] bg-[#1E140C] text-[#C9B096]">
                       <th className="p-3.5 font-semibold">Nombre Completo</th>
-                      <th className="p-3.5 font-semibold">Correo Electrónico</th>
+                      <th className="p-3.5 font-semibold">
+                        Correo Electrónico
+                      </th>
                       <th className="p-3.5 font-semibold">Rol Asignado</th>
                       <th className="p-3.5 font-semibold">Estado</th>
-                      <th className="p-3.5 font-semibold text-right">Acciones</th>
+                      <th className="p-3.5 font-semibold text-right">
+                        Acciones
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {personal.map(p => (
-                      <tr key={p.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
-                        <td className="p-3.5 font-bold text-white">{p.nombre}</td>
+                    {personal.map((p) => (
+                      <tr
+                        key={p.id}
+                        className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50"
+                      >
+                        <td className="p-3.5 font-bold text-white">
+                          {p.nombre}
+                        </td>
                         <td className="p-3.5 text-[#C9B096]">{p.email}</td>
                         <td className="p-3.5">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
-                            p.rol === 'administrador'
-                              ? 'bg-[#E0A526]/20 text-[#E0A526] border-[#E0A526]'
-                              : p.rol === 'recepcionista'
-                              ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'
-                              : 'bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]'
-                          }`}>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
+                              p.rol === "administrador"
+                                ? "bg-[#E0A526]/20 text-[#E0A526] border-[#E0A526]"
+                                : p.rol === "recepcionista"
+                                  ? "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]"
+                                  : "bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]"
+                            }`}
+                          >
                             {p.rol.toUpperCase()}
                           </span>
                         </td>
                         <td className="p-3.5">
                           {p.activo ? (
-                            <span className="text-[#5FD08E] font-semibold">✓ Activo</span>
+                            <span className="text-[#5FD08E] font-semibold">
+                              ✓ Activo
+                            </span>
                           ) : (
                             <span className="text-[#6E5644]">Inactivo</span>
                           )}
@@ -2495,11 +3319,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                           <button
                             onClick={async () => {
-                              if (confirm(`¿Estás seguro de que deseas eliminar al usuario ${p.nombre}?`)) {
-                                setPersonal(personal.filter(x => x.id !== p.id));
-                                mostrarNotificacion(`Usuario ${p.nombre} eliminado.`);
+                              if (
+                                confirm(
+                                  `¿Estás seguro de que deseas eliminar al usuario ${p.nombre}?`,
+                                )
+                              ) {
+                                setPersonal(
+                                  personal.filter((x) => x.id !== p.id),
+                                );
+                                mostrarNotificacion(
+                                  `Usuario ${p.nombre} eliminado.`,
+                                );
                                 try {
-                                  await supabase.from('perfiles').delete().eq('id', p.id);
+                                  await supabase
+                                    .from("perfiles")
+                                    .delete()
+                                    .eq("id", p.id);
                                 } catch (e) {
                                   console.warn(e);
                                 }
@@ -2519,19 +3354,25 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           )}
 
           {/* VISTA 9: ATENCIÓN AL CLIENTE (CRUD COMPLETO) */}
-          {seccionActiva === 'atencion' && (
+          {seccionActiva === "atencion" && (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">Atención al cliente</h2>
-                  <p className="text-sm text-[#C9B096] mt-0.5">Peticiones, requerimientos especiales y quejas de huéspedes</p>
+                  <h2 className="font-['Young_Serif',serif] text-3xl text-[#F5EBDC]">
+                    Atención al cliente
+                  </h2>
+                  <p className="text-sm text-[#C9B096] mt-0.5">
+                    Peticiones, requerimientos especiales y quejas de huéspedes
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2.5">
                   <button
                     onClick={() => {
                       if (tareasAtencion.length === 0) {
-                        mostrarNotificacion('No hay tareas registradas para modificar.');
+                        mostrarNotificacion(
+                          "No hay tareas registradas para modificar.",
+                        );
                         return;
                       }
                       const t = tareasAtencion[0];
@@ -2551,13 +3392,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                   <button
                     onClick={() => {
-                      setFormAtencionAmbiente(ambientes[0]?.codigo || 'HAB-101');
-                      setFormAtencionHuesped('');
-                      setFormAtencionTipo('Petición especial');
-                      setFormAtencionDesc('');
-                      setFormAtencionPrioridad('Normal');
-                      setFormAtencionResponsable('Recepción');
-                      setFormAtencionEstado('pendiente');
+                      setFormAtencionAmbiente(
+                        ambientes[0]?.codigo || "HAB-101",
+                      );
+                      setFormAtencionHuesped("");
+                      setFormAtencionTipo("Petición especial");
+                      setFormAtencionDesc("");
+                      setFormAtencionPrioridad("Normal");
+                      setFormAtencionResponsable("Recepción");
+                      setFormAtencionEstado("pendiente");
                       setShowNuevaTareaAtencionModal(true);
                     }}
                     className="px-4 py-2.5 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow flex items-center gap-1.5 cursor-pointer"
@@ -2570,24 +3413,36 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               {/* Filtros por estado */}
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="text-xs text-[#C9B096]">Filtrar por:</span>
-                {(['todos', 'pendiente', 'en_proceso', 'resuelta'] as const).map(est => (
+                {(
+                  ["todos", "pendiente", "en_proceso", "resuelta"] as const
+                ).map((est) => (
                   <button
                     key={est}
                     onClick={() => setFiltroAtencionEstado(est)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                      filtroAtencionEstado === est 
-                        ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' 
-                        : 'bg-[#24170E] border-[#3D2817] text-[#C9B096]'
+                      filtroAtencionEstado === est
+                        ? "bg-[#E0A526] text-[#1E140C] border-[#E0A526]"
+                        : "bg-[#24170E] border-[#3D2817] text-[#C9B096]"
                     }`}
                   >
-                    {est === 'todos' ? 'Todas' : (est === 'pendiente' ? 'Pendientes' : (est === 'en_proceso' ? 'En proceso' : 'Resueltas'))}
+                    {est === "todos"
+                      ? "Todas"
+                      : est === "pendiente"
+                        ? "Pendientes"
+                        : est === "en_proceso"
+                          ? "En proceso"
+                          : "Resueltas"}
                   </button>
                 ))}
               </div>
 
               {/* Tabla de Tareas de Atención */}
               <div className="rounded-2xl border border-[#3D2817] bg-[#24170E] overflow-hidden shadow-xl">
-                {tareasAtencion.filter(t => filtroAtencionEstado === 'todos' || t.estado === filtroAtencionEstado).length === 0 ? (
+                {tareasAtencion.filter(
+                  (t) =>
+                    filtroAtencionEstado === "todos" ||
+                    t.estado === filtroAtencionEstado,
+                ).length === 0 ? (
                   <div className="p-8 text-center text-sm text-[#C9B096]">
                     No hay tareas ni solicitudes registradas con este filtro.
                   </div>
@@ -2598,54 +3453,98 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         <th className="p-3.5 font-semibold">Habitación</th>
                         <th className="p-3.5 font-semibold">Huésped</th>
                         <th className="p-3.5 font-semibold">Tipo</th>
-                        <th className="p-3.5 font-semibold">Detalle de la solicitud</th>
+                        <th className="p-3.5 font-semibold">
+                          Detalle de la solicitud
+                        </th>
                         <th className="p-3.5 font-semibold">Prioridad</th>
                         <th className="p-3.5 font-semibold">Responsable</th>
                         <th className="p-3.5 font-semibold">Estado</th>
-                        <th className="p-3.5 font-semibold text-right">Acciones</th>
+                        <th className="p-3.5 font-semibold text-right">
+                          Acciones
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {tareasAtencion
-                        .filter(t => filtroAtencionEstado === 'todos' || t.estado === filtroAtencionEstado)
-                        .map(t => {
-                          const badgePrioridad = t.prioridad === 'Urgente'
-                            ? 'bg-rose-950/60 text-rose-300 border-rose-800'
-                            : (t.prioridad === 'Alta' 
-                               ? 'bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]' 
-                               : (t.prioridad === 'Normal' ? 'bg-[#E0A526]/20 text-[#E0A526] border-[#E0A526]/50' : 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'));
+                        .filter(
+                          (t) =>
+                            filtroAtencionEstado === "todos" ||
+                            t.estado === filtroAtencionEstado,
+                        )
+                        .map((t) => {
+                          const badgePrioridad =
+                            t.prioridad === "Urgente"
+                              ? "bg-rose-950/60 text-rose-300 border-rose-800"
+                              : t.prioridad === "Alta"
+                                ? "bg-[#C2570C]/20 text-[#F28C38] border-[#C2570C]"
+                                : t.prioridad === "Normal"
+                                  ? "bg-[#E0A526]/20 text-[#E0A526] border-[#E0A526]/50"
+                                  : "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]";
 
-                          const badgeEstado = t.estado === 'resuelta'
-                            ? 'bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]'
-                            : (t.estado === 'en_proceso' 
-                               ? 'bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]' 
-                               : 'bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]');
+                          const badgeEstado =
+                            t.estado === "resuelta"
+                              ? "bg-[#2F7D4F]/20 text-[#5FD08E] border-[#2F7D4F]"
+                              : t.estado === "en_proceso"
+                                ? "bg-[#2D6F8E]/20 text-[#6DB7D9] border-[#2D6F8E]"
+                                : "bg-[#96690F]/20 text-[#F0C14B] border-[#96690F]";
 
                           return (
-                            <tr key={t.id} className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50">
-                              <td className="p-3.5 font-bold text-[#E0A526]">{t.ambienteCodigo}</td>
-                              <td className="p-3.5 font-medium text-white">{t.huespedNombre || 'Huésped'}</td>
-                              <td className="p-3.5 text-[#C9B096] font-semibold">{t.tipo}</td>
-                              <td className="p-3.5 text-[#F5EBDC] max-w-xs">{t.descripcion}</td>
+                            <tr
+                              key={t.id}
+                              className="border-b border-[#3D2817] hover:bg-[#2D1E12]/50"
+                            >
+                              <td className="p-3.5 font-bold text-[#E0A526]">
+                                {t.ambienteCodigo}
+                              </td>
+                              <td className="p-3.5 font-medium text-white">
+                                {t.huespedNombre || "Huésped"}
+                              </td>
+                              <td className="p-3.5 text-[#C9B096] font-semibold">
+                                {t.tipo}
+                              </td>
+                              <td className="p-3.5 text-[#F5EBDC] max-w-xs">
+                                {t.descripcion}
+                              </td>
                               <td className="p-3.5">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgePrioridad}`}>
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgePrioridad}`}
+                                >
                                   {t.prioridad}
                                 </span>
                               </td>
-                              <td className="p-3.5 text-[#C9B096]">{t.responsable || 'Recepción'}</td>
+                              <td className="p-3.5 text-[#C9B096]">
+                                {t.responsable || "Recepción"}
+                              </td>
                               <td className="p-3.5">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeEstado}`}>
-                                  {t.estado === 'resuelta' ? '✓ Resuelta' : (t.estado === 'en_proceso' ? 'En proceso' : 'Pendiente')}
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeEstado}`}
+                                >
+                                  {t.estado === "resuelta"
+                                    ? "✓ Resuelta"
+                                    : t.estado === "en_proceso"
+                                      ? "En proceso"
+                                      : "Pendiente"}
                                 </span>
                               </td>
                               <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
-                                {t.estado !== 'resuelta' && (
+                                {t.estado !== "resuelta" && (
                                   <button
                                     onClick={async () => {
-                                      setTareasAtencion(tareasAtencion.map(x => x.id === t.id ? { ...x, estado: 'resuelta' } : x));
-                                      mostrarNotificacion('Tarea marcada como completa.');
+                                      setTareasAtencion(
+                                        tareasAtencion.map((x) =>
+                                          x.id === t.id
+                                            ? { ...x, estado: "resuelta" }
+                                            : x,
+                                        ),
+                                      );
+                                      mostrarNotificacion(
+                                        "Tarea marcada como completa.",
+                                      );
                                       try {
-                                        await supabase.from('tareas_atencion').update({ estado: 'resuelta' }).eq('id', t.id);
+                                        await supabase
+                                          .from("tareas_atencion")
+                                          .update({ estado: "resuelta" })
+                                          .eq("id", t.id);
                                       } catch (e) {
                                         console.warn(e);
                                       }
@@ -2658,11 +3557,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                                 )}
                                 <button
                                   onClick={async () => {
-                                    if (confirm('¿Eliminar esta tarea de atención?')) {
-                                      setTareasAtencion(tareasAtencion.filter(x => x.id !== t.id));
-                                      mostrarNotificacion('Tarea eliminada.');
+                                    if (
+                                      confirm(
+                                        "¿Eliminar esta tarea de atención?",
+                                      )
+                                    ) {
+                                      setTareasAtencion(
+                                        tareasAtencion.filter(
+                                          (x) => x.id !== t.id,
+                                        ),
+                                      );
+                                      mostrarNotificacion("Tarea eliminada.");
                                       try {
-                                        await supabase.from('tareas_atencion').delete().eq('id', t.id);
+                                        await supabase
+                                          .from("tareas_atencion")
+                                          .delete()
+                                          .eq("id", t.id);
                                       } catch (e) {
                                         console.warn(e);
                                       }
@@ -2682,7 +3592,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
             </div>
           )}
-
         </main>
       </div>
 
@@ -2699,11 +3608,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevoIngresoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Registrar ingreso</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Registrar ingreso
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Fecha *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Fecha *
+                </label>
                 <input
                   type="date"
                   value={nuevoMovFecha}
@@ -2713,7 +3626,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Categoría *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Categoría *
+                </label>
                 <select
                   value={nuevoMovCategoria}
                   onChange={(e) => setNuevoMovCategoria(e.target.value)}
@@ -2727,31 +3642,40 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Reserva vinculada</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Reserva vinculada
+                </label>
                 <select
                   value={nuevoMovReservaVinculada}
                   onChange={(e) => {
                     const selId = e.target.value;
                     setNuevoMovReservaVinculada(selId);
-                    const res = reservas.find(r => r.id === selId);
+                    const res = reservas.find((r) => r.id === selId);
                     if (res) {
-                      setNuevoMovDetalle(`Cobro estadía ${res.ambienteCodigo} - ${res.huespedNombre}`);
+                      setNuevoMovDetalle(
+                        `Cobro estadía ${res.ambienteCodigo} - ${res.huespedNombre}`,
+                      );
                       setNuevoMovMonto(String(res.montoTotal || 300));
                     }
                   }}
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                 >
                   <option value="">— sin vincular —</option>
-                  {reservas.filter(r => r.estadoPago === 'pendiente').map(r => (
-                    <option key={r.id} value={r.id}>
-                      {r.ambienteCodigo} — {r.huespedNombre} (Por pagar: Bs {r.montoTotal || 300})
-                    </option>
-                  ))}
+                  {reservas
+                    .filter((r) => r.estadoPago === "pendiente")
+                    .map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.ambienteCodigo} — {r.huespedNombre} (Por pagar: Bs{" "}
+                        {r.montoTotal || 300})
+                      </option>
+                    ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Detalle *
+                </label>
                 <input
                   type="text"
                   value={nuevoMovDetalle}
@@ -2762,7 +3686,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Monto (Bs) *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Monto (Bs) *
+                </label>
                 <input
                   type="number"
                   value={nuevoMovMonto}
@@ -2773,20 +3699,24 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Método *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Método *
+                </label>
                 <select
                   value={nuevoMovMetodo}
                   onChange={(e) => setNuevoMovMetodo(e.target.value as any)}
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#E0A526] outline-none"
                 >
                   <option value="Efectivo">Efectivo</option>
-                  <option value="Pago QR (Presencial)">Pago QR (Presencial)</option>
+                  <option value="Pago QR (Presencial)">
+                    Pago QR (Presencial)
+                  </option>
                   <option value="Tarjeta">Tarjeta de Crédito / Débito</option>
                   <option value="Transferencia">Transferencia bancaria</option>
                 </select>
               </div>
 
-              {nuevoMovMetodo === 'Pago QR (Presencial)' && (
+              {nuevoMovMetodo === "Pago QR (Presencial)" && (
                 <div className="p-3 rounded-xl bg-[#1E140C] border border-[#3D2817] space-y-1.5">
                   <label className="block text-xs text-[#E0A526] font-semibold">
                     Comprobante de pago QR (Subir captura / recibo):
@@ -2796,13 +3726,17 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     accept="image/*"
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
-                        setNuevoMovComprobante(URL.createObjectURL(e.target.files[0]));
+                        setNuevoMovComprobante(
+                          URL.createObjectURL(e.target.files[0]),
+                        );
                       }
                     }}
                     className="text-xs text-[#C9B096]"
                   />
                   {nuevoMovComprobante && (
-                    <p className="text-[11px] text-[#5FD08E]">✓ Archivo seleccionado correctamente.</p>
+                    <p className="text-[11px] text-[#5FD08E]">
+                      ✓ Archivo seleccionado correctamente.
+                    </p>
                   )}
                 </div>
               )}
@@ -2826,28 +3760,38 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         </div>
       )}
 
-            {/* 2. MODAL NUEVA RESERVA */}
+      {/* 2. MODAL NUEVA RESERVA */}
       {showNuevaReservaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Nueva reserva</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Nueva reserva
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Ambiente / Habitación *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Ambiente / Habitación *
+                </label>
                 <select
                   value={reservaAmbiente}
                   onChange={(e) => {
                     const sel = e.target.value;
                     setReservaAmbiente(sel);
-                    const ambObj = ambientes.find(a => a.id === sel || a.nombre === sel || a.codigo === sel);
+                    const ambObj = ambientes.find(
+                      (a) =>
+                        a.id === sel || a.nombre === sel || a.codigo === sel,
+                    );
                     if (ambObj) setReservaAmbienteId(ambObj.id);
                     verificarYLimpiarPorFecha(reservaEntrada, reservaSalida);
                   }}
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC]"
                 >
-                  {ambientes.map(a => (
-                    <option key={a.id} value={a.nombre || `${a.codigo} ${a.tipo}`}>
+                  {ambientes.map((a) => (
+                    <option
+                      key={a.id}
+                      value={a.nombre || `${a.codigo} ${a.tipo}`}
+                    >
                       {a.nombre || `${a.codigo} ${a.tipo}`}
                     </option>
                   ))}
@@ -2855,29 +3799,40 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
                 {/* PRÓXIMAS RESERVAS REGISTRADAS (Sin filas duplicadas) */}
                 {(() => {
-                  const amb = ambientes.find(a => 
-                    (reservaAmbienteId && a.id === reservaAmbienteId) ||
-                    a.nombre === reservaAmbiente || 
-                    a.codigo === reservaAmbiente || 
-                    reservaAmbiente.includes(a.codigo)
+                  const amb = ambientes.find(
+                    (a) =>
+                      (reservaAmbienteId && a.id === reservaAmbienteId) ||
+                      a.nombre === reservaAmbiente ||
+                      a.codigo === reservaAmbiente ||
+                      reservaAmbiente.includes(a.codigo),
                   );
-                  const hoyStr = new Date().toISOString().split('T')[0];
-                  
+                  const hoyStr = new Date().toISOString().split("T")[0];
+
                   // Filtra y elimina filas duplicadas por clics repetidos previos
                   const prox = reservas
-                    .filter(r => 
-                      (r.ambienteId === amb?.id || r.ambienteCodigo === amb?.codigo || r.ambienteCodigo === amb?.nombre || r.ambienteCodigo === reservaAmbiente) &&
-                      r.fechaSalida >= hoyStr
+                    .filter(
+                      (r) =>
+                        (r.ambienteId === amb?.id ||
+                          r.ambienteCodigo === amb?.codigo ||
+                          r.ambienteCodigo === amb?.nombre ||
+                          r.ambienteCodigo === reservaAmbiente) &&
+                        r.fechaSalida >= hoyStr,
                     )
-                    .filter((r, idx, arr) => 
-                      arr.findIndex(item => item.fechaEntrada === r.fechaEntrada && item.fechaSalida === r.fechaSalida && item.huespedNombre === r.huespedNombre) === idx
+                    .filter(
+                      (r, idx, arr) =>
+                        arr.findIndex(
+                          (item) =>
+                            item.fechaEntrada === r.fechaEntrada &&
+                            item.fechaSalida === r.fechaSalida &&
+                            item.huespedNombre === r.huespedNombre,
+                        ) === idx,
                     );
 
                   if (prox.length === 0) return null;
                   return (
                     <div className="mt-2 p-2.5 rounded-xl bg-[#1E140C] border border-[#5A3418] text-xs">
                       <span className="text-[#E0A526] font-bold block mb-1">
-                         Próximas reservas en {amb?.nombre || reservaAmbiente}:
+                        Próximas reservas en {amb?.nombre || reservaAmbiente}:
                       </span>
                       <div className="space-y-1">
                         {prox.map((p, idx) => (
@@ -2887,17 +3842,27 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                               setReservaEntrada(p.fechaEntrada);
                               setReservaSalida(p.fechaSalida);
                               setReservaHuesped(p.huespedNombre);
-                              setReservaDoc(p.documento || '');
-                              setReservaTel(p.contacto || '');
-                              setReservaEstadoPago(p.estadoPago as any || 'pendiente');
+                              setReservaDoc(p.documento || "");
+                              setReservaTel(p.contacto || "");
+                              setReservaEstadoPago(
+                                (p.estadoPago as any) || "pendiente",
+                              );
                             }}
                             className="flex items-center justify-between p-1.5 rounded bg-[#24170E] hover:bg-[#2D1E12] cursor-pointer text-[#C9B096] text-[11px] transition-colors"
                             title="Click para ver/cargar esta reserva"
                           >
-                            <span>{p.fechaEntrada} al {p.fechaSalida}</span>
-                            <span className="font-semibold text-white">{p.huespedNombre}</span>
-                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${p.estadoPago === 'confirmada' ? 'bg-[#2F7D4F]/30 text-[#5FD08E]' : 'bg-[#96690F]/30 text-[#F0C14B]'}`}>
-                              {p.estadoPago === 'confirmada' ? 'Confirmada' : 'Pendiente'}
+                            <span>
+                              {p.fechaEntrada} al {p.fechaSalida}
+                            </span>
+                            <span className="font-semibold text-white">
+                              {p.huespedNombre}
+                            </span>
+                            <span
+                              className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${p.estadoPago === "confirmada" ? "bg-[#2F7D4F]/30 text-[#5FD08E]" : "bg-[#96690F]/30 text-[#F0C14B]"}`}
+                            >
+                              {p.estadoPago === "confirmada"
+                                ? "Confirmada"
+                                : "Pendiente"}
                             </span>
                           </div>
                         ))}
@@ -2913,7 +3878,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </label>
                 <select
                   onChange={(e) => {
-                    const sel = huespedes.find(h => h.id === e.target.value);
+                    const sel = huespedes.find((h) => h.id === e.target.value);
                     if (sel) {
                       setReservaHuesped(sel.nombre);
                       setReservaDoc(sel.documento);
@@ -2924,9 +3889,10 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#E0A526] outline-none mb-2"
                 >
                   <option value="">— Seleccionar huésped existente —</option>
-                  {huespedes.map(h => (
+                  {huespedes.map((h) => (
                     <option key={h.id} value={h.id}>
-                      {h.nombre} · CI: {h.documento} ({h.estadiasTotal} estadías)
+                      {h.nombre} · CI: {h.documento} ({h.estadiasTotal}{" "}
+                      estadías)
                     </option>
                   ))}
                 </select>
@@ -2934,13 +3900,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-[#C9B096] font-semibold">Nombre del huésped *</label>
+                  <label className="text-[#C9B096] font-semibold">
+                    Nombre del huésped *
+                  </label>
                   <button
                     type="button"
                     onClick={() => {
-                      setReservaHuesped('');
-                      setReservaDoc('');
-                      setReservaTel('');
+                      setReservaHuesped("");
+                      setReservaDoc("");
+                      setReservaTel("");
                     }}
                     className="text-[11px] text-[#E0A526] hover:underline cursor-pointer"
                   >
@@ -2957,7 +3925,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Documento de identidad</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Documento de identidad
+                </label>
                 <input
                   type="text"
                   value={reservaDoc}
@@ -2968,7 +3938,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono o WhatsApp</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Teléfono o WhatsApp
+                </label>
                 <input
                   type="text"
                   value={reservaTel}
@@ -2980,33 +3952,45 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Entrada *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Fecha Entrada *
+                  </label>
                   <input
                     type="date"
                     value={reservaEntrada}
-                    onChange={(e) => verificarYLimpiarPorFecha(e.target.value, reservaSalida)}
+                    onChange={(e) =>
+                      verificarYLimpiarPorFecha(e.target.value, reservaSalida)
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Salida *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Fecha Salida *
+                  </label>
                   <input
                     type="date"
                     value={reservaSalida}
-                    onChange={(e) => verificarYLimpiarPorFecha(reservaEntrada, e.target.value)}
+                    onChange={(e) =>
+                      verificarYLimpiarPorFecha(reservaEntrada, e.target.value)
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Estado de pago *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Estado de pago *
+                </label>
                 <select
                   value={reservaEstadoPago}
                   onChange={(e) => setReservaEstadoPago(e.target.value as any)}
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#E0A526]"
                 >
-                  <option value="pendiente">Pendiente de pago (Por pagar)</option>
+                  <option value="pendiente">
+                    Pendiente de pago (Por pagar)
+                  </option>
                   <option value="confirmada">Confirmada (Pagada)</option>
                 </select>
               </div>
@@ -3027,12 +4011,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 onClick={handleGuardarReserva}
                 disabled={guardandoReserva}
                 className={`px-5 py-2 rounded-xl text-[#1E140C] font-bold text-xs shadow transition-all ${
-                  guardandoReserva 
-                    ? 'bg-[#A87B1D] opacity-60 cursor-not-allowed' 
-                    : 'bg-[#E0A526] hover:bg-[#F28C38] cursor-pointer'
+                  guardandoReserva
+                    ? "bg-[#A87B1D] opacity-60 cursor-not-allowed"
+                    : "bg-[#E0A526] hover:bg-[#F28C38] cursor-pointer"
                 }`}
               >
-                {guardandoReserva ? 'Guardando...' : 'Guardar'}
+                {guardandoReserva ? "Guardando..." : "Guardar"}
               </button>
             </div>
           </div>
@@ -3043,11 +4027,15 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showAddUserModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Añadir nuevo personal</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Añadir nuevo personal
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre Completo *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Nombre Completo *
+                </label>
                 <input
                   type="text"
                   value={nuevoUserNombre}
@@ -3058,7 +4046,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Correo Electrónico *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Correo Electrónico *
+                </label>
                 <input
                   type="email"
                   value={nuevoUserEmail}
@@ -3069,7 +4059,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Contraseña Provisional *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Contraseña Provisional *
+                </label>
                 <input
                   type="password"
                   value={nuevoUserPass}
@@ -3080,7 +4072,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Rol Asignado *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Rol Asignado *
+                </label>
                 <select
                   value={nuevoUserRol}
                   onChange={(e) => setNuevoUserRol(e.target.value as any)}
@@ -3115,35 +4109,69 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevaTareaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Nueva tarea de limpieza</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Nueva tarea de limpieza
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Ambiente / Habitación *</label>
-                <select value={nuevaTareaAmbiente} onChange={(e) => setNuevaTareaAmbiente(e.target.value)} className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC]">
-                  {ambientes.map(a => (
-                    <option key={a.id} value={a.codigo}>{a.codigo} — {a.tipo}</option>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Ambiente / Habitación *
+                </label>
+                <select
+                  value={nuevaTareaAmbiente}
+                  onChange={(e) => setNuevaTareaAmbiente(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC]"
+                >
+                  {ambientes.map((a) => (
+                    <option key={a.id} value={a.codigo}>
+                      {a.codigo} — {a.tipo}
+                    </option>
                   ))}
-                  <option value="AC — Pasillos">AC — Áreas comunes / Pasillos</option>
+                  <option value="AC — Pasillos">
+                    AC — Áreas comunes / Pasillos
+                  </option>
                   <option value="AC — Lobby">AC — Lobby Principal</option>
                 </select>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Descripción de la tarea *</label>
-                <input type="text" value={nuevaTareaDesc} onChange={(e) => setNuevaTareaDesc(e.target.value)} placeholder="Ej. Cambio de sábanas y desinfección" className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white" />
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Descripción de la tarea *
+                </label>
+                <input
+                  type="text"
+                  value={nuevaTareaDesc}
+                  onChange={(e) => setNuevaTareaDesc(e.target.value)}
+                  placeholder="Ej. Cambio de sábanas y desinfección"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
+                />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Responsable</label>
-                <input type="text" value={nuevaTareaResponsable} onChange={(e) => setNuevaTareaResponsable(e.target.value)} className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white" />
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Responsable
+                </label>
+                <input
+                  type="text"
+                  value={nuevaTareaResponsable}
+                  onChange={(e) => setNuevaTareaResponsable(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
+                />
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setShowNuevaTareaModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">Cancelar</button>
+              <button
+                onClick={() => setShowNuevaTareaModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
+                Cancelar
+              </button>
               <button
                 onClick={async () => {
                   if (!nuevaTareaDesc) {
-                    mostrarNotificacion('Por favor ingresa la descripción de la tarea.');
+                    mostrarNotificacion(
+                      "Por favor ingresa la descripción de la tarea.",
+                    );
                     return;
                   }
                   const nueva: TareaLimpieza = {
@@ -3151,21 +4179,21 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     ambienteCodigo: nuevaTareaAmbiente,
                     tarea: nuevaTareaDesc,
                     responsable: nuevaTareaResponsable,
-                    origen: 'manual',
-                    estado: 'pendiente'
+                    origen: "manual",
+                    estado: "pendiente",
                   };
                   setTareasLimpieza([nueva, ...tareasLimpieza]);
                   setShowNuevaTareaModal(false);
-                  setNuevaTareaDesc('');
-                  mostrarNotificacion('Tarea de limpieza creada exitosamente.');
+                  setNuevaTareaDesc("");
+                  mostrarNotificacion("Tarea de limpieza creada exitosamente.");
 
                   try {
-                    await supabase.from('tareas_limpieza').insert({
+                    await supabase.from("tareas_limpieza").insert({
                       ambiente_codigo: nuevaTareaAmbiente,
                       tarea: nuevaTareaDesc,
                       responsable: nuevaTareaResponsable,
-                      origen: 'manual',
-                      estado: 'pendiente'
+                      origen: "manual",
+                      estado: "pendiente",
                     });
                   } catch (e) {
                     console.error(e);
@@ -3184,59 +4212,90 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevoEgresoModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#F28C38]">Registrar egreso</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#F28C38]">
+              Registrar egreso
+            </h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Categoría *</label>
-                <select value={nuevoMovCategoria} onChange={(e) => setNuevoMovCategoria(e.target.value)} className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC]">
-                  <option value="Insumos cocina">Insumos cocina / Desayuno</option>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Categoría *
+                </label>
+                <select
+                  value={nuevoMovCategoria}
+                  onChange={(e) => setNuevoMovCategoria(e.target.value)}
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC]"
+                >
+                  <option value="Insumos cocina">
+                    Insumos cocina / Desayuno
+                  </option>
                   <option value="Limpieza">Artículos de limpieza</option>
                   <option value="Mantenimiento">Mantenimiento</option>
                   <option value="Servicios básicos">Servicios básicos</option>
                 </select>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle *</label>
-                <input type="text" value={nuevoMovDetalle} onChange={(e) => setNuevoMovDetalle(e.target.value)} placeholder="Ej. Compra de frutas y pan" className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white" />
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Detalle *
+                </label>
+                <input
+                  type="text"
+                  value={nuevoMovDetalle}
+                  onChange={(e) => setNuevoMovDetalle(e.target.value)}
+                  placeholder="Ej. Compra de frutas y pan"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
+                />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Monto (Bs) *</label>
-                <input type="number" value={nuevoMovMonto} onChange={(e) => setNuevoMovMonto(e.target.value)} placeholder="0.00" className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white" />
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Monto (Bs) *
+                </label>
+                <input
+                  type="number"
+                  value={nuevoMovMonto}
+                  onChange={(e) => setNuevoMovMonto(e.target.value)}
+                  placeholder="0.00"
+                  className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white"
+                />
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setShowNuevoEgresoModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">Cancelar</button>
+              <button
+                onClick={() => setShowNuevoEgresoModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
+                Cancelar
+              </button>
               <button
                 onClick={async () => {
                   if (!nuevoMovMonto || !nuevoMovDetalle) {
-                    mostrarNotificacion('Ingresa detalle y monto.');
+                    mostrarNotificacion("Ingresa detalle y monto.");
                     return;
                   }
                   const nuevoEg: MovimientoCaja = {
                     id: `c-${Date.now()}`,
-                    tipo: 'egreso',
-                    fecha: new Date().toISOString().split('T')[0],
+                    tipo: "egreso",
+                    fecha: new Date().toISOString().split("T")[0],
                     categoria: nuevoMovCategoria,
                     detalle: nuevoMovDetalle,
                     monto: parseFloat(nuevoMovMonto),
-                    metodo: 'Efectivo'
+                    metodo: "Efectivo",
                   };
                   setCajaMovimientos([nuevoEg, ...cajaMovimientos]);
                   setShowNuevoEgresoModal(false);
-                  setNuevoMovDetalle('');
-                  setNuevoMovMonto('');
-                  mostrarNotificacion('Egreso registrado en caja.');
+                  setNuevoMovDetalle("");
+                  setNuevoMovMonto("");
+                  mostrarNotificacion("Egreso registrado en caja.");
 
                   try {
-                    await supabase.from('movimientos_caja').insert({
-                      tipo: 'egreso',
-                      fecha: new Date().toISOString().split('T')[0],
+                    await supabase.from("movimientos_caja").insert({
+                      tipo: "egreso",
+                      fecha: new Date().toISOString().split("T")[0],
                       categoria: nuevoMovCategoria,
                       detalle: nuevoMovDetalle,
                       monto: parseFloat(nuevoMovMonto),
-                      metodo: 'Efectivo'
+                      metodo: "Efectivo",
                     });
                   } catch (e) {
                     console.error(e);
@@ -3255,23 +4314,38 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showCierreCajaModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Cierre de Caja / Fin de Turno</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Cierre de Caja / Fin de Turno
+            </h3>
             <div className="p-4 rounded-xl bg-[#1E140C] border border-[#3D2817] text-xs space-y-2">
               <div className="flex justify-between">
-                <span className="text-[#C9B096]">Ingresos totales del día:</span>
-                <span className="text-[#5FD08E] font-bold">Bs {totalIngresos.toFixed(2)}</span>
+                <span className="text-[#C9B096]">
+                  Ingresos totales del día:
+                </span>
+                <span className="text-[#5FD08E] font-bold">
+                  Bs {totalIngresos.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#C9B096]">Egresos totales del día:</span>
-                <span className="text-[#F28C38] font-bold">Bs {totalEgresos.toFixed(2)}</span>
+                <span className="text-[#F28C38] font-bold">
+                  Bs {totalEgresos.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between border-t border-[#3D2817] pt-2">
-                <span className="text-white font-bold">Efectivo esperado en caja:</span>
-                <span className="text-[#E0A526] font-bold text-sm">Bs {saldoCaja.toFixed(2)}</span>
+                <span className="text-white font-bold">
+                  Efectivo esperado en caja:
+                </span>
+                <span className="text-[#E0A526] font-bold text-sm">
+                  Bs {saldoCaja.toFixed(2)}
+                </span>
               </div>
             </div>
             <div className="flex justify-end pt-2">
-              <button onClick={() => setShowCierreCajaModal(false)} className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer">
+              <button
+                onClick={() => setShowCierreCajaModal(false)}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer"
+              >
                 Entendido
               </button>
             </div>
@@ -3283,24 +4357,32 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevoAmbienteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Añadir nuevo ambiente</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Añadir nuevo ambiente
+            </h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Tipo de ambiente a registrar *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Tipo de ambiente a registrar *
+                </label>
                 <div className="grid grid-cols-2 gap-2 mb-2">
                   <button
                     type="button"
                     onClick={() => {
-                      setFormAmbCategoria('Habitacion');
-                      setFormAmbTipo('Matrimonial');
-                      const siguienteNum = ambientes.filter(a => a.codigo.startsWith('HAB')).length + 101;
+                      setFormAmbCategoria("Habitacion");
+                      setFormAmbTipo("Matrimonial");
+                      const siguienteNum =
+                        ambientes.filter((a) => a.codigo.startsWith("HAB"))
+                          .length + 101;
                       setFormAmbCodigo(`HAB-${siguienteNum}`);
                       setFormAmbNombre(`Habitación ${siguienteNum}`);
                       setFormAmbCapacidad(2);
                       setFormAmbPrecio(300);
                     }}
                     className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                      formAmbCategoria === 'Habitacion' ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' : 'bg-[#1E140C] border-[#3D2817] text-[#C9B096]'
+                      formAmbCategoria === "Habitacion"
+                        ? "bg-[#E0A526] text-[#1E140C] border-[#E0A526]"
+                        : "bg-[#1E140C] border-[#3D2817] text-[#C9B096]"
                     }`}
                   >
                     <span>🛏️ Habitación</span>
@@ -3308,16 +4390,21 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   <button
                     type="button"
                     onClick={() => {
-                      setFormAmbCategoria('Coworking');
-                      setFormAmbTipo('Coworking');
-                      const siguienteCW = String(ambientes.filter(a => a.codigo.startsWith('CW')).length + 1).padStart(2, '0');
+                      setFormAmbCategoria("Coworking");
+                      setFormAmbTipo("Coworking");
+                      const siguienteCW = String(
+                        ambientes.filter((a) => a.codigo.startsWith("CW"))
+                          .length + 1,
+                      ).padStart(2, "0");
                       setFormAmbCodigo(`CW-${siguienteCW}`);
                       setFormAmbNombre(`Coworking Sala ${siguienteCW}`);
                       setFormAmbCapacidad(6);
                       setFormAmbPrecio(80);
                     }}
                     className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                      formAmbCategoria === 'Coworking' ? 'bg-[#E0A526] text-[#1E140C] border-[#E0A526]' : 'bg-[#1E140C] border-[#3D2817] text-[#C9B096]'
+                      formAmbCategoria === "Coworking"
+                        ? "bg-[#E0A526] text-[#1E140C] border-[#E0A526]"
+                        : "bg-[#1E140C] border-[#3D2817] text-[#C9B096]"
                     }`}
                   >
                     <span>💼 Coworking</span>
@@ -3326,7 +4413,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Código / Número *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Código / Número *
+                </label>
                 <input
                   type="text"
                   value={formAmbCodigo}
@@ -3336,7 +4425,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre descriptivo *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Nombre descriptivo *
+                </label>
                 <input
                   type="text"
                   value={formAmbNombre}
@@ -3347,7 +4438,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Tipo *
+                  </label>
                   <select
                     value={formAmbTipo}
                     onChange={(e) => setFormAmbTipo(e.target.value)}
@@ -3361,20 +4454,26 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Capacidad (pers.) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Capacidad (pers.) *
+                  </label>
                   <input
                     type="number"
                     min={1}
                     max={10}
                     value={formAmbCapacidad}
-                    onChange={(e) => setFormAmbCapacidad(Number(e.target.value))}
+                    onChange={(e) =>
+                      setFormAmbCapacidad(Number(e.target.value))
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Precio / Tarifa base (Bs) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Precio / Tarifa base (Bs) *
+                  </label>
                   <input
                     type="number"
                     min={1}
@@ -3384,7 +4483,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado inicial *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Estado inicial *
+                  </label>
                   <select
                     value={formAmbEstado}
                     onChange={(e) => setFormAmbEstado(e.target.value as any)}
@@ -3407,7 +4508,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               <button
                 onClick={async () => {
                   if (!formAmbCodigo.trim() || !formAmbNombre.trim()) {
-                    mostrarNotificacion('Por favor completa código y nombre.');
+                    mostrarNotificacion("Por favor completa código y nombre.");
                     return;
                   }
                   const nuevo: Ambiente = {
@@ -3417,20 +4518,22 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     tipo: formAmbTipo,
                     capacidad: Number(formAmbCapacidad) || 1,
                     tarifa_base: Number(formAmbPrecio) || 280,
-                    estado: formAmbEstado
+                    estado: formAmbEstado,
                   };
                   setAmbientes([...ambientes, nuevo]);
                   setShowNuevoAmbienteModal(false);
-                  mostrarNotificacion(`Ambiente ${nuevo.codigo} añadido correctamente.`);
+                  mostrarNotificacion(
+                    `Ambiente ${nuevo.codigo} añadido correctamente.`,
+                  );
 
                   try {
-                    await supabase.from('ambientes').insert({
+                    await supabase.from("ambientes").insert({
                       codigo: nuevo.codigo,
                       nombre: nuevo.nombre,
                       tipo: nuevo.tipo,
                       capacidad: nuevo.capacidad,
                       tarifa_base: nuevo.tarifa_base,
-                      estado: nuevo.estado
+                      estado: nuevo.estado,
                     });
                   } catch (e) {
                     console.warn(e);
@@ -3450,16 +4553,27 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar {ambienteAEditar.codigo}</h3>
-              <button onClick={() => setAmbienteAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Modificar {ambienteAEditar.codigo}
+              </h3>
+              <button
+                onClick={() => setAmbienteAEditar(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar ambiente a modificar:</label>
+                <label className="block text-[#E0A526] mb-1 font-bold">
+                  Seleccionar ambiente a modificar:
+                </label>
                 <select
                   value={ambienteAEditar.id}
                   onChange={(e) => {
-                    const ambSel = ambientes.find(a => a.id === e.target.value);
+                    const ambSel = ambientes.find(
+                      (a) => a.id === e.target.value,
+                    );
                     if (ambSel) {
                       setAmbienteAEditar(ambSel);
                       setFormAmbCodigo(ambSel.codigo);
@@ -3467,12 +4581,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       setFormAmbTipo(ambSel.tipo);
                       setFormAmbCapacidad(ambSel.capacidad);
                       setFormAmbPrecio(ambSel.tarifa_base);
-                      setFormAmbEstado(ambSel.estado === 'disponible' || ambSel.estado === 'ocupada' || ambSel.estado === 'limpieza' ? ambSel.estado : 'disponible');
+                      setFormAmbEstado(
+                        ambSel.estado === "disponible" ||
+                          ambSel.estado === "ocupada" ||
+                          ambSel.estado === "limpieza"
+                          ? ambSel.estado
+                          : "disponible",
+                      );
                     }
                   }}
                   className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
                 >
-                  {ambientes.map(a => (
+                  {ambientes.map((a) => (
                     <option key={a.id} value={a.id}>
                       {a.codigo} — {a.nombre} ({a.tipo} · Bs {a.tarifa_base})
                     </option>
@@ -3481,7 +4601,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Código / Número *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Código / Número *
+                  </label>
                   <input
                     type="text"
                     value={formAmbCodigo}
@@ -3490,7 +4612,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Nombre descriptivo *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Nombre descriptivo *
+                  </label>
                   <input
                     type="text"
                     value={formAmbNombre}
@@ -3501,7 +4625,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Tipo *
+                  </label>
                   <select
                     value={formAmbTipo}
                     onChange={(e) => setFormAmbTipo(e.target.value)}
@@ -3515,20 +4641,26 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Capacidad (personas) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Capacidad (personas) *
+                  </label>
                   <input
                     type="number"
                     min={1}
                     max={10}
                     value={formAmbCapacidad}
-                    onChange={(e) => setFormAmbCapacidad(Number(e.target.value))}
+                    onChange={(e) =>
+                      setFormAmbCapacidad(Number(e.target.value))
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#E0A526]"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Precio / Tarifa (Bs) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Precio / Tarifa (Bs) *
+                  </label>
                   <input
                     type="number"
                     min={1}
@@ -3538,7 +4670,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado actual *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Estado actual *
+                  </label>
                   <select
                     value={formAmbEstado}
                     onChange={(e) => setFormAmbEstado(e.target.value as any)}
@@ -3554,12 +4688,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  if (confirm(`¿Estás seguro de eliminar el ambiente ${ambienteAEditar.codigo} (${ambienteAEditar.nombre})?`)) {
-                    setAmbientes(ambientes.filter(a => a.id !== ambienteAEditar.id));
+                  if (
+                    confirm(
+                      `¿Estás seguro de eliminar el ambiente ${ambienteAEditar.codigo} (${ambienteAEditar.nombre})?`,
+                    )
+                  ) {
+                    setAmbientes(
+                      ambientes.filter((a) => a.id !== ambienteAEditar.id),
+                    );
                     setAmbienteAEditar(null);
-                    mostrarNotificacion(`Ambiente ${ambienteAEditar.codigo} eliminado.`);
+                    mostrarNotificacion(
+                      `Ambiente ${ambienteAEditar.codigo} eliminado.`,
+                    );
                     try {
-                      await supabase.from('ambientes').delete().eq('id', ambienteAEditar.id);
+                      await supabase
+                        .from("ambientes")
+                        .delete()
+                        .eq("id", ambienteAEditar.id);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -3570,42 +4715,57 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 ✕ Eliminar
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={() => setAmbienteAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                <button
+                  onClick={() => setAmbienteAEditar(null)}
+                  className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+                >
                   Cancelar
                 </button>
-              <button
-                onClick={async () => {
-                  const idEdit = ambienteAEditar.id;
-                  const nuevoCod = formAmbCodigo.trim().toUpperCase() || ambienteAEditar.codigo;
-                  setAmbientes(ambientes.map(a => a.id === idEdit ? {
-                    ...a,
-                    codigo: nuevoCod,
-                    nombre: formAmbNombre.trim(),
-                    tipo: formAmbTipo,
-                    capacidad: Number(formAmbCapacidad) || 1,
-                    tarifa_base: Number(formAmbPrecio) || 280,
-                    estado: formAmbEstado
-                  } : a));
-                  setAmbienteAEditar(null);
-                  mostrarNotificacion(`Ambiente ${nuevoCod} actualizado.`);
+                <button
+                  onClick={async () => {
+                    const idEdit = ambienteAEditar.id;
+                    const nuevoCod =
+                      formAmbCodigo.trim().toUpperCase() ||
+                      ambienteAEditar.codigo;
+                    setAmbientes(
+                      ambientes.map((a) =>
+                        a.id === idEdit
+                          ? {
+                              ...a,
+                              codigo: nuevoCod,
+                              nombre: formAmbNombre.trim(),
+                              tipo: formAmbTipo,
+                              capacidad: Number(formAmbCapacidad) || 1,
+                              tarifa_base: Number(formAmbPrecio) || 280,
+                              estado: formAmbEstado,
+                            }
+                          : a,
+                      ),
+                    );
+                    setAmbienteAEditar(null);
+                    mostrarNotificacion(`Ambiente ${nuevoCod} actualizado.`);
 
-                  try {
-                    await supabase.from('ambientes').update({
-                      codigo: nuevoCod,
-                      nombre: formAmbNombre.trim(),
-                      tipo: formAmbTipo,
-                      capacidad: Number(formAmbCapacidad) || 1,
-                      tarifa_base: Number(formAmbPrecio) || 280,
-                      estado: formAmbEstado
-                    }).eq('id', idEdit);
-                  } catch (e) {
-                    console.warn(e);
-                  }
-                }}
-                className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
-              >
-                Guardar Cambios
-              </button>
+                    try {
+                      await supabase
+                        .from("ambientes")
+                        .update({
+                          codigo: nuevoCod,
+                          nombre: formAmbNombre.trim(),
+                          tipo: formAmbTipo,
+                          capacidad: Number(formAmbCapacidad) || 1,
+                          tarifa_base: Number(formAmbPrecio) || 280,
+                          estado: formAmbEstado,
+                        })
+                        .eq("id", idEdit);
+                    } catch (e) {
+                      console.warn(e);
+                    }
+                  }}
+                  className="px-5 py-2 rounded-xl bg-[#E0A526] hover:bg-[#F28C38] text-[#1E140C] font-bold text-xs shadow cursor-pointer"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -3615,10 +4775,14 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevoHuespedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Registrar nuevo huésped</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Registrar nuevo huésped
+            </h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre completo *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Nombre completo *
+                </label>
                 <input
                   type="text"
                   value={formHuespedNombre}
@@ -3629,7 +4793,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Documento (CI / Pasaporte) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Documento (CI / Pasaporte) *
+                  </label>
                   <input
                     type="text"
                     value={formHuespedDoc}
@@ -3639,7 +4805,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Teléfono / WhatsApp *
+                  </label>
                   <input
                     type="tel"
                     value={formHuespedContacto}
@@ -3650,7 +4818,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Correo Electrónico</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Correo Electrónico
+                </label>
                 <input
                   type="email"
                   value={formHuespedEmail}
@@ -3666,42 +4836,51 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   onChange={(e) => setFormHuespedFotocopia(e.target.checked)}
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
-                <span className="text-xs text-[#F5EBDC]">Fotocopia de documento de identidad recibida</span>
+                <span className="text-xs text-[#F5EBDC]">
+                  Fotocopia de documento de identidad recibida
+                </span>
               </label>
             </div>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setShowNuevoHuespedModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+              <button
+                onClick={() => setShowNuevoHuespedModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
                 Cancelar
               </button>
               <button
                 onClick={async () => {
                   if (!formHuespedNombre.trim() || !formHuespedDoc.trim()) {
-                    mostrarNotificacion('Por favor completa nombre y documento.');
+                    mostrarNotificacion(
+                      "Por favor completa nombre y documento.",
+                    );
                     return;
                   }
                   const nuevoH: Huesped = {
                     id: `h-${Date.now()}`,
-                    codigo: `HU-${String(huespedes.length + 1).padStart(4, '0')}`,
+                    codigo: `HU-${String(huespedes.length + 1).padStart(4, "0")}`,
                     nombre: formHuespedNombre.trim(),
                     documento: formHuespedDoc.trim(),
-                    contacto: formHuespedContacto.trim() || 'Sin teléfono',
+                    contacto: formHuespedContacto.trim() || "Sin teléfono",
                     email: formHuespedEmail.trim(),
                     estadiasTotal: 1,
                     montoAcumulado: 0,
-                    fotocopiaRecibida: formHuespedFotocopia
+                    fotocopiaRecibida: formHuespedFotocopia,
                   };
                   setHuespedes([...huespedes, nuevoH]);
                   setShowNuevoHuespedModal(false);
-                  mostrarNotificacion(`Huésped ${nuevoH.nombre} registrado con éxito.`);
+                  mostrarNotificacion(
+                    `Huésped ${nuevoH.nombre} registrado con éxito.`,
+                  );
 
                   try {
-                    await supabase.from('huespedes').insert({
+                    await supabase.from("huespedes").insert({
                       codigo: nuevoH.codigo,
                       nombre: nuevoH.nombre,
                       documento: nuevoH.documento,
                       contacto: nuevoH.contacto,
                       email: nuevoH.email,
-                      fotocopia_recibida: nuevoH.fotocopiaRecibida
+                      fotocopia_recibida: nuevoH.fotocopiaRecibida,
                     });
                   } catch (e) {
                     console.warn(e);
@@ -3721,28 +4900,37 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Huésped ({huespedAEditar.codigo})</h3>
-              <button onClick={() => setHuespedAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Modificar Huésped ({huespedAEditar.codigo})
+              </h3>
+              <button
+                onClick={() => setHuespedAEditar(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar huésped a modificar:</label>
+                <label className="block text-[#E0A526] mb-1 font-bold">
+                  Seleccionar huésped a modificar:
+                </label>
                 <select
                   value={huespedAEditar.id}
                   onChange={(e) => {
-                    const hSel = huespedes.find(h => h.id === e.target.value);
+                    const hSel = huespedes.find((h) => h.id === e.target.value);
                     if (hSel) {
                       setHuespedAEditar(hSel);
                       setFormHuespedNombre(hSel.nombre);
                       setFormHuespedDoc(hSel.documento);
-                      setFormHuespedEmail(hSel.email || '');
+                      setFormHuespedEmail(hSel.email || "");
                       setFormHuespedContacto(hSel.contacto);
                       setFormHuespedFotocopia(hSel.fotocopiaRecibida);
                     }
                   }}
                   className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
                 >
-                  {huespedes.map(h => (
+                  {huespedes.map((h) => (
                     <option key={h.id} value={h.id}>
                       {h.nombre} ({h.codigo}) — CI: {h.documento}
                     </option>
@@ -3750,7 +4938,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </select>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre completo *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Nombre completo *
+                </label>
                 <input
                   type="text"
                   value={formHuespedNombre}
@@ -3760,7 +4950,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Documento de Identidad *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Documento de Identidad *
+                  </label>
                   <input
                     type="text"
                     value={formHuespedDoc}
@@ -3769,7 +4961,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Teléfono / WhatsApp *
+                  </label>
                   <input
                     type="tel"
                     value={formHuespedContacto}
@@ -3779,7 +4973,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Correo Electrónico</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Correo Electrónico
+                </label>
                 <input
                   type="email"
                   value={formHuespedEmail}
@@ -3795,18 +4991,31 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   onChange={(e) => setFormHuespedFotocopia(e.target.checked)}
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
-                <span className="text-xs text-[#F5EBDC]">Fotocopia de documento de identidad recibida</span>
+                <span className="text-xs text-[#F5EBDC]">
+                  Fotocopia de documento de identidad recibida
+                </span>
               </label>
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  if (confirm(`¿Estás seguro de que deseas eliminar permanentemente a ${huespedAEditar.nombre}?`)) {
-                    setHuespedes(huespedes.filter(h => h.id !== huespedAEditar.id));
+                  if (
+                    confirm(
+                      `¿Estás seguro de que deseas eliminar permanentemente a ${huespedAEditar.nombre}?`,
+                    )
+                  ) {
+                    setHuespedes(
+                      huespedes.filter((h) => h.id !== huespedAEditar.id),
+                    );
                     setHuespedAEditar(null);
-                    mostrarNotificacion(`Huésped ${huespedAEditar.nombre} eliminado.`);
+                    mostrarNotificacion(
+                      `Huésped ${huespedAEditar.nombre} eliminado.`,
+                    );
                     try {
-                      await supabase.from('huespedes').delete().eq('id', huespedAEditar.id);
+                      await supabase
+                        .from("huespedes")
+                        .delete()
+                        .eq("id", huespedAEditar.id);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -3817,31 +5026,43 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 ✕ Eliminar
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={() => setHuespedAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                <button
+                  onClick={() => setHuespedAEditar(null)}
+                  className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+                >
                   Cancelar
                 </button>
                 <button
                   onClick={async () => {
                     const idEdit = huespedAEditar.id;
-                    setHuespedes(huespedes.map(h => h.id === idEdit ? {
-                      ...h,
-                      nombre: formHuespedNombre.trim(),
-                      documento: formHuespedDoc.trim(),
-                      contacto: formHuespedContacto.trim(),
-                      email: formHuespedEmail.trim(),
-                      fotocopiaRecibida: formHuespedFotocopia
-                    } : h));
+                    setHuespedes(
+                      huespedes.map((h) =>
+                        h.id === idEdit
+                          ? {
+                              ...h,
+                              nombre: formHuespedNombre.trim(),
+                              documento: formHuespedDoc.trim(),
+                              contacto: formHuespedContacto.trim(),
+                              email: formHuespedEmail.trim(),
+                              fotocopiaRecibida: formHuespedFotocopia,
+                            }
+                          : h,
+                      ),
+                    );
                     setHuespedAEditar(null);
-                    mostrarNotificacion('Datos del huésped actualizados.');
+                    mostrarNotificacion("Datos del huésped actualizados.");
 
                     try {
-                      await supabase.from('huespedes').update({
-                        nombre: formHuespedNombre.trim(),
-                        documento: formHuespedDoc.trim(),
-                        contacto: formHuespedContacto.trim(),
-                        email: formHuespedEmail.trim(),
-                        fotocopia_recibida: formHuespedFotocopia
-                      }).eq('id', idEdit);
+                      await supabase
+                        .from("huespedes")
+                        .update({
+                          nombre: formHuespedNombre.trim(),
+                          documento: formHuespedDoc.trim(),
+                          contacto: formHuespedContacto.trim(),
+                          email: formHuespedEmail.trim(),
+                          fotocopia_recibida: formHuespedFotocopia,
+                        })
+                        .eq("id", idEdit);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -3862,51 +5083,101 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           <div className="w-full max-w-lg bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
               <div>
-                <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">{huespedHistorial.nombre}</h3>
-                <p className="text-xs text-[#C9B096]">Código {huespedHistorial.codigo} · CI: {huespedHistorial.documento}</p>
+                <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                  {huespedHistorial.nombre}
+                </h3>
+                <p className="text-xs text-[#C9B096]">
+                  Código {huespedHistorial.codigo} · CI:{" "}
+                  {huespedHistorial.documento}
+                </p>
               </div>
-              <button onClick={() => setHuespedHistorial(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <button
+                onClick={() => setHuespedHistorial(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div className="p-3 bg-[#1E140C] rounded-xl border border-[#3D2817]">
-                <span className="text-[#C9B096] block text-[11px]">Total Estadías:</span>
-                <span className="text-[#E0A526] font-bold text-base">{huespedHistorial.estadiasTotal} visitas</span>
+                <span className="text-[#C9B096] block text-[11px]">
+                  Total Estadías:
+                </span>
+                <span className="text-[#E0A526] font-bold text-base">
+                  {huespedHistorial.estadiasTotal} visitas
+                </span>
               </div>
               <div className="p-3 bg-[#1E140C] rounded-xl border border-[#3D2817]">
-                <span className="text-[#C9B096] block text-[11px]">Fotocopia de Carnet:</span>
-                <span className={`font-bold text-xs ${huespedHistorial.fotocopiaRecibida ? 'text-[#5FD08E]' : 'text-[#F0C14B]'}`}>
-                  {huespedHistorial.fotocopiaRecibida ? '✓ Documento en archivo' : '⚠️ Pendiente de entrega'}
+                <span className="text-[#C9B096] block text-[11px]">
+                  Fotocopia de Carnet:
+                </span>
+                <span
+                  className={`font-bold text-xs ${huespedHistorial.fotocopiaRecibida ? "text-[#5FD08E]" : "text-[#F0C14B]"}`}
+                >
+                  {huespedHistorial.fotocopiaRecibida
+                    ? "✓ Documento en archivo"
+                    : "⚠️ Pendiente de entrega"}
                 </span>
               </div>
             </div>
 
             <div>
-              <h4 className="text-xs font-bold text-[#C9B096] mb-2 uppercase tracking-wider">Historial de reservas registradas:</h4>
+              <h4 className="text-xs font-bold text-[#C9B096] mb-2 uppercase tracking-wider">
+                Historial de reservas registradas:
+              </h4>
               <div className="space-y-2">
-                {reservas.filter(r => r.huespedNombre.toLowerCase().includes(huespedHistorial.nombre.toLowerCase()) || r.documento === huespedHistorial.documento).length === 0 ? (
+                {reservas.filter(
+                  (r) =>
+                    r.huespedNombre
+                      .toLowerCase()
+                      .includes(huespedHistorial.nombre.toLowerCase()) ||
+                    r.documento === huespedHistorial.documento,
+                ).length === 0 ? (
                   <p className="text-xs text-[#6E5644] italic p-3 bg-[#1E140C] rounded-xl text-center">
                     No se registran estadías anteriores en el sistema.
                   </p>
                 ) : (
-                  reservas.filter(r => r.huespedNombre.toLowerCase().includes(huespedHistorial.nombre.toLowerCase()) || r.documento === huespedHistorial.documento).map(r => (
-                    <div key={r.id} className="p-3 rounded-xl bg-[#1E140C] border border-[#3D2817] flex justify-between items-center text-xs">
-                      <div>
-                        <p className="font-bold text-white">{r.ambienteCodigo}</p>
-                        <p className="text-[11px] text-[#C9B096]">{r.fechaEntrada} al {r.fechaSalida}</p>
+                  reservas
+                    .filter(
+                      (r) =>
+                        r.huespedNombre
+                          .toLowerCase()
+                          .includes(huespedHistorial.nombre.toLowerCase()) ||
+                        r.documento === huespedHistorial.documento,
+                    )
+                    .map((r) => (
+                      <div
+                        key={r.id}
+                        className="p-3 rounded-xl bg-[#1E140C] border border-[#3D2817] flex justify-between items-center text-xs"
+                      >
+                        <div>
+                          <p className="font-bold text-white">
+                            {r.ambienteCodigo}
+                          </p>
+                          <p className="text-[11px] text-[#C9B096]">
+                            {r.fechaEntrada} al {r.fechaSalida}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[#E0A526] font-bold block">
+                            Bs {r.montoTotal}
+                          </span>
+                          <span className="text-[10px] text-[#5FD08E] font-semibold">
+                            {r.estadoPago.toUpperCase()}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-[#E0A526] font-bold block">Bs {r.montoTotal}</span>
-                        <span className="text-[10px] text-[#5FD08E] font-semibold">{r.estadoPago.toUpperCase()}</span>
-                      </div>
-                    </div>
-                  ))
+                    ))
                 )}
               </div>
             </div>
 
             <div className="flex justify-end pt-2 border-t border-[#3D2817]">
-              <button onClick={() => setHuespedHistorial(null)} className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer">
+              <button
+                onClick={() => setHuespedHistorial(null)}
+                className="px-5 py-2 rounded-xl bg-[#E0A526] text-[#1E140C] font-bold text-xs cursor-pointer"
+              >
                 Cerrar Historial
               </button>
             </div>
@@ -3918,10 +5189,14 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       {showNuevaTareaAtencionModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
-            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Nueva tarea / atención</h3>
+            <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+              Nueva tarea / atención
+            </h3>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Huésped solicitante</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Huésped solicitante
+                </label>
                 <div className="space-y-1.5">
                   <select
                     value={formAtencionHuesped}
@@ -3929,9 +5204,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       const selNom = e.target.value;
                       setFormAtencionHuesped(selNom);
                       if (selNom) {
-                        const estAct = estadias.find(es => es.huespedNombre.toLowerCase() === selNom.toLowerCase());
-                        const resAct = reservas.find(r => r.huespedNombre.toLowerCase() === selNom.toLowerCase());
-                        const ambDetectado = estAct?.ambienteCodigo || resAct?.ambienteCodigo;
+                        const estAct = estadias.find(
+                          (es) =>
+                            es.huespedNombre.toLowerCase() ===
+                            selNom.toLowerCase(),
+                        );
+                        const resAct = reservas.find(
+                          (r) =>
+                            r.huespedNombre.toLowerCase() ===
+                            selNom.toLowerCase(),
+                        );
+                        const ambDetectado =
+                          estAct?.ambienteCodigo || resAct?.ambienteCodigo;
                         if (ambDetectado) {
                           setFormAtencionAmbiente(ambDetectado);
                         }
@@ -3939,9 +5223,13 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     }}
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
-                    <option value="">-- Seleccionar de huéspedes registrados --</option>
-                    {huespedes.map(h => (
-                      <option key={h.id} value={h.nombre}>{h.nombre} ({h.codigo})</option>
+                    <option value="">
+                      -- Seleccionar de huéspedes registrados --
+                    </option>
+                    {huespedes.map((h) => (
+                      <option key={h.id} value={h.nombre}>
+                        {h.nombre} ({h.codigo})
+                      </option>
                     ))}
                   </select>
                   <input
@@ -3955,14 +5243,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Habitación / Ambiente asignado *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Habitación / Ambiente asignado *
+                </label>
                 <select
                   value={formAtencionAmbiente}
                   onChange={(e) => setFormAtencionAmbiente(e.target.value)}
                   className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                 >
-                  {ambientes.map(a => (
-                    <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                  {ambientes.map((a) => (
+                    <option key={a.id} value={a.codigo}>
+                      {a.codigo} - {a.nombre}
+                    </option>
                   ))}
                 </select>
                 <span className="text-[10px] text-[#5FD08E] mt-1 block">
@@ -3972,7 +5264,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo de solicitud *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Tipo de solicitud *
+                  </label>
                   <select
                     value={formAtencionTipo}
                     onChange={(e) => setFormAtencionTipo(e.target.value as any)}
@@ -3980,17 +5274,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   >
                     <option value="Petición especial">Petición especial</option>
                     <option value="Requerimiento">Requerimiento</option>
-                    <option value="Toallas / Amenities">Toallas / Amenities</option>
+                    <option value="Toallas / Amenities">
+                      Toallas / Amenities
+                    </option>
                     <option value="Queja">Queja / Reclamo</option>
                     <option value="Mantenimiento">Mantenimiento rápido</option>
                     <option value="Otro">Otro</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Prioridad *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Prioridad *
+                  </label>
                   <select
                     value={formAtencionPrioridad}
-                    onChange={(e) => setFormAtencionPrioridad(e.target.value as any)}
+                    onChange={(e) =>
+                      setFormAtencionPrioridad(e.target.value as any)
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
                     <option value="Normal">Normal</option>
@@ -4001,7 +5301,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle de la solicitud *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Detalle de la solicitud *
+                </label>
                 <textarea
                   rows={3}
                   value={formAtencionDesc}
@@ -4011,7 +5313,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Responsable asignado</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Responsable asignado
+                </label>
                 <select
                   value={formAtencionResponsable}
                   onChange={(e) => setFormAtencionResponsable(e.target.value)}
@@ -4019,44 +5323,53 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 >
                   <option value="Recepción">Recepción (Leonel)</option>
                   <option value="Limpieza">Limpieza (Grimanez)</option>
-                  <option value="Administración">Administración (Tamara)</option>
+                  <option value="Administración">
+                    Administración (Tamara)
+                  </option>
                 </select>
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#3D2817]">
-              <button onClick={() => setShowNuevaTareaAtencionModal(false)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+              <button
+                onClick={() => setShowNuevaTareaAtencionModal(false)}
+                className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+              >
                 Cancelar
               </button>
               <button
                 onClick={async () => {
                   if (!formAtencionDesc.trim()) {
-                    mostrarNotificacion('Por favor ingresa el detalle de la solicitud.');
+                    mostrarNotificacion(
+                      "Por favor ingresa el detalle de la solicitud.",
+                    );
                     return;
                   }
                   const nueva: TareaAtencion = {
                     id: `tat-${Date.now()}`,
                     ambienteCodigo: formAtencionAmbiente,
-                    huespedNombre: formAtencionHuesped.trim() || 'Huésped',
+                    huespedNombre: formAtencionHuesped.trim() || "Huésped",
                     tipo: formAtencionTipo,
                     descripcion: formAtencionDesc.trim(),
                     prioridad: formAtencionPrioridad,
                     responsable: formAtencionResponsable,
-                    estado: 'pendiente',
-                    fecha: new Date().toISOString().split('T')[0]
+                    estado: "pendiente",
+                    fecha: new Date().toISOString().split("T")[0],
                   };
                   setTareasAtencion([nueva, ...tareasAtencion]);
                   setShowNuevaTareaAtencionModal(false);
-                  mostrarNotificacion('Tarea de atención registrada exitosamente.');
+                  mostrarNotificacion(
+                    "Tarea de atención registrada exitosamente.",
+                  );
 
                   try {
-                    await supabase.from('tareas_atencion').insert({
+                    await supabase.from("tareas_atencion").insert({
                       ambiente_codigo: nueva.ambienteCodigo,
                       huesped_nombre: nueva.huespedNombre,
                       tipo: nueva.tipo,
                       descripcion: nueva.descripcion,
                       prioridad: nueva.prioridad,
                       responsable: nueva.responsable,
-                      estado: nueva.estado
+                      estado: nueva.estado,
                     });
                   } catch (e) {
                     console.warn(e);
@@ -4076,16 +5389,27 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar atención ({tareaAtencionAEditar.ambienteCodigo})</h3>
-              <button onClick={() => setTareaAtencionAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Modificar atención ({tareaAtencionAEditar.ambienteCodigo})
+              </h3>
+              <button
+                onClick={() => setTareaAtencionAEditar(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar tarea / atención a modificar:</label>
+                <label className="block text-[#E0A526] mb-1 font-bold">
+                  Seleccionar tarea / atención a modificar:
+                </label>
                 <select
                   value={tareaAtencionAEditar.id}
                   onChange={(e) => {
-                    const tSel = tareasAtencion.find(t => t.id === e.target.value);
+                    const tSel = tareasAtencion.find(
+                      (t) => t.id === e.target.value,
+                    );
                     if (tSel) {
                       setTareaAtencionAEditar(tSel);
                       setFormAtencionAmbiente(tSel.ambienteCodigo);
@@ -4099,28 +5423,35 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   }}
                   className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
                 >
-                  {tareasAtencion.map(t => (
+                  {tareasAtencion.map((t) => (
                     <option key={t.id} value={t.id}>
-                      {t.ambienteCodigo} ({t.huespedNombre}) — {t.tipo} [{t.estado.toUpperCase()}]
+                      {t.ambienteCodigo} ({t.huespedNombre}) — {t.tipo} [
+                      {t.estado.toUpperCase()}]
                     </option>
                   ))}
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Habitación</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Habitación
+                  </label>
                   <select
                     value={formAtencionAmbiente}
                     onChange={(e) => setFormAtencionAmbiente(e.target.value)}
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
-                    {ambientes.map(a => (
-                      <option key={a.id} value={a.codigo}>{a.codigo} - {a.nombre}</option>
+                    {ambientes.map((a) => (
+                      <option key={a.id} value={a.codigo}>
+                        {a.codigo} - {a.nombre}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Huésped</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Huésped
+                  </label>
                   <input
                     type="text"
                     value={formAtencionHuesped}
@@ -4131,7 +5462,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Tipo</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Tipo
+                  </label>
                   <select
                     value={formAtencionTipo}
                     onChange={(e) => setFormAtencionTipo(e.target.value as any)}
@@ -4139,17 +5472,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   >
                     <option value="Petición especial">Petición especial</option>
                     <option value="Requerimiento">Requerimiento</option>
-                    <option value="Toallas / Amenities">Toallas / Amenities</option>
+                    <option value="Toallas / Amenities">
+                      Toallas / Amenities
+                    </option>
                     <option value="Queja">Queja / Reclamo</option>
                     <option value="Mantenimiento">Mantenimiento rápido</option>
                     <option value="Otro">Otro</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Prioridad</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Prioridad
+                  </label>
                   <select
                     value={formAtencionPrioridad}
-                    onChange={(e) => setFormAtencionPrioridad(e.target.value as any)}
+                    onChange={(e) =>
+                      setFormAtencionPrioridad(e.target.value as any)
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
                     <option value="Normal">Normal</option>
@@ -4160,7 +5499,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Detalle *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Detalle *
+                </label>
                 <textarea
                   rows={3}
                   value={formAtencionDesc}
@@ -4170,7 +5511,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Responsable</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Responsable
+                  </label>
                   <select
                     value={formAtencionResponsable}
                     onChange={(e) => setFormAtencionResponsable(e.target.value)}
@@ -4178,14 +5521,20 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   >
                     <option value="Recepción">Recepción (Leonel)</option>
                     <option value="Limpieza">Limpieza (Grimanez)</option>
-                    <option value="Administración">Administración (Tamara)</option>
+                    <option value="Administración">
+                      Administración (Tamara)
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Estado *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Estado *
+                  </label>
                   <select
                     value={formAtencionEstado}
-                    onChange={(e) => setFormAtencionEstado(e.target.value as any)}
+                    onChange={(e) =>
+                      setFormAtencionEstado(e.target.value as any)
+                    }
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
                     <option value="pendiente">Pendiente</option>
@@ -4198,12 +5547,23 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  if (confirm('¿Estás seguro de que deseas eliminar esta tarea de atención?')) {
-                    setTareasAtencion(tareasAtencion.filter(t => t.id !== tareaAtencionAEditar.id));
+                  if (
+                    confirm(
+                      "¿Estás seguro de que deseas eliminar esta tarea de atención?",
+                    )
+                  ) {
+                    setTareasAtencion(
+                      tareasAtencion.filter(
+                        (t) => t.id !== tareaAtencionAEditar.id,
+                      ),
+                    );
                     setTareaAtencionAEditar(null);
-                    mostrarNotificacion('Tarea eliminada.');
+                    mostrarNotificacion("Tarea eliminada.");
                     try {
-                      await supabase.from('tareas_atencion').delete().eq('id', tareaAtencionAEditar.id);
+                      await supabase
+                        .from("tareas_atencion")
+                        .delete()
+                        .eq("id", tareaAtencionAEditar.id);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4214,35 +5574,48 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 ✕ Eliminar
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={() => setTareaAtencionAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                <button
+                  onClick={() => setTareaAtencionAEditar(null)}
+                  className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+                >
                   Cancelar
                 </button>
                 <button
                   onClick={async () => {
                     const idEdit = tareaAtencionAEditar.id;
-                    setTareasAtencion(tareasAtencion.map(t => t.id === idEdit ? {
-                      ...t,
-                      ambienteCodigo: formAtencionAmbiente,
-                      huespedNombre: formAtencionHuesped.trim() || 'Huésped',
-                      tipo: formAtencionTipo,
-                      descripcion: formAtencionDesc.trim(),
-                      prioridad: formAtencionPrioridad,
-                      responsable: formAtencionResponsable,
-                      estado: formAtencionEstado
-                    } : t));
+                    setTareasAtencion(
+                      tareasAtencion.map((t) =>
+                        t.id === idEdit
+                          ? {
+                              ...t,
+                              ambienteCodigo: formAtencionAmbiente,
+                              huespedNombre:
+                                formAtencionHuesped.trim() || "Huésped",
+                              tipo: formAtencionTipo,
+                              descripcion: formAtencionDesc.trim(),
+                              prioridad: formAtencionPrioridad,
+                              responsable: formAtencionResponsable,
+                              estado: formAtencionEstado,
+                            }
+                          : t,
+                      ),
+                    );
                     setTareaAtencionAEditar(null);
-                    mostrarNotificacion('Tarea de atención actualizada.');
+                    mostrarNotificacion("Tarea de atención actualizada.");
 
                     try {
-                      await supabase.from('tareas_atencion').update({
-                        ambiente_codigo: formAtencionAmbiente,
-                        huesped_nombre: formAtencionHuesped.trim(),
-                        tipo: formAtencionTipo,
-                        descripcion: formAtencionDesc.trim(),
-                        prioridad: formAtencionPrioridad,
-                        responsable: formAtencionResponsable,
-                        estado: formAtencionEstado
-                      }).eq('id', idEdit);
+                      await supabase
+                        .from("tareas_atencion")
+                        .update({
+                          ambiente_codigo: formAtencionAmbiente,
+                          huesped_nombre: formAtencionHuesped.trim(),
+                          tipo: formAtencionTipo,
+                          descripcion: formAtencionDesc.trim(),
+                          prioridad: formAtencionPrioridad,
+                          responsable: formAtencionResponsable,
+                          estado: formAtencionEstado,
+                        })
+                        .eq("id", idEdit);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4262,21 +5635,32 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Reserva</h3>
-              <button onClick={() => setReservaAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Modificar Reserva
+              </h3>
+              <button
+                onClick={() => setReservaAEditar(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar reserva a modificar:</label>
+                <label className="block text-[#E0A526] mb-1 font-bold">
+                  Seleccionar reserva a modificar:
+                </label>
                 <select
                   value={reservaAEditar.id}
                   onChange={(e) => {
-                    const resSel = reservas.find(r => r.id === e.target.value);
+                    const resSel = reservas.find(
+                      (r) => r.id === e.target.value,
+                    );
                     if (resSel) {
                       setReservaAEditar(resSel);
                       setFormResHuesped(resSel.huespedNombre);
-                      setFormResDoc(resSel.documento || '');
-                      setFormResTel(resSel.contacto || '');
+                      setFormResDoc(resSel.documento || "");
+                      setFormResTel(resSel.contacto || "");
                       setFormResAmbiente(resSel.ambienteCodigo);
                       setFormResEntrada(resSel.fechaEntrada);
                       setFormResSalida(resSel.fechaSalida);
@@ -4286,15 +5670,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   }}
                   className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
                 >
-                  {reservas.map(r => (
+                  {reservas.map((r) => (
                     <option key={r.id} value={r.id}>
-                      {r.huespedNombre} — {r.ambienteCodigo} ({r.fechaEntrada} al {r.fechaSalida}) [Bs {r.montoTotal || 300}]
+                      {r.huespedNombre} — {r.ambienteCodigo} ({r.fechaEntrada}{" "}
+                      al {r.fechaSalida}) [Bs {r.montoTotal || 300}]
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Huésped *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Huésped *
+                </label>
                 <input
                   type="text"
                   value={formResHuesped}
@@ -4304,7 +5691,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">C.I. / Documento</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    C.I. / Documento
+                  </label>
                   <input
                     type="text"
                     value={formResDoc}
@@ -4313,7 +5702,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Teléfono / WhatsApp</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Teléfono / WhatsApp
+                  </label>
                   <input
                     type="text"
                     value={formResTel}
@@ -4324,19 +5715,25 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Ambiente / Habitación *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Ambiente / Habitación *
+                  </label>
                   <select
                     value={formResAmbiente}
                     onChange={(e) => setFormResAmbiente(e.target.value)}
                     className="w-full bg-[#1E140C] border border-[#3D2817] rounded-xl px-3 py-2 text-xs text-[#F5EBDC] outline-none"
                   >
-                    {ambientes.map(a => (
-                      <option key={a.id} value={a.nombre || a.codigo}>{a.codigo} - {a.nombre}</option>
+                    {ambientes.map((a) => (
+                      <option key={a.id} value={a.nombre || a.codigo}>
+                        {a.codigo} - {a.nombre}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Monto Total (Bs) *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Monto Total (Bs) *
+                  </label>
                   <input
                     type="number"
                     min={0}
@@ -4348,7 +5745,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Entrada *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Fecha Entrada *
+                  </label>
                   <input
                     type="date"
                     value={formResEntrada}
@@ -4357,7 +5756,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-[#C9B096] mb-1 font-semibold">Fecha Salida *</label>
+                  <label className="block text-[#C9B096] mb-1 font-semibold">
+                    Fecha Salida *
+                  </label>
                   <input
                     type="date"
                     value={formResSalida}
@@ -4367,7 +5768,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </div>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Estado de Pago</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Estado de Pago
+                </label>
                 <select
                   value={formResPago}
                   onChange={(e) => setFormResPago(e.target.value as any)}
@@ -4381,12 +5784,21 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  if (confirm(`¿Estás seguro de que deseas eliminar la reserva de ${reservaAEditar.huespedNombre}?`)) {
-                    setReservas(reservas.filter(r => r.id !== reservaAEditar.id));
+                  if (
+                    confirm(
+                      `¿Estás seguro de que deseas eliminar la reserva de ${reservaAEditar.huespedNombre}?`,
+                    )
+                  ) {
+                    setReservas(
+                      reservas.filter((r) => r.id !== reservaAEditar.id),
+                    );
                     setReservaAEditar(null);
-                    mostrarNotificacion('Reserva eliminada.');
+                    mostrarNotificacion("Reserva eliminada.");
                     try {
-                      await supabase.from('reservas').delete().eq('id', reservaAEditar.id);
+                      await supabase
+                        .from("reservas")
+                        .delete()
+                        .eq("id", reservaAEditar.id);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4397,37 +5809,50 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 ✕ Eliminar
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={() => setReservaAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                <button
+                  onClick={() => setReservaAEditar(null)}
+                  className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+                >
                   Cancelar
                 </button>
                 <button
                   onClick={async () => {
                     const idEdit = reservaAEditar.id;
-                    setReservas(reservas.map(r => r.id === idEdit ? {
-                      ...r,
-                      huespedNombre: formResHuesped.trim() || r.huespedNombre,
-                      documento: formResDoc.trim(),
-                      contacto: formResTel.trim(),
-                      ambienteCodigo: formResAmbiente,
-                      fechaEntrada: formResEntrada,
-                      fechaSalida: formResSalida,
-                      estadoPago: formResPago,
-                      montoTotal: Number(formResTotal) || 300
-                    } : r));
+                    setReservas(
+                      reservas.map((r) =>
+                        r.id === idEdit
+                          ? {
+                              ...r,
+                              huespedNombre:
+                                formResHuesped.trim() || r.huespedNombre,
+                              documento: formResDoc.trim(),
+                              contacto: formResTel.trim(),
+                              ambienteCodigo: formResAmbiente,
+                              fechaEntrada: formResEntrada,
+                              fechaSalida: formResSalida,
+                              estadoPago: formResPago,
+                              montoTotal: Number(formResTotal) || 300,
+                            }
+                          : r,
+                      ),
+                    );
                     setReservaAEditar(null);
-                    mostrarNotificacion('Reserva modificada correctamente.');
+                    mostrarNotificacion("Reserva modificada correctamente.");
 
                     try {
-                      await supabase.from('reservas').update({
-                        huesped_nombre: formResHuesped.trim(),
-                        documento: formResDoc.trim(),
-                        contacto: formResTel.trim(),
-                        ambiente_codigo: formResAmbiente,
-                        fecha_entrada: formResEntrada,
-                        fecha_salida: formResSalida,
-                        estado_pago: formResPago,
-                        monto_total: Number(formResTotal) || 300
-                      }).eq('id', idEdit);
+                      await supabase
+                        .from("reservas")
+                        .update({
+                          huesped_nombre: formResHuesped.trim(),
+                          documento: formResDoc.trim(),
+                          contacto: formResTel.trim(),
+                          ambiente_codigo: formResAmbiente,
+                          fecha_entrada: formResEntrada,
+                          fecha_salida: formResSalida,
+                          estado_pago: formResPago,
+                          monto_total: Number(formResTotal) || 300,
+                        })
+                        .eq("id", idEdit);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4447,16 +5872,25 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Modificar Usuario</h3>
-              <button onClick={() => setUsuarioAEditar(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Modificar Usuario
+              </h3>
+              <button
+                onClick={() => setUsuarioAEditar(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#E0A526] mb-1 font-bold">Seleccionar personal a modificar:</label>
+                <label className="block text-[#E0A526] mb-1 font-bold">
+                  Seleccionar personal a modificar:
+                </label>
                 <select
                   value={usuarioAEditar.id}
                   onChange={(e) => {
-                    const uSel = personal.find(p => p.id === e.target.value);
+                    const uSel = personal.find((p) => p.id === e.target.value);
                     if (uSel) {
                       setUsuarioAEditar(uSel);
                       setFormUserNombre(uSel.nombre);
@@ -4466,7 +5900,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   }}
                   className="w-full bg-[#1E140C] border-2 border-[#E0A526] rounded-xl px-3 py-2 text-xs text-white font-bold outline-none"
                 >
-                  {personal.map(p => (
+                  {personal.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.nombre} ({p.rol.toUpperCase()}) — {p.email}
                     </option>
@@ -4474,7 +5908,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 </select>
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Correo (invariable)</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Correo (invariable)
+                </label>
                 <input
                   type="email"
                   readOnly
@@ -4483,7 +5919,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Nombre Completo *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Nombre Completo *
+                </label>
                 <input
                   type="text"
                   value={formUserNombre}
@@ -4492,7 +5930,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 />
               </div>
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Rol Asignado *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Rol Asignado *
+                </label>
                 <select
                   value={formUserRol}
                   onChange={(e) => setFormUserRol(e.target.value as any)}
@@ -4510,18 +5950,31 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   onChange={(e) => setFormUserActivo(e.target.checked)}
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
-                <span className="text-xs text-[#F5EBDC]">Usuario Activo (permitir acceso al sistema)</span>
+                <span className="text-xs text-[#F5EBDC]">
+                  Usuario Activo (permitir acceso al sistema)
+                </span>
               </label>
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-[#3D2817]">
               <button
                 onClick={async () => {
-                  if (confirm(`¿Estás seguro de que deseas eliminar permanentemente a ${usuarioAEditar.nombre}?`)) {
-                    setPersonal(personal.filter(x => x.id !== usuarioAEditar.id));
+                  if (
+                    confirm(
+                      `¿Estás seguro de que deseas eliminar permanentemente a ${usuarioAEditar.nombre}?`,
+                    )
+                  ) {
+                    setPersonal(
+                      personal.filter((x) => x.id !== usuarioAEditar.id),
+                    );
                     setUsuarioAEditar(null);
-                    mostrarNotificacion(`Usuario ${usuarioAEditar.nombre} eliminado.`);
+                    mostrarNotificacion(
+                      `Usuario ${usuarioAEditar.nombre} eliminado.`,
+                    );
                     try {
-                      await supabase.from('perfiles').delete().eq('id', usuarioAEditar.id);
+                      await supabase
+                        .from("perfiles")
+                        .delete()
+                        .eq("id", usuarioAEditar.id);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4532,27 +5985,39 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 ✕ Eliminar
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={() => setUsuarioAEditar(null)} className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer">
+                <button
+                  onClick={() => setUsuarioAEditar(null)}
+                  className="px-4 py-2 rounded-xl bg-[#2D1E12] text-xs font-semibold text-[#C9B096] cursor-pointer"
+                >
                   Cancelar
                 </button>
                 <button
                   onClick={async () => {
                     const idEdit = usuarioAEditar.id;
-                    setPersonal(personal.map(p => p.id === idEdit ? {
-                      ...p,
-                      nombre: formUserNombre.trim(),
-                      rol: formUserRol,
-                      activo: formUserActivo
-                    } : p));
+                    setPersonal(
+                      personal.map((p) =>
+                        p.id === idEdit
+                          ? {
+                              ...p,
+                              nombre: formUserNombre.trim(),
+                              rol: formUserRol,
+                              activo: formUserActivo,
+                            }
+                          : p,
+                      ),
+                    );
                     setUsuarioAEditar(null);
-                    mostrarNotificacion('Datos del personal actualizados.');
+                    mostrarNotificacion("Datos del personal actualizados.");
 
                     try {
-                      await supabase.from('perfiles').update({
-                        nombre: formUserNombre.trim(),
-                        rol: formUserRol,
-                        activo: formUserActivo
-                      }).eq('id', idEdit);
+                      await supabase
+                        .from("perfiles")
+                        .update({
+                          nombre: formUserNombre.trim(),
+                          rol: formUserRol,
+                          activo: formUserActivo,
+                        })
+                        .eq("id", idEdit);
                     } catch (e) {
                       console.warn(e);
                     }
@@ -4572,24 +6037,44 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">Check-in de Huésped</h3>
-              <button onClick={() => setShowCheckInModal(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#E0A526]">
+                Check-in de Huésped
+              </h3>
+              <button
+                onClick={() => setShowCheckInModal(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="p-3 bg-[#1E140C] border border-[#3D2817] rounded-xl text-xs space-y-1">
-              <p className="text-white font-bold text-sm">{showCheckInModal.huespedNombre}</p>
-              <p className="text-[#E0A526] font-semibold">Habitación / Ambiente: {showCheckInModal.ambienteCodigo}</p>
-              <p className="text-[#C9B096]">Estadía: {showCheckInModal.fechaEntrada} al {showCheckInModal.fechaSalida}</p>
+              <p className="text-white font-bold text-sm">
+                {showCheckInModal.huespedNombre}
+              </p>
+              <p className="text-[#E0A526] font-semibold">
+                Habitación / Ambiente: {showCheckInModal.ambienteCodigo}
+              </p>
+              <p className="text-[#C9B096]">
+                Estadía: {showCheckInModal.fechaEntrada} al{" "}
+                {showCheckInModal.fechaSalida}
+              </p>
               {showCheckInModal.saldoPendiente > 0 ? (
-                <p className="text-[#F28C38] font-bold">Saldo pendiente de cobro: Bs {showCheckInModal.saldoPendiente}</p>
+                <p className="text-[#F28C38] font-bold">
+                  Saldo pendiente de cobro: Bs {showCheckInModal.saldoPendiente}
+                </p>
               ) : (
-                <p className="text-[#5FD08E] font-bold">✓ Reserva totalmente pagada</p>
+                <p className="text-[#5FD08E] font-bold">
+                  ✓ Reserva totalmente pagada
+                </p>
               )}
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Cédula de Identidad / Pasaporte *</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Cédula de Identidad / Pasaporte *
+                </label>
                 <input
                   type="text"
                   value={formCheckInDoc}
@@ -4607,19 +6092,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
                 <div>
-                  <span className="text-xs font-bold text-[#F5EBDC] block">Fotocopia de Carnet de Identidad recibida</span>
-                  <span className="text-[11px] text-[#C9B096]">Requisito legal para registro de huéspedes y Policía Turística</span>
+                  <span className="text-xs font-bold text-[#F5EBDC] block">
+                    Fotocopia de Carnet de Identidad recibida
+                  </span>
+                  <span className="text-[11px] text-[#C9B096]">
+                    Requisito legal para registro de huéspedes y Policía
+                    Turística
+                  </span>
                 </div>
               </label>
 
               <div className="p-3 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-[11px] text-[#C9B096] space-y-1">
-                <p className="font-bold text-[#E0A526]">Control de Horarios PMS:</p>
-                <p>• Horario oficial Check-in: <strong>8:30 a 12:00</strong></p>
-                <p>• Al confirmar, la habitación pasará a estado <strong>OCUPADA</strong> y se activará la estadía.</p>
+                <p className="font-bold text-[#E0A526]">
+                  Control de Horarios PMS:
+                </p>
+                <p>
+                  • Horario oficial Check-in: <strong>8:30 a 12:00</strong>
+                </p>
+                <p>
+                  • Al confirmar, la habitación pasará a estado{" "}
+                  <strong>OCUPADA</strong> y se activará la estadía.
+                </p>
               </div>
 
               <div>
-                <label className="block text-[#C9B096] mb-1 font-semibold">Observaciones de ingreso (opcional)</label>
+                <label className="block text-[#C9B096] mb-1 font-semibold">
+                  Observaciones de ingreso (opcional)
+                </label>
                 <input
                   type="text"
                   value={formCheckInObs}
@@ -4640,11 +6139,18 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
               <button
                 onClick={async () => {
                   const check = showCheckInModal;
-                  const docFinal = formCheckInDoc.trim() || check.documento || 'Sin doc';
+                  const docFinal =
+                    formCheckInDoc.trim() || check.documento || "Sin doc";
 
                   // 1. Actualizar reserva a en_curso
                   if (check.reservaId) {
-                    setReservas(prev => prev.map(r => r.id === check.reservaId ? { ...r, estado: 'en_curso', documento: docFinal } : r));
+                    setReservas((prev) =>
+                      prev.map((r) =>
+                        r.id === check.reservaId
+                          ? { ...r, estado: "en_curso", documento: docFinal }
+                          : r,
+                      ),
+                    );
                   }
 
                   // 2. Crear o actualizar estadía en_curso
@@ -4659,58 +6165,88 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                     fechaSalida: check.fechaSalida,
                     personas: 1,
                     saldoPendiente: check.saldoPendiente,
-                    estado: 'en_curso',
-                    fotocopiaRecibida: formCheckInFotocopia
+                    estado: "en_curso",
+                    fotocopiaRecibida: formCheckInFotocopia,
                   };
 
-                  setEstadias(prev => [nuevaEstadia, ...prev.filter(e => e.id !== check.estadiaId)]);
+                  setEstadias((prev) => [
+                    nuevaEstadia,
+                    ...prev.filter((e) => e.id !== check.estadiaId),
+                  ]);
 
                   // 3. Ocupar habitación
-                  setAmbientes(prev => prev.map(a => 
-                    (a.codigo === check.ambienteCodigo || a.nombre === check.ambienteCodigo || check.ambienteCodigo.includes(a.codigo))
-                      ? { ...a, estado: 'ocupada', huespedActual: check.huespedNombre, codigoEstadia: nuevaEstadia.codigoEstadia }
-                      : a
-                  ));
+                  setAmbientes((prev) =>
+                    prev.map((a) =>
+                      a.codigo === check.ambienteCodigo ||
+                      a.nombre === check.ambienteCodigo ||
+                      check.ambienteCodigo.includes(a.codigo)
+                        ? {
+                            ...a,
+                            estado: "ocupada",
+                            huespedActual: check.huespedNombre,
+                            codigoEstadia: nuevaEstadia.codigoEstadia,
+                          }
+                        : a,
+                    ),
+                  );
 
                   // 4. Actualizar o registrar huésped
-                  setHuespedes(prev => {
-                    const yaExiste = prev.find(h => h.nombre.toLowerCase() === check.huespedNombre.toLowerCase());
+                  setHuespedes((prev) => {
+                    const yaExiste = prev.find(
+                      (h) =>
+                        h.nombre.toLowerCase() ===
+                        check.huespedNombre.toLowerCase(),
+                    );
                     if (yaExiste) {
-                      return prev.map(h => h.id === yaExiste.id ? {
-                        ...h,
-                        documento: docFinal,
-                        codigoEstadiaActiva: nuevaEstadia.codigoEstadia,
-                        fotocopiaRecibida: formCheckInFotocopia
-                      } : h);
+                      return prev.map((h) =>
+                        h.id === yaExiste.id
+                          ? {
+                              ...h,
+                              documento: docFinal,
+                              codigoEstadiaActiva: nuevaEstadia.codigoEstadia,
+                              fotocopiaRecibida: formCheckInFotocopia,
+                            }
+                          : h,
+                      );
                     } else {
                       const nuevoH: Huesped = {
                         id: `h-${Date.now()}`,
-                        codigo: `HU-${String(prev.length + 1).padStart(4, '0')}`,
+                        codigo: `HU-${String(prev.length + 1).padStart(4, "0")}`,
                         nombre: check.huespedNombre,
                         documento: docFinal,
-                        contacto: check.contacto || 'Sin teléfono',
+                        contacto: check.contacto || "Sin teléfono",
                         estadiasTotal: 1,
                         montoAcumulado: 0,
                         codigoEstadiaActiva: nuevaEstadia.codigoEstadia,
-                        fotocopiaRecibida: formCheckInFotocopia
+                        fotocopiaRecibida: formCheckInFotocopia,
                       };
                       return [nuevoH, ...prev];
                     }
                   });
 
                   setShowCheckInModal(null);
-                  mostrarNotificacion(`✓ Check-in completado para ${check.huespedNombre}. ${check.ambienteCodigo} ahora está OCUPADA.`);
+                  mostrarNotificacion(
+                    `✓ Check-in completado para ${check.huespedNombre}. ${check.ambienteCodigo} ahora está OCUPADA.`,
+                  );
 
                   try {
                     if (check.reservaId) {
-                      await supabase.from('reservas').update({ estado: 'en_curso', documento: docFinal }).eq('id', check.reservaId);
+                      await supabase
+                        .from("reservas")
+                        .update({ estado: "en_curso", documento: docFinal })
+                        .eq("id", check.reservaId);
                     }
-                    await supabase.from('ambientes').update({
-                      estado: 'ocupada',
-                      huesped_actual: check.huespedNombre,
-                      codigo_estadia: nuevaEstadia.codigoEstadia
-                    }).or(`codigo.eq.${check.ambienteCodigo},nombre.eq.${check.ambienteCodigo}`);
-                    await supabase.from('estadias').insert({
+                    await supabase
+                      .from("ambientes")
+                      .update({
+                        estado: "ocupada",
+                        huesped_actual: check.huespedNombre,
+                        codigo_estadia: nuevaEstadia.codigoEstadia,
+                      })
+                      .or(
+                        `codigo.eq.${check.ambienteCodigo},nombre.eq.${check.ambienteCodigo}`,
+                      );
+                    await supabase.from("estadias").insert({
                       codigo_estadia: nuevaEstadia.codigoEstadia,
                       huesped_nombre: check.huespedNombre,
                       documento: docFinal,
@@ -4718,8 +6254,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                       ambiente_codigo: check.ambienteCodigo,
                       fecha_entrada: check.fechaEntrada,
                       fecha_salida: check.fechaSalida,
-                      estado: 'en_curso',
-                      fotocopia_recibida: formCheckInFotocopia
+                      estado: "en_curso",
+                      fotocopia_recibida: formCheckInFotocopia,
                     });
                   } catch (e) {
                     console.warn(e);
@@ -4739,16 +6275,33 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#24170E] border border-[#5A3418] rounded-3xl p-6 text-[#F5EBDC] space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#3D2817] pb-3">
-              <h3 className="font-['Young_Serif',serif] text-2xl text-[#C2570C]">Salida / Check-out</h3>
-              <button onClick={() => setShowCheckOutWarning(null)} className="text-[#C9B096] hover:text-white cursor-pointer">✕</button>
+              <h3 className="font-['Young_Serif',serif] text-2xl text-[#C2570C]">
+                Salida / Check-out
+              </h3>
+              <button
+                onClick={() => setShowCheckOutWarning(null)}
+                className="text-[#C9B096] hover:text-white cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="p-3 bg-[#1E140C] border border-[#3D2817] rounded-xl text-xs space-y-1">
-              <p className="text-white font-bold text-sm">{showCheckOutWarning.huespedNombre}</p>
-              <p className="text-[#E0A526] font-semibold">Habitación: {showCheckOutWarning.ambienteCodigo}</p>
-              <p className="text-[#C9B096]">Estadía: {showCheckOutWarning.fechaEntrada} al {showCheckOutWarning.fechaSalida}</p>
+              <p className="text-white font-bold text-sm">
+                {showCheckOutWarning.huespedNombre}
+              </p>
+              <p className="text-[#E0A526] font-semibold">
+                Habitación: {showCheckOutWarning.ambienteCodigo}
+              </p>
+              <p className="text-[#C9B096]">
+                Estadía: {showCheckOutWarning.fechaEntrada} al{" "}
+                {showCheckOutWarning.fechaSalida}
+              </p>
               {showCheckOutWarning.saldoPendiente > 0 && (
-                <p className="text-[#F28C38] font-bold">⚠️ Saldo pendiente de pago: Bs {showCheckOutWarning.saldoPendiente}</p>
+                <p className="text-[#F28C38] font-bold">
+                  ⚠️ Saldo pendiente de pago: Bs{" "}
+                  {showCheckOutWarning.saldoPendiente}
+                </p>
               )}
             </div>
 
@@ -4760,21 +6313,30 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   onChange={(e) => setFormCheckOutLlave(e.target.checked)}
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
-                <span className="text-xs font-semibold text-[#F5EBDC]">Llaves de habitación entregadas en recepción</span>
+                <span className="text-xs font-semibold text-[#F5EBDC]">
+                  Llaves de habitación entregadas en recepción
+                </span>
               </label>
 
               <label className="flex items-center gap-2.5 p-3 bg-[#1E140C] rounded-xl border border-[#3D2817] cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formCheckOutHabitacionOk}
-                  onChange={(e) => setFormCheckOutHabitacionOk(e.target.checked)}
+                  onChange={(e) =>
+                    setFormCheckOutHabitacionOk(e.target.checked)
+                  }
                   className="w-4 h-4 rounded text-[#E0A526] accent-[#E0A526]"
                 />
-                <span className="text-xs font-semibold text-[#F5EBDC]">Revisión de habitación completada (sin daños)</span>
+                <span className="text-xs font-semibold text-[#F5EBDC]">
+                  Revisión de habitación completada (sin daños)
+                </span>
               </label>
 
               <div className="p-3 rounded-xl bg-[#2D1E12] border border-[#5A3418] text-[11px] text-[#6DB7D9]">
-                ⚡ Al confirmar la salida, la habitación {showCheckOutWarning.ambienteCodigo} pasará automáticamente a estado <strong>EN LIMPIEZA</strong> y se creará la orden de preparación.
+                ⚡ Al confirmar la salida, la habitación{" "}
+                {showCheckOutWarning.ambienteCodigo} pasará automáticamente a
+                estado <strong>EN LIMPIEZA</strong> y se creará la orden de
+                preparación.
               </div>
             </div>
 
@@ -4790,56 +6352,89 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                   const est = showCheckOutWarning;
 
                   // 1. Finalizar estadía
-                  setEstadias(prev => prev.map(e => e.id === est.id ? { ...e, estado: 'finalizada' } : e));
+                  setEstadias((prev) =>
+                    prev.map((e) =>
+                      e.id === est.id ? { ...e, estado: "finalizada" } : e,
+                    ),
+                  );
 
                   // 2. Finalizar reserva si existe
-                  setReservas(prev => prev.map(r => 
-                    r.huespedNombre.toLowerCase() === est.huespedNombre.toLowerCase() && r.estado === 'en_curso'
-                      ? { ...r, estado: 'finalizada' }
-                      : r
-                  ));
+                  setReservas((prev) =>
+                    prev.map((r) =>
+                      r.huespedNombre.toLowerCase() ===
+                        est.huespedNombre.toLowerCase() &&
+                      r.estado === "en_curso"
+                        ? { ...r, estado: "finalizada" }
+                        : r,
+                    ),
+                  );
 
                   // 3. Habitación a Limpieza
-                  setAmbientes(prev => prev.map(a => 
-                    (a.codigo === est.ambienteCodigo || a.nombre === est.ambienteCodigo || est.ambienteCodigo.includes(a.codigo))
-                      ? { ...a, estado: 'limpieza', huespedActual: undefined, codigoEstadia: undefined }
-                      : a
-                  ));
+                  setAmbientes((prev) =>
+                    prev.map((a) =>
+                      a.codigo === est.ambienteCodigo ||
+                      a.nombre === est.ambienteCodigo ||
+                      est.ambienteCodigo.includes(a.codigo)
+                        ? {
+                            ...a,
+                            estado: "limpieza",
+                            huespedActual: undefined,
+                            codigoEstadia: undefined,
+                          }
+                        : a,
+                    ),
+                  );
 
                   // 4. Crear tarea de limpieza automática
                   const nuevaLimpieza: TareaLimpieza = {
                     id: `t-out-${Date.now()}`,
                     ambienteCodigo: est.ambienteCodigo,
                     tarea: `Limpieza y desinfección completa tras salida de ${est.huespedNombre}`,
-                    responsable: 'Grimanez Cordero',
-                    origen: 'checkout',
-                    estado: 'pendiente'
+                    responsable: "Grimanez Cordero",
+                    origen: "checkout",
+                    estado: "pendiente",
                   };
-                  setTareasLimpieza(prev => [nuevaLimpieza, ...prev]);
+                  setTareasLimpieza((prev) => [nuevaLimpieza, ...prev]);
 
                   // 5. Quitar estadía activa en huésped
-                  setHuespedes(prev => prev.map(h => 
-                    h.nombre.toLowerCase() === est.huespedNombre.toLowerCase()
-                      ? { ...h, codigoEstadiaActiva: undefined, estadiasTotal: h.estadiasTotal + 1 }
-                      : h
-                  ));
+                  setHuespedes((prev) =>
+                    prev.map((h) =>
+                      h.nombre.toLowerCase() === est.huespedNombre.toLowerCase()
+                        ? {
+                            ...h,
+                            codigoEstadiaActiva: undefined,
+                            estadiasTotal: h.estadiasTotal + 1,
+                          }
+                        : h,
+                    ),
+                  );
 
                   setShowCheckOutWarning(null);
-                  mostrarNotificacion(`✓ Check-out realizado. Habitación ${est.ambienteCodigo} enviada a LIMPIEZA.`);
+                  mostrarNotificacion(
+                    `✓ Check-out realizado. Habitación ${est.ambienteCodigo} enviada a LIMPIEZA.`,
+                  );
 
                   try {
-                    await supabase.from('estadias').update({ estado: 'finalizada' }).eq('id', est.id);
-                    await supabase.from('ambientes').update({
-                      estado: 'limpieza',
-                      huesped_actual: null,
-                      codigo_estadia: null
-                    }).or(`codigo.eq.${est.ambienteCodigo},nombre.eq.${est.ambienteCodigo}`);
-                    await supabase.from('tareas_limpieza').insert({
+                    await supabase
+                      .from("estadias")
+                      .update({ estado: "finalizada" })
+                      .eq("id", est.id);
+                    await supabase
+                      .from("ambientes")
+                      .update({
+                        estado: "limpieza",
+                        huesped_actual: null,
+                        codigo_estadia: null,
+                      })
+                      .or(
+                        `codigo.eq.${est.ambienteCodigo},nombre.eq.${est.ambienteCodigo}`,
+                      );
+                    await supabase.from("tareas_limpieza").insert({
                       ambiente_codigo: est.ambienteCodigo,
                       tarea: `Limpieza tras salida de ${est.huespedNombre}`,
-                      responsable: 'Grimanez Cordero',
-                      origen: 'checkout',
-                      estado: 'pendiente'
+                      responsable: "Grimanez Cordero",
+                      origen: "checkout",
+                      estado: "pendiente",
                     });
                   } catch (e) {
                     console.warn(e);
@@ -4853,7 +6448,6 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
           </div>
         </div>
       )}
-
     </div>
   );
 }
